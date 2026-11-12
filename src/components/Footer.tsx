@@ -1,34 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useCMS } from '../context/CMSContext';
-import { validateEmail } from '../utils/quizScorer';
-import { Instagram, Check, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Instagram, Mail, MapPin, ArrowRight } from 'lucide-react';
 
 export const Footer: React.FC = () => {
-  const { siteConfig, addLead, setActiveView } = useCMS();
-  const [newsletterEmail, setNewsletterEmail] = useState('');
-  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
-  const [newsletterError, setNewsletterError] = useState('');
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateEmail(newsletterEmail)) {
-      setNewsletterError('Please enter a valid email address');
-      return;
-    }
-    setNewsletterError('');
-    addLead({
-      name: 'Newsletter Subscriber',
-      email: newsletterEmail.trim(),
-      source: 'newsletter',
-    });
-    setNewsletterSubmitted(true);
-  };
+  const { siteConfig, setActiveView } = useCMS();
 
   const navLinks = [
     { id: 'home', label: 'Home', view: 'home' as const },
     { id: 'quiz', label: 'Level Quiz', view: 'quiz' as const },
     { id: 'courses', label: 'Courses & Pricing', view: 'courses' as const },
     { id: 'about', label: 'About Meli', view: 'about' as const },
+    { id: 'contact', label: 'Contact', view: 'contact' as const },
   ];
 
   return (
@@ -58,6 +40,13 @@ export const Footer: React.FC = () => {
                   <Instagram className="w-4 h-4" />
                 </a>
               )}
+              <a
+                href="mailto:spanishconmeli@gmail.com"
+                className="w-10 h-10 rounded-xl bg-[#2B2723] hover:bg-[#C73E29] text-white flex items-center justify-center transition-all hover:scale-105"
+                aria-label="Email"
+              >
+                <Mail className="w-4 h-4" />
+              </a>
             </div>
           </div>
 
@@ -83,58 +72,51 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Newsletter Lead Form */}
+          {/* Direct Contact Card */}
           <div className="md:col-span-4">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white mb-2">
-              {siteConfig.footerNewsletterTitle || 'Weekly Real Spanish Letter'}
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white mb-3">
+              Direct Contact
             </h4>
-            <p className="text-xs text-[#A8A196] mb-4">
-              {siteConfig.footerNewsletterDesc ||
-                'Receive 1 colloquial expression every Tuesday plus 15% off your first course enrollment.'}
-            </p>
-
-            {!newsletterSubmitted ? (
-              <form onSubmit={handleSubscribe} className="space-y-2">
-                <div className="flex gap-2">
-                  <input
-                    type="email"
-                    required
-                    placeholder="your@email.com"
-                    value={newsletterEmail}
-                    onChange={(e) => {
-                      setNewsletterEmail(e.target.value);
-                      if (newsletterError) setNewsletterError('');
-                    }}
-                    className="flex-1 px-3 py-2 text-xs rounded-xl bg-[#2B2723] border border-[#3D3732] text-white focus:outline-none focus:border-[#C73E29]"
-                  />
-                  <button
-                    type="submit"
-                    className="px-3.5 py-2 bg-[#C73E29] hover:bg-[#AB3220] text-white text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center justify-center"
-                    aria-label="Subscribe to newsletter"
-                  >
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-                {newsletterError && (
-                  <p className="text-[11px] text-red-400 font-medium">{newsletterError}</p>
-                )}
-                <div className="flex items-center gap-1.5 text-[10px] text-[#78716C] pt-1">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>No spam ever. Unsubscribe with 1 click anytime.</span>
-                </div>
-              </form>
-            ) : (
-              <div className="p-3 bg-[#2A9D8F]/20 border border-[#2A9D8F]/40 rounded-xl text-xs text-[#80E5D9] flex items-center gap-2">
-                <Check className="w-4 h-4 shrink-0" />
-                <span>
-                  Subscribed! Use code{' '}
-                  <strong className="text-white">
-                    {siteConfig.newsletterDiscountCode || 'MELI15'}
-                  </strong>{' '}
-                  on any course.
-                </span>
+            <div className="p-4 rounded-2xl bg-[#2B2723] border border-[#3D3732] space-y-3">
+              <div className="flex items-center gap-2.5 text-xs text-[#D5CFC4]">
+                <Mail className="w-4 h-4 text-[#C73E29] shrink-0" />
+                <a
+                  href="mailto:spanishconmeli@gmail.com"
+                  className="hover:text-white transition-colors underline"
+                >
+                  spanishconmeli@gmail.com
+                </a>
               </div>
-            )}
+              <div className="flex items-center gap-2.5 text-xs text-[#D5CFC4]">
+                <Instagram className="w-4 h-4 text-[#E1306C] shrink-0" />
+                <a
+                  href="https://instagram.com/spanishconmeli"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  @spanishconmeli
+                </a>
+              </div>
+              <div className="flex items-center gap-2.5 text-xs text-[#A8A196]">
+                <MapPin className="w-4 h-4 text-[#2A9D8F] shrink-0" />
+                <span>Madrid, Spain (Central European Time)</span>
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveView('contact');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="w-full py-2.5 px-3 rounded-xl bg-[#C73E29] hover:bg-[#AB3220] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <span>Open Contact Form</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -152,4 +134,3 @@ export const Footer: React.FC = () => {
     </footer>
   );
 };
-

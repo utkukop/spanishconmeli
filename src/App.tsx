@@ -7,6 +7,7 @@ import { CoursesSection } from './components/CoursesSection';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { AboutSection } from './components/AboutSection';
 import { QuizPage } from './components/QuizPage';
+import { ContactPage } from './components/ContactPage';
 import { Footer } from './components/Footer';
 import { BackofficePage } from './components/BackofficePage';
 import { Sparkles } from 'lucide-react';
@@ -53,6 +54,8 @@ const AppContent: React.FC = () => {
             <AboutSection />
             <TestimonialsSection />
           </div>
+        ) : activeView === 'contact' ? (
+          <ContactPage />
         ) : (
           /* HOME VIEW */
           <div>

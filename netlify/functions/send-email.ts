@@ -1,5 +1,4 @@
 export async function handler(event: { httpMethod: string; body: string | null }) {
-  // CORS Headers
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -15,134 +14,166 @@ export async function handler(event: { httpMethod: string; body: string | null }
     return {
       statusCode: 405,
       headers,
-      body: JSON.stringify({ error: 'Method not allowed. Use POST.' }),
+      body: JSON.stringify({ error: 'Method Not Allowed' }),
     };
   }
 
   try {
     const payload = event.body ? JSON.parse(event.body) : {};
-    const { name, email, courseTitle, courseTier, price, currency = '$' } = payload;
+    const {
+      name,
+      email,
+      message,
+      subject,
+      courseTitle,
+      courseTier,
+      price,
+      currency = '$',
+    } = payload;
 
-    if (!email || !name) {
+    if (!name || !email || !email.includes('@')) {
       return {
         statusCode: 400,
         headers,
-        body: JSON.stringify({ error: 'Missing required fields: name and email.' }),
+        body: JSON.stringify({ error: 'Please fill in all fields with a valid email address.' }),
       };
     }
 
-    const resendApiKey = process.env.RESEND_API_KEY;
-    const singleEmail = process.env.EMAIL || process.env.CONTACT_EMAIL;
-    const teacherEmail = process.env.TEACHER_EMAIL || singleEmail || process.env.ADMIN_EMAIL;
-    const senderEmail =
-      process.env.SENDER_EMAIL ||
-      (singleEmail ? `Spanish with Meli <${singleEmail}>` : 'Spanish with Meli <onboarding@resend.dev>');
+    const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    const adminEmail = process.env.TEACHER_EMAIL || process.env.ADMIN_EMAIL || 'spanishconmeli@gmail.com';
+    const senderFrom = process.env.SENDER_EMAIL || 'Spanish con Meli <hola@spanishconmeli.com>';
 
-    // Student Welcome Email HTML Template
-    const studentHtml = `
-      <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FAF9F5; padding: 32px; border-radius: 16px; border: 1px solid #EAE5D9; color: #1E1B18;">
-        <div style="text-align: center; margin-bottom: 24px;">
-          <h1 style="color: #1E1B18; font-size: 24px; margin: 0;">Spanish with Meli<span style="color: #C73E29;">.</span></h1>
-          <p style="color: #78716C; font-size: 13px; margin-top: 4px;">Real Conversational Spanish</p>
-        </div>
+    const isCourseEnrollment = Boolean(courseTitle);
 
-        <div style="background: #FFFFFF; padding: 24px; border-radius: 12px; border: 1px solid #EAE5D9;">
-          <h2 style="color: #C73E29; font-size: 18px; margin-top: 0;">¡Hola ${name}! Welcome to the Course!</h2>
-          <p style="font-size: 14px; line-height: 1.6; color: #443E38;">
-            Thank you for enrolling in <strong>${courseTitle}</strong>${courseTier ? ` (${courseTier})` : ''}. Your registration has been received successfully!
-          </p>
+    // 1. AUTOMATIC WELCOME / CONFIRMATION EMAIL TO THE USER
+    let userSubject = 'Thank you for contacting Spanish con Meli!';
+    let userHtml = `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; background: #ffffff; padding: 24px; border-radius: 12px; border: 1px solid #EAE5D9;">
+        <h2 style="color: #C73E29; margin-top: 0;">Hola ${name},</h2>
+        <p>Thank you for reaching out! We have received your message and will get back to you as soon as possible.</p>
+        <p>Best regards,<br><strong>Spanish con Meli</strong></p>
+      </div>
+    `;
+
+    if (isCourseEnrollment) {
+      userSubject = `Welcome to the Course! - ${courseTitle}`;
+      userHtml = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; background: #ffffff; padding: 28px; border-radius: 16px; border: 1px solid #EAE5D9;">
+          <h2 style="color: #C73E29; margin-top: 0;">¡Hola ${name}! Welcome to the Course!</h2>
+          <p>Thank you for registering for <strong>${courseTitle}</strong>${courseTier ? ` (${courseTier})` : ''}. Your access details and welcome guide have been registered!</p>
           
-          <div style="background: #FAF9F5; border-left: 4px solid #C73E29; padding: 12px 16px; margin: 18px 0; border-radius: 4px;">
-            <p style="margin: 0; font-size: 13px; font-weight: bold; color: #1E1B18;">Your Enrollment Details:</p>
-            <p style="margin: 4px 0 0 0; font-size: 13px; color: #57514A;">Program: ${courseTitle}</p>
-            ${courseTier ? `<p style="margin: 2px 0 0 0; font-size: 13px; color: #57514A;">Package: ${courseTier}</p>` : ''}
-            ${price ? `<p style="margin: 2px 0 0 0; font-size: 13px; color: #57514A;">Investment: ${currency}${price}</p>` : ''}
+          <div style="background: #FAF9F5; border-left: 4px solid #C73E29; padding: 14px 18px; margin: 20px 0; border-radius: 6px;">
+            <p style="margin: 0; font-weight: bold; color: #1E1B18;">Your Enrollment Details:</p>
+            <p style="margin: 4px 0 0 0; color: #57514A;">Program: ${courseTitle}</p>
+            ${courseTier ? `<p style="margin: 2px 0 0 0; color: #57514A;">Package: ${courseTier}</p>` : ''}
+            ${price ? `<p style="margin: 2px 0 0 0; color: #57514A;">Investment: ${currency}${price} USD</p>` : ''}
           </div>
 
-          <p style="font-size: 14px; line-height: 1.6; color: #443E38;">
-            Teacher Meli will be in touch with your direct Google Meet link, syllabus materials, and preparatory steps so you can hit the ground running.
-          </p>
-
-          <p style="font-size: 14px; line-height: 1.6; color: #443E38; margin-bottom: 0;">
-            Get ready to start speaking real Spanish! If you have any immediate questions, reply directly to this email.
+          <p>Teacher Meli will be in touch shortly with your Google Meet access link, syllabus materials, and preparatory steps.</p>
+          <p>Get ready to start speaking real Spanish!</p>
+          <p style="margin-top: 24px; font-size: 13px; color: #78716C;">
+            Best regards,<br>
+            <strong>Spanish con Meli</strong><br>
+            Follow on Instagram: <a href="https://instagram.com/spanishconmeli" style="color: #C73E29; text-decoration: none;">@spanishconmeli</a>
           </p>
         </div>
+      `;
+    }
 
-        <div style="text-align: center; margin-top: 24px; font-size: 12px; color: #A8A196;">
-          <p style="margin: 0;">© ${new Date().getFullYear()} Spanish with Meli. Madrid, Spain.</p>
-          <p style="margin: 4px 0 0 0;">Follow on Instagram <a href="https://instagram.com/spanishconmeli" style="color: #C73E29; text-decoration: none;">@spanishconmeli</a></p>
+    // 2. NOTIFICATION EMAIL TO YOU (GMAIL)
+    let adminSubject = `New Contact Form Message from ${name}`;
+    let adminHtml = `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h3 style="color: #1E1B18; margin-top: 0;">New Contact Form Submission</h3>
+        <p><strong>Full Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        ${subject ? `<p><strong>Subject:</strong> ${subject}</p>` : ''}
+        <p><strong>Message:</strong></p>
+        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; white-space: pre-wrap;">
+          ${message || 'No additional message provided.'}
         </div>
       </div>
     `;
 
-    if (resendApiKey) {
-      // Send real email via Resend REST API
-      const resendResponse = await fetch('https://api.resend.com/emails', {
+    if (isCourseEnrollment) {
+      adminSubject = `🎉 New Course Enrollment: ${name} (${courseTitle})`;
+      adminHtml = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h3 style="color: #C73E29; margin-top: 0;">🎉 New Student Enrollment!</h3>
+          <p><strong>Full Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Program:</strong> ${courseTitle}</p>
+          <p><strong>Package / Tier:</strong> ${courseTier || 'Standard'}</p>
+          ${price ? `<p><strong>Price:</strong> ${currency}${price} USD</p>` : ''}
+          <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+        </div>
+      `;
+    }
+
+    if (RESEND_API_KEY) {
+      const userMail = fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${resendApiKey}`,
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: senderEmail,
+          from: senderFrom,
           to: [email],
-          subject: `Welcome to ${courseTitle}! - Spanish with Meli`,
-          html: studentHtml,
+          reply_to: 'spanishconmeli@gmail.com',
+          subject: userSubject,
+          html: userHtml,
         }),
       });
 
-      const resendData = await resendResponse.json();
+      const adminMail = fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: senderFrom,
+          to: [adminEmail],
+          reply_to: email,
+          subject: adminSubject,
+          html: adminHtml,
+        }),
+      });
 
-      // If teacher notification email is set up, also send notification to teacher
-      if (teacherEmail && resendResponse.ok) {
-        await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${resendApiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: senderEmail,
-            to: [teacherEmail],
-            subject: `🎉 New Student Enrollment: ${name} (${courseTitle})`,
-            html: `
-              <p>You have a new student enrollment!</p>
-              <ul>
-                <li><strong>Name:</strong> ${name}</li>
-                <li><strong>Email:</strong> ${email}</li>
-                <li><strong>Course:</strong> ${courseTitle}</li>
-                <li><strong>Tier:</strong> ${courseTier || 'Standard'}</li>
-                <li><strong>Date:</strong> ${new Date().toLocaleString()}</li>
-              </ul>
-            `,
-          }),
-        }).catch((err) => console.warn('Teacher notification error:', err));
+      const [userRes, adminRes] = await Promise.all([userMail, adminMail]);
+
+      if (!userRes.ok || !adminRes.ok) {
+        const userErr = !userRes.ok ? await userRes.text() : '';
+        const adminErr = !adminRes.ok ? await adminRes.text() : '';
+        console.error('Resend API error:', { userErr, adminErr });
+        throw new Error('Resend API error');
       }
 
       return {
         statusCode: 200,
         headers,
-        body: JSON.stringify({ success: true, data: resendData }),
+        body: JSON.stringify({ success: true }),
       };
     } else {
-      // Free fallback mode: logs cleanly when RESEND_API_KEY is not yet added to Netlify env
-      console.log('RESEND_API_KEY not configured. Simulated email sent to:', email, payload);
+      console.log('[send-email] Simulated dispatch (RESEND_API_KEY pending):', {
+        to: email,
+        adminTo: adminEmail,
+        isCourseEnrollment,
+        name,
+      });
       return {
         statusCode: 200,
         headers,
-        body: JSON.stringify({
-          success: true,
-          simulated: true,
-          message: 'Welcome email recorded (configure RESEND_API_KEY in Netlify to deliver real emails)',
-        }),
+        body: JSON.stringify({ success: true, simulated: true }),
       };
     }
   } catch (error: any) {
-    console.error('Email error:', error);
+    console.error('send-email handler error:', error);
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: error?.message || 'Internal server error sending email.' }),
+      body: JSON.stringify({ error: error?.message || 'Failed to send email. Please try again later.' }),
     };
   }
 }

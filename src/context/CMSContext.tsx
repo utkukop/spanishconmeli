@@ -17,9 +17,9 @@ import {
 } from '../data/initialContent';
 
 const STORAGE_KEYS = {
-  PUBLISHED_DATA: 'spanishconmeli_published_data_v4',
-  DRAFT_DATA: 'spanishconmeli_draft_data_v4',
-  AUTH_SESSION: 'spanishconmeli_backoffice_auth_v4',
+  PUBLISHED_DATA: 'spanishconmeli_published_data_v5',
+  DRAFT_DATA: 'spanishconmeli_draft_data_v5',
+  AUTH_SESSION: 'spanishconmeli_backoffice_auth_v5',
 };
 
 const DEFAULT_WEBSITE_DATA: WebsiteData = {
@@ -90,8 +90,8 @@ interface CMSContextType {
   addLead: (lead: Omit<Lead, 'id' | 'createdAt'>) => void;
 
   // Navigation & Routing
-  activeView: 'home' | 'quiz' | 'courses' | 'resources' | 'about';
-  setActiveView: (view: 'home' | 'quiz' | 'courses' | 'resources' | 'about') => void;
+  activeView: 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact';
+  setActiveView: (view: 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact') => void;
 
   // Backoffice State & Security
   isBackofficeMode: boolean;
@@ -175,7 +175,9 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   const [previewMode, setPreviewMode] = useState<'live' | 'draft'>('live');
-  const [activeView, setActiveView] = useState<'home' | 'quiz' | 'courses' | 'resources' | 'about'>('home');
+  const [activeView, setActiveView] = useState<
+    'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact'
+  >('home');
 
   // Listen to popstate / hash / key events for secret backoffice toggle
   useEffect(() => {

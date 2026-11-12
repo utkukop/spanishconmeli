@@ -147,7 +147,7 @@ export interface PillarItem {
 export interface NavLinkItem {
   id: string;
   label: string;
-  view: 'home' | 'quiz' | 'courses' | 'resources' | 'about';
+  view: 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact';
 }
 
 export interface SiteConfig {

@@ -11,6 +11,7 @@ export const Navbar: React.FC = () => {
     { id: 'quiz', label: 'Level Quiz', view: 'quiz' },
     { id: 'courses', label: 'Courses', view: 'courses' },
     { id: 'about', label: 'About Meli', view: 'about' },
+    { id: 'contact', label: 'Contact', view: 'contact' },
   ];
 
   const handleNavClick = (viewId: typeof activeView) => {

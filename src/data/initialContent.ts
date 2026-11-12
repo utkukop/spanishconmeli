@@ -38,6 +38,7 @@ export const INITIAL_SITE_CONFIG: SiteConfig = {
     { id: 'quiz', label: 'Level Quiz', view: 'quiz' },
     { id: 'courses', label: 'Courses', view: 'courses' },
     { id: 'about', label: 'About Meli', view: 'about' },
+    { id: 'contact', label: 'Contact', view: 'contact' },
   ],
 
   // Hero Section
