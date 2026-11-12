@@ -62,78 +62,78 @@ export function calculateQuizResult(
   }
 
   // Default multilingual-friendly fallback
-  let title = 'Principiante Curioso (Nivel A1)';
+  let title = 'Curious Beginner (Level A1)';
   let summary =
-    'Conoces palabras y frases básicas de cortesía, pero todavía te cuesta construir oraciones fluidas o entender a nativos cuando hablan a ritmo normal.';
-  let recommendedCourseId = 'course-fundamentals';
+    'You understand basic greetings and courtesy phrases, but find it challenging to build fluid sentences or follow native speech at natural speed.';
+  let recommendedCourseId = 'course-group-a0a1';
   let strengths = [
-    'Entendimiento de saludos y vocabulario cotidiano esencial.',
-    'Gran motivación y oído receptivo para la pronunciación.',
+    'Basic greetings and essential everyday Spanish vocabulary.',
+    'High motivation and receptive ear for natural pronunciation.',
   ];
   let focusAreas = [
-    'Conectar verbos frecuentes (ser, estar, tener, ir) en presente.',
-    'Automatizar respuestas automáticas sin traducir mentalmente palabra por palabra.',
+    'Connecting common verbs (ser, estar, tener, ir) in present tense.',
+    'Responding spontaneously without translating word-for-word in your head.',
   ];
   let actionPlan = [
-    'Día 1-7: Practica los 50 conectores coloquiales más usados.',
-    'Día 8-15: Escucha micro-diálogos reales de 2 minutos sin subtítulos en inglés.',
-    'Día 16-30: Graba notas de voz diarias de 30 segundos simulando situaciones de viaje.',
+    'Day 1-7: Master the top 30 conversational connectors and starters.',
+    'Day 8-15: Practice bite-sized 2-minute real dialogues without English subtitles.',
+    'Day 16-30: Shadow short audio clips to build muscle memory and rhythm.',
   ];
 
   if (level === 'B2+') {
-    title = 'Conversador Avanzado y Natural (Nivel B2 / C1)';
+    title = 'Advanced & Natural Speaker (Level B2 / C1)';
     summary =
-      'Tienes un vocabulario amplio y entiendes matices culturales, doble sentido y expresiones idiomáticas. Tu próximo reto es afinar el subjuntivo sutil y la entonación nativa.';
-    recommendedCourseId = 'course-subjunctive';
+      'You have an extensive vocabulary and understand cultural nuances, humor, and idiomatic expressions. Your next leap is mastering subtle tone nuances and effortless spontaneity.';
+    recommendedCourseId = 'course-private-1on1';
     strengths = [
-      'Dominio de modismos y jerga local española / latinoamericana.',
-      'Fluidez inmediata sin miedo a cometer errores.',
-      'Excelente comprensión auditiva a velocidad rápida.',
+      'Mastery of idioms and local conversational phrases.',
+      'Instant fluency without fear of making mistakes.',
+      'Strong listening comprehension at rapid native speed.',
     ];
     focusAreas = [
-      'Subjuntivo imperfecto y frases condicionales complejas.',
-      'Afinar conectores de registro informal vs profesional.',
+      'Complex past subjunctive and conditional hypotheticals.',
+      'Fine-tuning colloquial street registers vs. professional nuance.',
     ];
     actionPlan = [
-      'Escucha podcasts nativos sin guion (temas de humor y debate).',
-      'Incorpora expresiones de reacción espontánea: "¡No me digas!", "¡Qué fuerte!", "¿En serio?".',
-      'Practica storytelling y anécdotas con tiempos del pasado entrelazados.',
+      'Listen to unscripted native discussions on culture and debate.',
+      'Adopt spontaneous reaction expressions: "¡No me digas!", "¡Qué fuerte!", "¿En serio?".',
+      'Practice dynamic storytelling with interwoven past tenses in 1-on-1 sessions.',
     ];
   } else if (level === 'B1') {
-    title = 'Intermedio en Despegue (Nivel B1)';
+    title = 'Progressing Intermediate (Level B1)';
     summary =
-      'Puedes mantener conversaciones sobre temas familiares y viajar con comodidad, pero te bloqueas al hablar rápido o cuando entran en juego los pasados y el subjuntivo.';
-    recommendedCourseId = 'course-conversational';
+      'You can maintain conversations on familiar topics and travel comfortably, but you hesitate when speaking quickly or when past tenses come into play.';
+    recommendedCourseId = 'course-private-1on1';
     strengths = [
-      'Buen repertorio de verbos en presente y pasado.',
-      'Capacidad de hacerte entender en situaciones cotidianas de viaje y ocio.',
+      'Solid repertoire of common verbs in present and past tenses.',
+      'Ability to express ideas in everyday travel and social settings.',
     ];
     focusAreas = [
-      'Diferenciar pretérito indefinido vs imperfecto de forma intuitiva.',
-      'Perder el miedo escénico y mejorar la velocidad de procesamiento auditivo.',
+      'Intuitive distinction between Preterite and Imperfect past tenses.',
+      'Overcoming hesitation and increasing listening processing speed.',
     ];
     actionPlan = [
-      'Dedica 10 minutos al día a la técnica de "Shadowing" con los audios de Meli.',
-      'Elimina las muletillas de traducción y adopta muletillas nativas: "O sea", "A ver", "Pues nada".',
-      'Aplica el método de 3 preguntas de seguimiento en cada conversación.',
+      'Spend 10 minutes daily on vocal shadowing with authentic dialogues.',
+      'Replace filler translations with native conversational pauses: "O sea", "A ver", "Pues nada".',
+      'Practice targeted 1-on-1 personalized conversation drills.',
     ];
   } else if (level === 'A2') {
-    title = 'Principiante con Base (Nivel A2)';
+    title = 'Elementary Communicator (Level A2)';
     summary =
-      'Reconoces estructuras básicas y puedes pedir comida o dar indicaciones, pero la velocidad nativa te sobrepasa y necesitas tiempo para pensar antes de hablar.';
-    recommendedCourseId = 'course-conversational';
+      'You recognize core structures and can order food or ask for directions, but fast speech feels overwhelming and you need time to construct sentences before speaking.';
+    recommendedCourseId = 'course-group-a0a1';
     strengths = [
-      'Conocimiento de gramática elemental y conjugaciones regulares.',
-      'Buena comprensión lectora básica.',
+      'Knowledge of basic grammar and regular conjugations.',
+      'Solid reading comprehension for simple dialogues.',
     ];
     focusAreas = [
-      'Entrenamiento auditivo con acentos reales y contracciones orales.',
-      'Pronunciación de la "R" vibrante y la entonación melódica del español.',
+      'Ear training with authentic accents and natural spoken contractions.',
+      'Smooth sentence linking and melodic conversational intonation.',
     ];
     actionPlan = [
-      'Practica los 10 diálogos esenciales de supervivencia en la calle.',
-      'Aprende vocabulario por bloques de frases fijas ("chunks") y no palabras sueltas.',
-      'Repite en voz alta los episodios del podcast para calentar los músculos vocales.',
+      'Practice the 10 essential street survival dialogues.',
+      'Learn vocabulary in chunked phrases rather than isolated word lists.',
+      'Join our small-group cohort to practice live with peers and Teacher Meli.',
     ];
   }
 

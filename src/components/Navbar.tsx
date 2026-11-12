@@ -24,17 +24,8 @@ export const Navbar: React.FC = () => {
       {/* Optional Dynamic Announcement Bar */}
       {siteConfig.announcementActive && siteConfig.announcementText && (
         <div className="bg-[#1E1B18] text-[#F3EFE6] text-[11px] sm:text-xs py-2 px-4 border-b border-[#332E29]">
-          <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-center">
+          <div className="max-w-7xl mx-auto flex items-center justify-center text-center font-medium">
             <span>{siteConfig.announcementText}</span>
-            {siteConfig.announcementLinkText && (
-              <button
-                onClick={() => handleNavClick('courses')}
-                className="font-bold underline text-[#F4A261] hover:text-white transition-colors cursor-pointer inline-flex items-center gap-0.5"
-              >
-                <span>{siteConfig.announcementLinkText}</span>
-                <ArrowUpRight className="w-3 h-3" />
-              </button>
-            )}
           </div>
         </div>
       )}

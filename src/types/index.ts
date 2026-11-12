@@ -67,21 +67,34 @@ export interface QuizEvaluation {
   actionPlan: string[];
 }
 
+export interface CoursePackage {
+  id: string;
+  lessonsCount: number;
+  price: number;
+  perLesson: number;
+  label: string;
+  popular?: boolean;
+}
+
 export interface Course {
   id: string;
   title: string;
   tagline: string;
   badge?: string;
-  level: string; // e.g., 'Nivel A2 a B1' or 'Beginner to Intermediate'
+  level: string; // e.g., 'A0–A1 Level' or 'All Levels'
   duration: string;
   price: number;
   originalPrice?: number;
-  currency?: string; // e.g., '€', '$', '₺', '£'
+  regularPrice?: number;
+  earlyBirdPrice?: number;
+  currency?: string; // e.g., '$', '€'
   image: string;
+  secondaryImage?: string;
   features: string[];
   syllabus: { title: string; desc: string }[];
   ctaText: string;
   popular?: boolean;
+  packages?: CoursePackage[];
 }
 
 export interface ResourceItem {

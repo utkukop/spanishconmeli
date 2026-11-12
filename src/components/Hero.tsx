@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCMS } from '../context/CMSContext';
-import { ArrowRight, CheckCircle2, Sparkles, Star, Users, Volume2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Sparkles, Star, Users } from 'lucide-react';
 import { WireframePlaceholder } from './WireframePlaceholder';
 
 export const Hero: React.FC = () => {
@@ -112,17 +112,6 @@ export const Hero: React.FC = () => {
                 subtitle="Recommended: 600 × 750 px transparent cut-out or studio portrait"
                 className="shadow-xl"
               />
-
-              {/* Floating micro trust card */}
-              <div className="absolute -bottom-5 -left-4 sm:left-4 bg-white/95 backdrop-blur-md border border-[#EAE5D9] rounded-xl p-3.5 shadow-lg flex items-center gap-3 z-20">
-                <div className="w-10 h-10 rounded-lg bg-[#C73E29]/10 text-[#C73E29] flex items-center justify-center shrink-0">
-                  <Volume2 className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-[#1E1B18]">100% Street-Smart Spanish</p>
-                  <p className="text-[11px] text-[#665E55]">Zero robotic memorization</p>
-                </div>
-              </div>
             </div>
           </div>
         </div>

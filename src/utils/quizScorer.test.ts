@@ -49,7 +49,7 @@ test('calculateQuizResult evaluates B2+ when answers achieve high scores', () =>
   assert.equal(result.level, 'B2+');
   assert.equal(result.totalPoints, 30);
   assert.equal(result.scorePercentage, 100);
-  assert.equal(result.recommendedCourseId, 'course-subjunctive');
+  assert.equal(result.recommendedCourseId, 'course-private-1on1');
 });
 
 test('calculateQuizResult evaluates A1 when low beginner answers are picked', () => {
@@ -62,7 +62,7 @@ test('calculateQuizResult evaluates A1 when low beginner answers are picked', ()
   assert.equal(result.level, 'A1');
   assert.equal(result.totalPoints, 3);
   assert.equal(result.scorePercentage, 10);
-  assert.equal(result.recommendedCourseId, 'course-fundamentals');
+  assert.equal(result.recommendedCourseId, 'course-group-a0a1');
 });
 
 test('calculateQuizResult handles empty or unanswered questions safely', () => {
