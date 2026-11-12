@@ -1,0 +1,6 @@
+{
+  "name": "spanishconmeli",
+  "description": "Aprende español real y con confianza con Meli. Cursos conversacionales, podcast de inmersión y test de nivel interactivo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
