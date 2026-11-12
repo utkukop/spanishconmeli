@@ -32,8 +32,11 @@ export async function handler(event: { httpMethod: string; body: string | null }
     }
 
     const resendApiKey = process.env.RESEND_API_KEY;
-    const senderEmail = process.env.SENDER_EMAIL || 'Spanish with Meli <onboarding@resend.dev>';
-    const teacherEmail = process.env.TEACHER_EMAIL || process.env.ADMIN_EMAIL;
+    const singleEmail = process.env.EMAIL || process.env.CONTACT_EMAIL;
+    const teacherEmail = process.env.TEACHER_EMAIL || singleEmail || process.env.ADMIN_EMAIL;
+    const senderEmail =
+      process.env.SENDER_EMAIL ||
+      (singleEmail ? `Spanish with Meli <${singleEmail}>` : 'Spanish with Meli <onboarding@resend.dev>');
 
     // Student Welcome Email HTML Template
     const studentHtml = `
