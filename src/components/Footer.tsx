@@ -1,29 +1,34 @@
 import React from 'react';
 import { useCMS } from '../context/CMSContext';
+import { BrandLogo } from './BrandLogo';
 import { Instagram, Mail, MapPin, ArrowRight } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const { siteConfig, setActiveView } = useCMS();
 
   const navLinks = [
-    { id: 'home', label: 'Home', view: 'home' as const },
-    { id: 'quiz', label: 'Level Quiz', view: 'quiz' as const },
-    { id: 'courses', label: 'Courses & Pricing', view: 'courses' as const },
-    { id: 'about', label: 'About Meli', view: 'about' as const },
-    { id: 'contact', label: 'Contact', view: 'contact' as const },
+    { id: 'home', label: 'Home', view: 'home' as const, path: '/' },
+    { id: 'quiz', label: 'Level Quiz', view: 'quiz' as const, path: '/quiz' },
+    { id: 'courses', label: 'Courses & Pricing', view: 'courses' as const, path: '/courses' },
+    { id: 'about', label: 'About Meli', view: 'about' as const, path: '/about' },
+    { id: 'contact', label: 'Contact', view: 'contact' as const, path: '/contact' },
   ];
+
+  const handleNavClick = (view: 'home' | 'quiz' | 'courses' | 'about' | 'contact') => {
+    setActiveView(view);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  };
 
   return (
     <footer className="bg-[#1E1B18] text-[#D5CFC4] pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-[#332E29]">
-          {/* Brand Info */}
+          {/* Brand Info with SCM Emblem Favicon & Typographic Wordmark */}
           <div className="md:col-span-5 flex flex-col items-start">
-            <span className="text-2xl font-extrabold text-white tracking-tight">
-              {siteConfig.siteName}
-              <span className="text-[#C73E29]">.</span>
-            </span>
-            <p className="mt-3 text-xs sm:text-sm text-[#A8A196] leading-relaxed max-w-sm">
+            <BrandLogo variant="dark" iconSize={42} wordmarkSize="24px" />
+            <p className="mt-4 text-xs sm:text-sm text-[#A8A196] leading-relaxed max-w-sm">
               {siteConfig.footerDescription ||
                 `${siteConfig.brandTagline}. An authentic Spanish school designed to get you speaking with natural rhythm, real colloquial phrases, and zero hesitation.`}
             </p>
@@ -58,15 +63,16 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2.5 text-xs text-[#A8A196]">
               {navLinks.map((item) => (
                 <li key={item.id}>
-                  <button
-                    onClick={() => {
-                      setActiveView(item.view);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                  <a
+                    href={item.path}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick(item.view);
                     }}
-                    className="hover:text-white transition-colors cursor-pointer text-left"
+                    className="hover:text-white transition-colors cursor-pointer text-left inline-block"
                   >
                     {item.label}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -104,17 +110,17 @@ export const Footer: React.FC = () => {
               </div>
 
               <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActiveView('contact');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                <a
+                  href="/contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick('contact');
                   }}
-                  className="w-full py-2.5 px-3 rounded-xl bg-[#C73E29] hover:bg-[#AB3220] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="w-full py-2.5 px-3 rounded-xl bg-[#C73E29] hover:bg-[#AB3220] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-center"
                 >
                   <span>Open Contact Form</span>
                   <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                </a>
               </div>
             </div>
           </div>

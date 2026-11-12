@@ -120,15 +120,19 @@ export const MethodologySection: React.FC = () => {
               <span className="text-xs font-semibold text-[#C73E29]">
                 Measurable results in 30 days
               </span>
-              <button
-                onClick={() => {
+              <a
+                href="/quiz"
+                onClick={(e) => {
+                  e.preventDefault();
                   setActiveView('quiz');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                  document.documentElement.scrollTop = 0;
+                  document.body.scrollTop = 0;
                 }}
                 className="text-xs font-bold text-[#1E1B18] hover:text-[#C73E29] underline cursor-pointer"
               >
                 Assess my level now →
-              </button>
+              </a>
             </div>
           </div>
         </div>

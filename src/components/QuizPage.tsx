@@ -149,13 +149,20 @@ export const QuizPage: React.FC = () => {
       <div className="max-w-3xl mx-auto">
         {/* Header Breadcrumb / Return */}
         <div className="flex items-center justify-between mb-8">
-          <button
-            onClick={() => setActiveView('home')}
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              setActiveView('home');
+              window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+              document.documentElement.scrollTop = 0;
+              document.body.scrollTop = 0;
+            }}
             className="inline-flex items-center gap-2 text-xs font-semibold text-[#665E55] hover:text-[#1E1B18] transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>{qc.backButtonText || 'Back to website'}</span>
-          </button>
+          </a>
 
           <span className="text-xs font-bold text-[#C73E29] uppercase tracking-wider">
             {qc.badgeTitle || 'Conversational Level Assessment'}
@@ -284,17 +291,20 @@ export const QuizPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => {
+                  <a
+                    href="/courses"
+                    onClick={(e) => {
+                      e.preventDefault();
                       setActiveView('courses');
-                      const el = document.getElementById('courses-section');
-                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                      document.documentElement.scrollTop = 0;
+                      document.body.scrollTop = 0;
                     }}
                     className="w-full md:w-auto px-6 py-3 text-xs sm:text-sm font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl shadow-xs transition-colors shrink-0 cursor-pointer flex items-center justify-center gap-2"
                   >
                     <span>{qc.resultsCourseCtaText || 'View Course Details'}</span>
                     <ExternalLink className="w-4 h-4" />
-                  </button>
+                  </a>
                 </div>
               </div>
             )}

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <!-- Arka Plan Turuncu-Kırmızı Degrade -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F7941D" />
+      <stop offset="55%" stop-color="#F15A24" />
+      <stop offset="100%" stop-color="#D9272E" />
+    </linearGradient>
+    <!-- S ve M Şerit Geçişleri -->
+    <linearGradient id="ribbonGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBB040" />
+      <stop offset="100%" stop-color="#E63E21" />
+    </linearGradient>
+    <linearGradient id="ribbonGrad2" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D9272E" />
+      <stop offset="100%" stop-color="#F7941D" />
+    </linearGradient>
+    <filter id="dropShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#7A120A" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Yuvarlatılmış Kare (Squircle) -->
+  <rect x="4" y="4" width="112" height="112" rx="28" fill="url(#bgGrad)" />
+
+  <!-- Akıcı S ve M Monogramı -->
+  <g filter="url(#dropShadow)">
+    <!-- S Harfi Kıvrımı -->
+    <path d="M 48 34 C 30 34, 24 46, 36 55 C 48 64, 52 74, 38 82 C 26 88, 22 76, 26 70" fill="none" stroke="url(#ribbonGrad1)" stroke-width="11" stroke-linecap="round" />
+    <!-- S'den M'ye Bağlantı ve M Harfi -->
+    <path d="M 38 82 C 48 86, 56 76, 60 62 L 66 78 L 78 58 L 88 82" fill="none" stroke="url(#ribbonGrad2)" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+
+  <!-- ¡H! Konuşma Balonu -->
+  <g transform="translate(56, 26)">
+    <circle cx="12" cy="12" r="11" fill="#FFFDF9" />
+    <polygon points="4,19 2,24 9,21" fill="#FFFDF9" />
+    <text x="12" y="15.5" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="9.5" fill="#C92A2A" text-anchor="middle">¡H!</text>
+  </g>
+
+  <!-- İspanya Bayrağı Şeridi -->
+  <g transform="translate(82, 30) rotate(-8)">
+    <path d="M0,2 Q6,0 12,2 T24,2 L24,14 Q18,16 12,14 T0,14 Z" fill="#AA151B" />
+    <path d="M0,5 Q6,3 12,5 T24,5 L24,11 Q18,13 12,11 T0,11 Z" fill="#F1BF00" />
+  </g>
+</svg>

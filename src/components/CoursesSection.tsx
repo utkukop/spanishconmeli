@@ -54,7 +54,9 @@ export const CoursesSection: React.FC = () => {
         )}`
       );
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   };
 
   return (
@@ -329,16 +331,20 @@ export const CoursesSection: React.FC = () => {
               Take Teacher Meli's interactive CEFR assessment for a diagnostic breakdown and a personalized 3-step action roadmap.
             </p>
           </div>
-          <button
-            onClick={() => {
+          <a
+            href="/quiz"
+            onClick={(e) => {
+              e.preventDefault();
               setActiveView('quiz');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+              document.documentElement.scrollTop = 0;
+              document.body.scrollTop = 0;
             }}
             className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl shrink-0 shadow-sm transition-transform hover:scale-105 cursor-pointer"
           >
             <Sparkles className="w-4 h-4" />
             <span>Take Free Level Quiz</span>
-          </button>
+          </a>
         </div>
       </div>
 

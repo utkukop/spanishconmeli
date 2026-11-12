@@ -20,3 +20,57 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #b5a896;
 }
+
+/* SCM Custom Brand Logo & Typography */
+.scm-brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  user-select: none;
+}
+
+.scm-icon {
+  flex-shrink: 0;
+  border-radius: 11px;
+  box-shadow: 0 4px 12px rgba(217, 39, 46, 0.22);
+  transition: transform 0.25s ease;
+}
+
+.scm-brand-logo:hover .scm-icon {
+  transform: translateY(-2px) scale(1.03);
+}
+
+.scm-wordmark {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+@media (min-width: 640px) {
+  .scm-wordmark {
+    font-size: 28px;
+  }
+}
+
+/* Noktasız 'ı' harfinin üzerine turuncu-kırmızı özel nokta yerleştirme */
+.red-dot-i {
+  position: relative;
+  display: inline-block;
+}
+
+.red-dot-i::after {
+  content: "";
+  position: absolute;
+  top: 0.08em;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0.21em;
+  height: 0.21em;
+  background-color: #E84C22;
+  border-radius: 50%;
+}

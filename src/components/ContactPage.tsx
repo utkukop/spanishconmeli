@@ -91,16 +91,20 @@ export const ContactPage: React.FC = () => {
       <div className="max-w-6xl mx-auto">
         {/* Top Breadcrumb */}
         <div className="mb-8">
-          <button
-            onClick={() => {
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
               setActiveView('home');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+              document.documentElement.scrollTop = 0;
+              document.body.scrollTop = 0;
             }}
             className="inline-flex items-center gap-2 text-xs font-semibold text-[#665E55] hover:text-[#1E1B18] transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to website</span>
-          </button>
+          </a>
         </div>
 
         {/* Page Header */}
@@ -300,16 +304,19 @@ export const ContactPage: React.FC = () => {
                     >
                       Send Another Message
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => {
+                    <a
+                      href="/courses"
+                      onClick={(e) => {
+                        e.preventDefault();
                         setActiveView('courses');
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                        document.documentElement.scrollTop = 0;
+                        document.body.scrollTop = 0;
                       }}
-                      className="w-full sm:w-auto px-6 py-3 text-xs font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl transition-colors cursor-pointer"
+                      className="w-full sm:w-auto px-6 py-3 text-xs font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl transition-colors cursor-pointer text-center"
                     >
                       Explore Courses & Pricing
-                    </button>
+                    </a>
                   </div>
                 </div>
               )}

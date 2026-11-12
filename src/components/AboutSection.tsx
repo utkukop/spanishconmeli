@@ -61,16 +61,20 @@ export const AboutSection: React.FC = () => {
             </div>
 
             <div className="mt-8">
-              <button
-                onClick={() => {
+              <a
+                href="/quiz"
+                onClick={(e) => {
+                  e.preventDefault();
                   setActiveView('quiz');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                  document.documentElement.scrollTop = 0;
+                  document.body.scrollTop = 0;
                 }}
                 className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl shadow-xs transition-colors cursor-pointer"
               >
                 <Sparkles className="w-4 h-4" />
                 <span>Ready to speak? Discover your level with our Quiz</span>
-              </button>
+              </a>
             </div>
           </div>
         </div>

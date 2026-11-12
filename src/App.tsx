@@ -20,6 +20,13 @@ const AppContent: React.FC = () => {
     siteConfig,
   } = useCMS();
 
+  // Scroll to absolute top whenever active view changes
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [activeView]);
+
   // If in Backoffice route / mode, render dedicated administration portal
   if (isBackofficeMode) {
     return <BackofficePage />;
@@ -73,17 +80,21 @@ const AppContent: React.FC = () => {
       {/* Floating Action Button for Students: Quick Quiz trigger (Only if not on quiz) */}
       {activeView !== 'quiz' && (
         <div className="fixed bottom-5 right-5 z-40 flex flex-col gap-2 items-end">
-          <button
-            onClick={() => {
+          <a
+            href="/quiz"
+            onClick={(e) => {
+              e.preventDefault();
               setActiveView('quiz');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+              document.documentElement.scrollTop = 0;
+              document.body.scrollTop = 0;
             }}
             className="flex items-center gap-2 px-4 py-2.5 bg-[#C73E29] hover:bg-[#AB3220] text-white text-xs font-bold rounded-full shadow-lg transition-all hover:scale-105 cursor-pointer"
             title="Take Level Quiz"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Level Quiz</span>
-          </button>
+          </a>
         </div>
       )}
     </div>

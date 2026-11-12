@@ -30,7 +30,7 @@ export const INITIAL_SITE_CONFIG: SiteConfig = {
   brandTagline: 'Learn the Spanish people actually speak on the streets',
   currencySymbol: '$',
   announcementActive: true,
-  announcementText: '🔥 New Subjunctive Mastery Intensive now live! 15% off with code MELI15',
+  announcementText: '🎯 Stop translating in your head: Learn real conversational Spanish with Meli! · Free 3-min quiz',
   announcementLinkText: '',
   headerCtaText: 'Take Level Quiz',
   navLinks: [

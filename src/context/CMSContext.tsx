@@ -220,6 +220,9 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (currentUrl !== targetUrl) {
         window.history.pushState({ view }, '', targetUrl);
       }
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
     }
   };
 
@@ -230,6 +233,9 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (typeof window !== 'undefined') {
         const viewFromUrl = getViewFromPathname(window.location.pathname);
         setActiveViewState(viewFromUrl);
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
       }
     };
 

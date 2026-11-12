@@ -55,28 +55,35 @@ export const Hero: React.FC = () => {
 
             {/* Action Buttons */}
             <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto">
-              <button
-                onClick={() => {
+              <a
+                href="/quiz"
+                onClick={(e) => {
+                  e.preventDefault();
                   setActiveView('quiz');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                  document.documentElement.scrollTop = 0;
+                  document.body.scrollTop = 0;
                 }}
                 className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-sm sm:text-base font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl shadow-sm transition-all hover:translate-y-[-1px] cursor-pointer"
               >
                 <Sparkles className="w-4 h-4" />
                 <span>{siteConfig.heroCtaPrimaryText || 'Take Free Level Quiz'}</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </a>
 
-              <button
-                onClick={() => {
+              <a
+                href="/courses"
+                onClick={(e) => {
+                  e.preventDefault();
                   setActiveView('courses');
-                  const el = document.getElementById('courses-section');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                  document.documentElement.scrollTop = 0;
+                  document.body.scrollTop = 0;
                 }}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm sm:text-base font-semibold text-[#1E1B18] bg-[#EFE9DD] hover:bg-[#E5DDCF] rounded-xl transition-colors cursor-pointer"
               >
                 <span>{siteConfig.heroCtaSecondaryText || 'Explore Courses & Pricing'}</span>
-              </button>
+              </a>
             </div>
 
             {/* Social proof strip */}
