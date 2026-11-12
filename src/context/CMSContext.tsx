@@ -17,9 +17,9 @@ import {
 } from '../data/initialContent';
 
 const STORAGE_KEYS = {
-  PUBLISHED_DATA: 'spanishconmeli_published_data_v5',
-  DRAFT_DATA: 'spanishconmeli_draft_data_v5',
-  AUTH_SESSION: 'spanishconmeli_backoffice_auth_v5',
+  PUBLISHED_DATA: 'spanishconmeli_published_data_v6',
+  DRAFT_DATA: 'spanishconmeli_draft_data_v6',
+  AUTH_SESSION: 'spanishconmeli_backoffice_auth_v6',
 };
 
 const DEFAULT_WEBSITE_DATA: WebsiteData = {
@@ -91,7 +91,10 @@ interface CMSContextType {
 
   // Navigation & Routing
   activeView: 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact';
-  setActiveView: (view: 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact') => void;
+  setActiveView: (
+    view: 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact',
+    searchParams?: string
+  ) => void;
 
   // Backoffice State & Security
   isBackofficeMode: boolean;
@@ -174,15 +177,60 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   });
 
-  const [previewMode, setPreviewMode] = useState<'live' | 'draft'>('live');
-  const [activeView, setActiveView] = useState<
-    'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact'
-  >('home');
+  const getViewFromPathname = (pathname: string): 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact' => {
+    const clean = pathname.toLowerCase().replace(/\/$/, '') || '/';
+    if (clean === '/contact' || clean.startsWith('/contact')) return 'contact';
+    if (clean === '/courses' || clean.startsWith('/courses')) return 'courses';
+    if (clean === '/quiz' || clean.startsWith('/quiz')) return 'quiz';
+    if (clean === '/about' || clean.startsWith('/about')) return 'about';
+    return 'home';
+  };
 
-  // Listen to popstate / hash / key events for secret backoffice toggle
+  const getPathnameFromView = (view: 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact'): string => {
+    switch (view) {
+      case 'contact':
+        return '/contact';
+      case 'courses':
+        return '/courses';
+      case 'quiz':
+        return '/quiz';
+      case 'about':
+        return '/about';
+      case 'home':
+      default:
+        return '/';
+    }
+  };
+
+  const [previewMode, setPreviewMode] = useState<'live' | 'draft'>('live');
+  const [activeView, setActiveViewState] = useState<
+    'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact'
+  >(() => (typeof window !== 'undefined' ? getViewFromPathname(window.location.pathname) : 'home'));
+
+  const setActiveView = (
+    view: 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact',
+    searchParams?: string
+  ) => {
+    setActiveViewState(view);
+    if (typeof window !== 'undefined') {
+      const base = getPathnameFromView(view);
+      const query = searchParams ? (searchParams.startsWith('?') ? searchParams : `?${searchParams}`) : '';
+      const targetUrl = base + query;
+      const currentUrl = window.location.pathname + window.location.search;
+      if (currentUrl !== targetUrl) {
+        window.history.pushState({ view }, '', targetUrl);
+      }
+    }
+  };
+
+  // Listen to popstate / hash / key events for routing and backoffice
   useEffect(() => {
     const handleUrlChange = () => {
       setIsBackofficeMode(checkIsBackofficeUrl());
+      if (typeof window !== 'undefined') {
+        const viewFromUrl = getViewFromPathname(window.location.pathname);
+        setActiveViewState(viewFromUrl);
+      }
     };
 
     window.addEventListener('popstate', handleUrlChange);

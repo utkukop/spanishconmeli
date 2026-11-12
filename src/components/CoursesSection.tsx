@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCMS } from '../context/CMSContext';
-import { Course, CoursePackage } from '../types';
+import { Course } from '../types';
 import {
   Check,
   ChevronDown,
@@ -10,17 +10,12 @@ import {
   CheckCircle2,
   ZoomIn,
   X,
-  Send,
-  Calendar,
-  Users,
-  Video,
-  FileText,
   Gift,
+  ArrowRight,
 } from 'lucide-react';
-import { sendEnrollmentEmail } from '../services/emailService';
 
 export const CoursesSection: React.FC = () => {
-  const { courses, siteConfig, addLead, setActiveView } = useCMS();
+  const { courses, setActiveView } = useCMS();
   const [selectedCourseId, setSelectedCourseId] = useState<string>(
     courses[0]?.id || 'course-group-a0a1'
   );
@@ -30,13 +25,6 @@ export const CoursesSection: React.FC = () => {
   // Lightbox modal state for viewing full flyers
   const [lightboxImage, setLightboxImage] = useState<{ src: string; title: string } | null>(null);
 
-  // Enrollment Modal state
-  const [enrollingCourse, setEnrollingCourse] = useState<Course | null>(null);
-  const [studentName, setStudentName] = useState('');
-  const [studentEmail, setStudentEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [enrollSuccess, setEnrollSuccess] = useState(false);
-
   const toggleSyllabus = (courseId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     setExpandedSyllabus((prev) => ({
@@ -45,44 +33,28 @@ export const CoursesSection: React.FC = () => {
     }));
   };
 
-  const handleStartEnrollment = (course: Course, e?: React.MouseEvent) => {
+  const handleEnrollClick = (course: Course, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     setSelectedCourseId(course.id);
-    setEnrollingCourse(course);
-    setEnrollSuccess(false);
-    setStudentName('');
-    setStudentEmail('');
-  };
 
-  const handleConfirmEnrollment = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!enrollingCourse || !studentEmail.trim() || !studentName.trim()) return;
-
-    setIsSubmitting(true);
-
-    const activePkg = enrollingCourse.packages?.find((p) => p.id === selectedPackageId);
-    const tierName = activePkg ? activePkg.label : (enrollingCourse.earlyBirdPrice ? 'Early Bird Cohort' : 'Standard');
-    const finalPrice = activePkg ? activePkg.price : enrollingCourse.price;
-
-    // Record lead in CMS
-    addLead({
-      name: studentName.trim(),
-      email: studentEmail.trim(),
-      source: 'course_waitlist',
-    });
-
-    // Send welcome email via Netlify serverless function (Resend API)
-    await sendEnrollmentEmail({
-      name: studentName.trim(),
-      email: studentEmail.trim(),
-      courseTitle: enrollingCourse.title,
-      courseTier: tierName,
-      price: finalPrice,
-      currency: enrollingCourse.currency || '$',
-    });
-
-    setIsSubmitting(false);
-    setEnrollSuccess(true);
+    if (course.id === 'course-private-1on1') {
+      const activePkg = course.packages?.find((p) => p.id === selectedPackageId);
+      const tierLabel = activePkg ? activePkg.label : 'Private Lessons';
+      setActiveView(
+        'contact',
+        `subject=${encodeURIComponent('Private lessons & free trial')}&course=${encodeURIComponent(
+          `Online Spanish Private Lessons (${tierLabel})`
+        )}`
+      );
+    } else {
+      setActiveView(
+        'contact',
+        `subject=${encodeURIComponent('Course enrollment')}&course=${encodeURIComponent(
+          'A0–A1 Small Group Spanish Cohort ($115 USD Early Bird)'
+        )}`
+      );
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -320,11 +292,11 @@ export const CoursesSection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Footer Enrollment Action */}
+                {/* Footer Action -> Redirects directly to /contact with course pre-selected */}
                 <div className="p-6 sm:p-8 pt-0">
                   <button
                     type="button"
-                    onClick={(e) => handleStartEnrollment(course, e)}
+                    onClick={(e) => handleEnrollClick(course, e)}
                     className={`w-full py-3.5 px-6 rounded-xl text-sm font-bold transition-all cursor-pointer shadow-xs flex items-center justify-center gap-2 ${
                       isSelected
                         ? 'bg-[#C73E29] hover:bg-[#AB3220] text-white ring-2 ring-[#C73E29]/30'
@@ -333,9 +305,10 @@ export const CoursesSection: React.FC = () => {
                   >
                     <span>
                       {isPrivate1on1
-                        ? `Select ${activePackage?.label || 'Package'} (${currency}${displayPrice}) →`
-                        : `Reserve Group Spot (${currency}${displayPrice} USD) →`}
+                        ? `Inquire & Book ${activePackage?.label || 'Package'} (${currency}${displayPrice})`
+                        : `Reserve Group Spot (${currency}${displayPrice} USD)`}
                     </span>
+                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -395,149 +368,6 @@ export const CoursesSection: React.FC = () => {
               alt={lightboxImage.title}
               className="w-auto h-auto max-h-[82vh] max-w-full rounded-2xl shadow-2xl object-contain border border-white/10"
             />
-          </div>
-        </div>
-      )}
-
-      {/* ENROLLMENT / SELECT PLAN MODAL WITH REAL EMAIL DISPATCH */}
-      {enrollingCourse && (
-        <div
-          className="fixed inset-0 z-50 bg-[#1E1B18]/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn"
-          onClick={() => setEnrollingCourse(null)}
-        >
-          <div
-            className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-[#EAE5D9]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {!enrollSuccess ? (
-              <div>
-                <div className="flex items-center justify-between pb-3 border-b border-[#F0ECE2] mb-4">
-                  <div>
-                    <span className="text-[11px] font-bold text-[#C73E29] uppercase tracking-wider">
-                      Course Enrollment
-                    </span>
-                    <h3 className="text-xl font-extrabold text-[#1E1B18]">
-                      {enrollingCourse.title}
-                    </h3>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setEnrollingCourse(null)}
-                    className="p-1.5 text-[#8C827A] hover:text-[#1E1B18] rounded-lg cursor-pointer"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-
-                {/* Selected Package Details */}
-                <div className="p-4 bg-[#FAF9F5] rounded-2xl border border-[#EAE5D9] mb-5">
-                  <div className="flex items-center justify-between text-xs text-[#57514A]">
-                    <span className="font-medium">Selected Format:</span>
-                    <span className="font-bold text-[#1E1B18]">
-                      {enrollingCourse.id === 'course-private-1on1'
-                        ? enrollingCourse.packages?.find((p) => p.id === selectedPackageId)?.label || 'Private Lessons'
-                        : '10-Week Beginner Cohort'}
-                    </span>
-                  </div>
-                  <div className="mt-2 pt-2 border-t border-[#EAE5D9] flex items-center justify-between">
-                    <span className="text-xs font-semibold text-[#1E1B18]">Program Investment:</span>
-                    <span className="text-2xl font-black text-[#C73E29]">
-                      {enrollingCourse.currency || '$'}
-                      {enrollingCourse.id === 'course-private-1on1'
-                        ? enrollingCourse.packages?.find((p) => p.id === selectedPackageId)?.price || enrollingCourse.price
-                        : enrollingCourse.price}{' '}
-                      <span className="text-xs text-[#78716C] font-normal">USD</span>
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-[#2A9D8F] font-semibold mt-2">
-                    ✓ Google Meet live classes + all weekly materials included
-                  </p>
-                </div>
-
-                {/* Form */}
-                <form onSubmit={handleConfirmEnrollment} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-[#1E1B18] mb-1">
-                      Your Full Name
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="e.g. Sarah Connor"
-                      value={studentName}
-                      onChange={(e) => setStudentName(e.target.value)}
-                      className="w-full px-4 py-3 text-sm rounded-xl border border-[#D5CFC4] focus:outline-none focus:ring-2 focus:ring-[#C73E29]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-[#1E1B18] mb-1">
-                      Email Address (Where to send your welcome guide & access)
-                    </label>
-                    <input
-                      required
-                      type="email"
-                      placeholder="you@example.com"
-                      value={studentEmail}
-                      onChange={(e) => setStudentEmail(e.target.value)}
-                      className="w-full px-4 py-3 text-sm rounded-xl border border-[#D5CFC4] focus:outline-none focus:ring-2 focus:ring-[#C73E29]"
-                    />
-                  </div>
-
-                  <div className="pt-2 flex gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setEnrollingCourse(null)}
-                      className="flex-1 py-3 text-xs font-semibold text-[#57514A] bg-[#F0ECE2] hover:bg-[#E5DDCF] rounded-xl transition-colors cursor-pointer"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="flex-1 py-3 text-xs font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-50"
-                    >
-                      {isSubmitting ? (
-                        <span>Sending details...</span>
-                      ) : (
-                        <>
-                          <span>Confirm & Send Guide</span>
-                          <Send className="w-3.5 h-3.5" />
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            ) : (
-              /* Success confirmation state */
-              <div className="text-center py-4 animate-fadeIn">
-                <div className="w-14 h-14 bg-[#2A9D8F]/15 text-[#2A9D8F] rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Check className="w-8 h-8 stroke-[3]" />
-                </div>
-                
-                <h4 className="text-xl font-extrabold text-[#1E1B18]">
-                  Welcome to the Course!
-                </h4>
-
-                <p className="text-sm text-[#57514A] mt-3 leading-relaxed">
-                  Your access details and welcome guide have been sent to your email. Get ready to start speaking real Spanish!
-                </p>
-
-                <div className="my-5 p-3.5 bg-[#FAF9F5] rounded-xl border border-[#EAE5D9] text-xs text-[#78716C] text-left">
-                  <p className="font-semibold text-[#1E1B18] mb-1">Confirmation dispatched to:</p>
-                  <p className="font-mono text-[#C73E29]">{studentEmail}</p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setEnrollingCourse(null)}
-                  className="w-full py-3 text-xs font-bold text-white bg-[#1E1B18] hover:bg-[#332E29] rounded-xl cursor-pointer transition-colors"
-                >
-                  Done
-                </button>
-              </div>
-            )}
           </div>
         </div>
       )}

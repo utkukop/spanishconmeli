@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCMS } from '../context/CMSContext';
 import { Mail, Instagram, MapPin, Send, CheckCircle2, Sparkles, MessageSquare, Clock, ArrowLeft } from 'lucide-react';
 import { sendContactEmail } from '../services/emailService';
 
 export const ContactPage: React.FC = () => {
-  const { siteConfig, setActiveView, addLead } = useCMS();
+  const { setActiveView, addLead } = useCMS();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -13,6 +13,32 @@ export const ContactPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Pre-fill from query params if coming from Courses or another page
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const courseParam = params.get('course');
+      const subjectParam = params.get('subject');
+
+      if (subjectParam) {
+        if (subjectParam.toLowerCase().includes('private')) {
+          setSubject('Private lessons & free trial');
+        } else if (
+          subjectParam.toLowerCase().includes('group') ||
+          subjectParam.toLowerCase().includes('enrollment')
+        ) {
+          setSubject('Course enrollment');
+        }
+      }
+
+      if (courseParam) {
+        setMessage(
+          `Hi Meli! I would like to inquire about ${courseParam}. Please let me know the upcoming schedule and how to reserve my spot!`
+        );
+      }
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,9 +105,9 @@ export const ContactPage: React.FC = () => {
 
         {/* Page Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C73E29]/10 text-[#C73E29] text-xs font-bold rounded-full mb-3">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-[#C73E29]/10 text-[#C73E29] text-xs font-bold rounded-full mb-3">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Get in Touch · Habla con Meli</span>
+            <span>Get in Touch</span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#1E1B18] tracking-tight">
             Let’s Chat About Your Spanish Journey
@@ -136,8 +162,8 @@ export const ContactPage: React.FC = () => {
                   <MapPin className="w-5 h-5 text-[#2A9D8F] shrink-0 mt-0.5" />
                   <div>
                     <p className="text-xs font-bold text-[#1E1B18]">Location & Timezone</p>
-                    <p className="text-xs text-[#57514A] font-medium">Madrid, Spain (Central European Time)</p>
-                    <p className="text-[11px] text-[#8C827A] mt-0.5">Flexible times available for European & Americas timezones</p>
+                    <p className="text-xs text-[#57514A] font-medium">Toronto, Canada (Eastern Time / ET)</p>
+                    <p className="text-[11px] text-[#8C827A] mt-0.5">Flexible times available across North American and European timezones</p>
                   </div>
                 </div>
               </div>

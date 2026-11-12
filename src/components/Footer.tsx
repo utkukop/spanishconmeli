@@ -100,7 +100,7 @@ export const Footer: React.FC = () => {
               </div>
               <div className="flex items-center gap-2.5 text-xs text-[#A8A196]">
                 <MapPin className="w-4 h-4 text-[#2A9D8F] shrink-0" />
-                <span>Madrid, Spain (Central European Time)</span>
+                <span>Toronto, Canada (Eastern Time / ET)</span>
               </div>
 
               <div className="pt-2">
@@ -127,7 +127,7 @@ export const Footer: React.FC = () => {
             {siteConfig.footerCopyright || 'All rights reserved.'}
           </div>
           <div className="flex items-center gap-4 text-[11px]">
-            <span>{siteConfig.footerAddress || 'Madrid, Spain'}</span>
+            <span>{siteConfig.footerAddress || 'Toronto, Canada'}</span>
           </div>
         </div>
       </div>

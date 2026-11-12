@@ -112,7 +112,7 @@ export const INITIAL_SITE_CONFIG: SiteConfig = {
   footerDescription:
     'Learn the Spanish people actually speak on the street. The online school designed to give you the rhythm, humor, and natural ease of a true native speaker.',
   footerCopyright: 'All rights reserved.',
-  footerAddress: 'Madrid, Spain',
+  footerAddress: 'Toronto, Canada',
   footerNewsletterTitle: 'Weekly Real Spanish Letter',
   footerNewsletterDesc:
     'Get 1 bite-sized conversational idiom every Tuesday plus a 15% discount code for your first course.',
