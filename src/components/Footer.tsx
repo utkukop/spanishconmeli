@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useCMS } from '../context/CMSContext';
 import { validateEmail } from '../utils/quizScorer';
-import { Instagram, Youtube, Music, Check, ArrowRight, ShieldCheck, Lock } from 'lucide-react';
+import { Instagram, Check, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export const Footer: React.FC = () => {
-  const { siteConfig, addLead, setActiveView, enterBackoffice } = useCMS();
+  const { siteConfig, addLead, setActiveView } = useCMS();
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
   const [newsletterError, setNewsletterError] = useState('');
@@ -12,24 +12,23 @@ export const Footer: React.FC = () => {
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateEmail(newsletterEmail)) {
-      setNewsletterError('Por favor introduce un correo válido');
+      setNewsletterError('Please enter a valid email address');
       return;
     }
     setNewsletterError('');
     addLead({
-      name: 'Suscriptor Newsletter',
+      name: 'Newsletter Subscriber',
       email: newsletterEmail.trim(),
       source: 'newsletter',
     });
     setNewsletterSubmitted(true);
   };
 
-  const navLinks = siteConfig.navLinks || [
-    { id: 'home', label: 'Inicio', view: 'home' },
-    { id: 'quiz', label: 'Test de Nivel', view: 'quiz' },
-    { id: 'courses', label: 'Cursos', view: 'courses' },
-    { id: 'resources', label: 'Podcast & Recursos', view: 'resources' },
-    { id: 'about', label: 'Sobre Meli', view: 'about' },
+  const navLinks = [
+    { id: 'home', label: 'Home', view: 'home' as const },
+    { id: 'quiz', label: 'Level Quiz', view: 'quiz' as const },
+    { id: 'courses', label: 'Courses & Pricing', view: 'courses' as const },
+    { id: 'about', label: 'About Meli', view: 'about' as const },
   ];
 
   return (
@@ -44,7 +43,7 @@ export const Footer: React.FC = () => {
             </span>
             <p className="mt-3 text-xs sm:text-sm text-[#A8A196] leading-relaxed max-w-sm">
               {siteConfig.footerDescription ||
-                `${siteConfig.brandTagline}. La escuela online que te enseña a hablar con la naturalidad, el ritmo y el humor de las calles de España.`}
+                `${siteConfig.brandTagline}. An authentic Spanish school designed to get you speaking with natural rhythm, real colloquial phrases, and zero hesitation.`}
             </p>
 
             <div className="mt-6 flex items-center gap-3">
@@ -53,32 +52,10 @@ export const Footer: React.FC = () => {
                   href={`https://instagram.com/${siteConfig.instagramHandle.replace('@', '')}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-9 h-9 rounded-lg bg-[#2B2723] hover:bg-[#C73E29] text-white flex items-center justify-center transition-colors"
+                  className="w-10 h-10 rounded-xl bg-[#2B2723] hover:bg-[#C73E29] text-white flex items-center justify-center transition-all hover:scale-105"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-4 h-4" />
-                </a>
-              )}
-              {siteConfig.youtubeHandle && (
-                <a
-                  href="https://youtube.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-9 h-9 rounded-lg bg-[#2B2723] hover:bg-[#C73E29] text-white flex items-center justify-center transition-colors"
-                  aria-label="YouTube"
-                >
-                  <Youtube className="w-4 h-4" />
-                </a>
-              )}
-              {siteConfig.spotifyHandle && (
-                <a
-                  href="https://spotify.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-9 h-9 rounded-lg bg-[#2B2723] hover:bg-[#C73E29] text-white flex items-center justify-center transition-colors"
-                  aria-label="Spotify Podcast"
-                >
-                  <Music className="w-4 h-4" />
                 </a>
               )}
             </div>
@@ -87,7 +64,7 @@ export const Footer: React.FC = () => {
           {/* Navigation Links */}
           <div className="md:col-span-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white mb-4">
-              Explorar
+              Explore
             </h4>
             <ul className="space-y-2.5 text-xs text-[#A8A196]">
               {navLinks.map((item) => (
@@ -109,11 +86,11 @@ export const Footer: React.FC = () => {
           {/* Newsletter Lead Form */}
           <div className="md:col-span-4">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white mb-2">
-              {siteConfig.footerNewsletterTitle || 'Carta Semanal de Español Real'}
+              {siteConfig.footerNewsletterTitle || 'Weekly Real Spanish Letter'}
             </h4>
             <p className="text-xs text-[#A8A196] mb-4">
               {siteConfig.footerNewsletterDesc ||
-                'Recibe 1 expresión coloquial cada martes y un 15% de descuento en tu primer curso.'}
+                'Receive 1 colloquial expression every Tuesday plus 15% off your first course enrollment.'}
             </p>
 
             {!newsletterSubmitted ? (
@@ -122,7 +99,7 @@ export const Footer: React.FC = () => {
                   <input
                     type="email"
                     required
-                    placeholder="tu@email.com"
+                    placeholder="your@email.com"
                     value={newsletterEmail}
                     onChange={(e) => {
                       setNewsletterEmail(e.target.value);
@@ -133,7 +110,7 @@ export const Footer: React.FC = () => {
                   <button
                     type="submit"
                     className="px-3.5 py-2 bg-[#C73E29] hover:bg-[#AB3220] text-white text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center justify-center"
-                    aria-label="Suscribirse a la newsletter"
+                    aria-label="Subscribe to newsletter"
                   >
                     <ArrowRight className="w-4 h-4" />
                   </button>
@@ -143,35 +120,36 @@ export const Footer: React.FC = () => {
                 )}
                 <div className="flex items-center gap-1.5 text-[10px] text-[#78716C] pt-1">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Sin spam. Cancela cuando quieras con 1 clic.</span>
+                  <span>No spam ever. Unsubscribe with 1 click anytime.</span>
                 </div>
               </form>
             ) : (
               <div className="p-3 bg-[#2A9D8F]/20 border border-[#2A9D8F]/40 rounded-xl text-xs text-[#80E5D9] flex items-center gap-2">
                 <Check className="w-4 h-4 shrink-0" />
                 <span>
-                  ¡Suscrito! Usa el cupón{' '}
+                  Subscribed! Use code{' '}
                   <strong className="text-white">
                     {siteConfig.newsletterDiscountCode || 'MELI15'}
                   </strong>{' '}
-                  en cualquier curso.
+                  on any course.
                 </span>
               </div>
             )}
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright & Discreet Team Access */}
+        {/* Bottom Bar: Copyright */}
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#78716C]">
           <div>
             © {new Date().getFullYear()} {siteConfig.siteName}.{' '}
-            {siteConfig.footerCopyright || 'Todos los derechos reservados.'}
+            {siteConfig.footerCopyright || 'All rights reserved.'}
           </div>
           <div className="flex items-center gap-4 text-[11px]">
-            <span>{siteConfig.footerAddress || 'Madrid, España'}</span>
+            <span>{siteConfig.footerAddress || 'Madrid, Spain'}</span>
           </div>
         </div>
       </div>
     </footer>
   );
 };
+

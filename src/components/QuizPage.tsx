@@ -13,6 +13,7 @@ import {
   Gift,
   ExternalLink,
 } from 'lucide-react';
+import { WireframePlaceholder } from './WireframePlaceholder';
 
 export const QuizPage: React.FC = () => {
   const { quizQuestions, courses, siteConfig, addLead, setActiveView } = useCMS();
@@ -153,11 +154,11 @@ export const QuizPage: React.FC = () => {
             className="inline-flex items-center gap-2 text-xs font-semibold text-[#665E55] hover:text-[#1E1B18] transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>{qc.backButtonText || 'Volver al inicio'}</span>
+            <span>{qc.backButtonText || 'Back to website'}</span>
           </button>
 
           <span className="text-xs font-bold text-[#C73E29] uppercase tracking-wider">
-            {qc.badgeTitle || 'Test de Nivel Conversacional'}
+            {qc.badgeTitle || 'Conversational Level Assessment'}
           </span>
         </div>
 
@@ -168,7 +169,7 @@ export const QuizPage: React.FC = () => {
             <div className="text-center pb-8 border-b border-[#F0ECE2]">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#2A9D8F]/10 text-[#2A9D8F] text-xs font-bold rounded-full mb-3">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>{qc.resultsBadgeText || 'Evaluación Completada'}</span>
+                <span>{qc.resultsBadgeText || 'Assessment Completed'}</span>
               </div>
 
               <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1E1B18] tracking-tight">
@@ -177,7 +178,7 @@ export const QuizPage: React.FC = () => {
 
               <div className="mt-4 inline-flex items-baseline gap-2 bg-[#FAF9F5] border border-[#EAE5D9] px-4 py-2 rounded-xl">
                 <span className="text-xs font-semibold text-[#665E55]">
-                  {qc.resultsLevelLabel || 'Nivel estimado:'}
+                  {qc.resultsLevelLabel || 'Estimated CEFR Level:'}
                 </span>
                 <span className="text-lg font-black text-[#C73E29]">{quizResult.level}</span>
                 <span className="text-xs text-[#8C827A] tabular-nums">
@@ -195,7 +196,7 @@ export const QuizPage: React.FC = () => {
               <div className="bg-[#FAF9F5] p-5 rounded-2xl border border-[#EAE5D9]">
                 <h4 className="text-xs font-bold text-[#2A9D8F] uppercase tracking-wider mb-3 flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>{qc.resultsStrengthsTitle || 'Tus Puntos Fuertes'}</span>
+                  <span>{qc.resultsStrengthsTitle || 'Your Strengths'}</span>
                 </h4>
                 <ul className="space-y-2 text-xs text-[#443E38]">
                   {quizResult.strengths.map((s, i) => (
@@ -210,7 +211,7 @@ export const QuizPage: React.FC = () => {
               <div className="bg-[#FAF9F5] p-5 rounded-2xl border border-[#EAE5D9]">
                 <h4 className="text-xs font-bold text-[#C73E29] uppercase tracking-wider mb-3 flex items-center gap-1.5">
                   <Sparkles className="w-4 h-4" />
-                  <span>{qc.resultsFocusTitle || 'Tu Próximo Salto'}</span>
+                  <span>{qc.resultsFocusTitle || 'Next Growth Areas'}</span>
                 </h4>
                 <ul className="space-y-2 text-xs text-[#443E38]">
                   {quizResult.focusAreas.map((f, i) => (
@@ -226,7 +227,7 @@ export const QuizPage: React.FC = () => {
             {/* 3-Step Action Plan */}
             <div className="py-8 border-b border-[#F0ECE2]">
               <h4 className="text-sm font-bold text-[#1E1B18] mb-4">
-                {qc.resultsActionPlanTitle || 'Tu Plan de Acción Personalizado en 3 Pasos:'}
+                {qc.resultsActionPlanTitle || 'Your Personalized 3-Step Action Plan:'}
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                 {quizResult.actionPlan.map((step, idx) => (
@@ -235,7 +236,7 @@ export const QuizPage: React.FC = () => {
                     className="p-4 bg-[#FAF9F5] border border-[#EAE5D9] rounded-xl text-xs text-[#57514A]"
                   >
                     <span className="font-extrabold text-[#C73E29] block mb-1">
-                      Paso 0{idx + 1}
+                      Step 0{idx + 1}
                     </span>
                     <span>{step}</span>
                   </div>
@@ -247,12 +248,13 @@ export const QuizPage: React.FC = () => {
             {recommendedCourse && (
               <div className="pt-8">
                 <div className="bg-gradient-to-br from-[#FAF0E6] to-[#FDF7F0] border-2 border-[#C73E29]/20 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6">
-                  <div className="w-full md:w-48 h-32 rounded-xl overflow-hidden bg-white shrink-0 shadow-xs">
-                    <img
-                      src={recommendedCourse.image}
-                      alt={recommendedCourse.title}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
+                  <div className="w-full md:w-52 rounded-xl overflow-hidden bg-white shrink-0 shadow-xs border border-[#EAE5D9]">
+                    <WireframePlaceholder
+                      width={480}
+                      height={300}
+                      aspectRatio="16/10"
+                      label="Recommended Course"
+                      description="480 × 300 px"
                     />
                   </div>
 
@@ -260,7 +262,7 @@ export const QuizPage: React.FC = () => {
                     <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C73E29] mb-1">
                       <Gift className="w-3.5 h-3.5" />
                       <span>
-                        {qc.resultsRecommendedCourseBadge || 'Recomendado para tu nivel'} ({quizResult.level})
+                        {qc.resultsRecommendedCourseBadge || 'Recommended Program for Your Level'} ({quizResult.level})
                       </span>
                     </div>
                     <h3 className="text-lg font-bold text-[#1E1B18]">
@@ -276,7 +278,7 @@ export const QuizPage: React.FC = () => {
                       </span>
                       {siteConfig.newsletterDiscountCode && (
                         <span className="text-xs text-[#2A9D8F] font-semibold bg-[#2A9D8F]/10 px-2.5 py-0.5 rounded-full">
-                          Cupón {siteConfig.newsletterDiscountCode} disponible
+                          Coupon {siteConfig.newsletterDiscountCode} available
                         </span>
                       )}
                     </div>
@@ -290,7 +292,7 @@ export const QuizPage: React.FC = () => {
                     }}
                     className="w-full md:w-auto px-6 py-3 text-xs sm:text-sm font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl shadow-xs transition-colors shrink-0 cursor-pointer flex items-center justify-center gap-2"
                   >
-                    <span>{qc.resultsCourseCtaText || 'Ver Detalles del Curso'}</span>
+                    <span>{qc.resultsCourseCtaText || 'View Course Details'}</span>
                     <ExternalLink className="w-4 h-4" />
                   </button>
                 </div>
@@ -304,7 +306,7 @@ export const QuizPage: React.FC = () => {
                 className="inline-flex items-center gap-2 text-xs font-semibold text-[#665E55] hover:text-[#1E1B18] cursor-pointer"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
-                <span>{qc.resultsRetakeText || 'Repetir el test con otras respuestas'}</span>
+                <span>{qc.resultsRetakeText || 'Retake assessment with different answers'}</span>
               </button>
             </div>
           </div>
@@ -317,21 +319,21 @@ export const QuizPage: React.FC = () => {
 
             <div className="text-center max-w-md mx-auto mb-8">
               <h2 className="text-2xl font-extrabold text-[#1E1B18]">
-                {qc.leadTitle || '¡Has completado todas las preguntas!'}
+                {qc.leadTitle || "You've completed all questions!"}
               </h2>
               <p className="mt-2 text-xs sm:text-sm text-[#57514A]">
-                {qc.leadSubtitle || 'Introduce tus datos para calcular tu nivel CEFR y tu informe.'}
+                {qc.leadSubtitle || 'Enter your details to calculate your estimated CEFR level and personalized roadmap.'}
               </p>
             </div>
 
             <form onSubmit={handleFinishQuiz} className="max-w-md mx-auto space-y-4">
               <div>
                 <label className="block text-xs font-bold text-[#1E1B18] mb-1">
-                  {qc.leadNameLabel || 'Tu nombre'}
+                  {qc.leadNameLabel || 'Your Name'}
                 </label>
                 <input
                   type="text"
-                  placeholder="Ej. Ana o David"
+                  placeholder="e.g., Sarah or David"
                   value={leadName}
                   onChange={(e) => setLeadName(e.target.value)}
                   className="w-full px-4 py-3 text-sm rounded-xl border border-[#D5CFC4] focus:outline-none focus:ring-2 focus:ring-[#C73E29]"
@@ -340,12 +342,12 @@ export const QuizPage: React.FC = () => {
 
               <div>
                 <label className="block text-xs font-bold text-[#1E1B18] mb-1">
-                  {qc.leadEmailLabel || 'Tu correo electrónico'}
+                  {qc.leadEmailLabel || 'Your Email Address'}
                 </label>
                 <input
                   type="email"
                   required
-                  placeholder="tu@email.com"
+                  placeholder="your@email.com"
                   value={leadEmail}
                   onChange={(e) => {
                     setLeadEmail(e.target.value);
@@ -362,7 +364,7 @@ export const QuizPage: React.FC = () => {
 
               <div className="flex items-center gap-2 text-[11px] text-[#78716C] pt-1">
                 <Lock className="w-3.5 h-3.5 shrink-0" />
-                <span>{qc.leadPrivacyNotice || '100% libre de spam.'}</span>
+                <span>{qc.leadPrivacyNotice || '100% spam-free. Only useful learning tips.'}</span>
               </div>
 
               <button
@@ -371,10 +373,10 @@ export const QuizPage: React.FC = () => {
                 className="w-full mt-4 py-3.5 px-6 text-sm font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl shadow-xs transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {isSubmitting ? (
-                  <span>Calculando tus resultados...</span>
+                  <span>Calculating your assessment...</span>
                 ) : (
                   <>
-                    <span>{qc.leadSubmitButtonText || 'Ver Mi Nivel y Hoja de Ruta'}</span>
+                    <span>{qc.leadSubmitButtonText || 'View My Level & Roadmap'}</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -388,7 +390,7 @@ export const QuizPage: React.FC = () => {
             <div className="mb-6">
               <div className="flex items-center justify-between text-xs text-[#665E55] mb-2 font-semibold">
                 <span>
-                  Pregunta {currentStepIndex + 1} de {totalQuestions}
+                  Question {currentStepIndex + 1} of {totalQuestions}
                 </span>
                 <span className="tabular-nums">{progressPercent}%</span>
               </div>
@@ -421,10 +423,10 @@ export const QuizPage: React.FC = () => {
                     type="button"
                     onClick={() => handlePlayAudio(currentQuestion.audioPhrase!)}
                     className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold text-[#C73E29] bg-[#C73E29]/10 hover:bg-[#C73E29]/20 rounded-lg transition-colors cursor-pointer"
-                    title={qc.listenAudioText || 'Escuchar frase'}
+                    title={qc.listenAudioText || 'Listen in Spanish'}
                   >
                     <Volume2 className="w-4 h-4" />
-                    <span>{qc.listenAudioText || 'Escuchar frase en audio'}</span>
+                    <span>{qc.listenAudioText || 'Listen in Spanish'}</span>
                   </button>
                   <span className="text-xs text-[#78716C] italic">
                     «{currentQuestion.audioPhrase}»
@@ -474,7 +476,7 @@ export const QuizPage: React.FC = () => {
                 className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#665E55] hover:text-[#1E1B18] disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>{qc.previousButtonText || 'Anterior'}</span>
+                <span>{qc.previousButtonText || 'Previous'}</span>
               </button>
 
               <button
@@ -485,8 +487,8 @@ export const QuizPage: React.FC = () => {
               >
                 <span>
                   {currentStepIndex + 1 === totalQuestions
-                    ? qc.finishButtonText || 'Finalizar y Ver Nivel'
-                    : qc.nextButtonText || 'Siguiente'}
+                    ? qc.finishButtonText || 'Finish & View Level'
+                    : qc.nextButtonText || 'Next'}
                 </span>
                 <ArrowRight className="w-4 h-4" />
               </button>

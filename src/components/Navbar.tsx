@@ -7,11 +7,10 @@ export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = siteConfig.navLinks || [
-    { id: 'home', label: 'Inicio', view: 'home' },
-    { id: 'quiz', label: 'Test de Nivel', view: 'quiz' },
-    { id: 'courses', label: 'Cursos', view: 'courses' },
-    { id: 'resources', label: 'Podcast & Recursos', view: 'resources' },
-    { id: 'about', label: 'Sobre Meli', view: 'about' },
+    { id: 'home', label: 'Home', view: 'home' },
+    { id: 'quiz', label: 'Level Quiz', view: 'quiz' },
+    { id: 'courses', label: 'Courses', view: 'courses' },
+    { id: 'about', label: 'About Meli', view: 'about' },
   ];
 
   const handleNavClick = (viewId: typeof activeView) => {
@@ -87,7 +86,7 @@ export const Navbar: React.FC = () => {
               className="hidden sm:inline-flex items-center gap-2 px-4.5 py-2.5 text-xs sm:text-sm font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl shadow-xs transition-colors cursor-pointer whitespace-nowrap"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>{siteConfig.headerCtaText || 'Hacer Quiz de Nivel'}</span>
+              <span>{siteConfig.headerCtaText || 'Take Level Quiz'}</span>
             </button>
 
             {/* Mobile Hamburger Button */}
@@ -155,7 +154,7 @@ export const Navbar: React.FC = () => {
                 className="w-full flex items-center justify-center gap-2 py-3.5 px-4 text-sm font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl shadow-xs cursor-pointer"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>{siteConfig.headerCtaText || 'Test de Nivel Gratuito'}</span>
+                <span>{siteConfig.headerCtaText || 'Take Free Level Quiz'}</span>
               </button>
             </div>
           </div>

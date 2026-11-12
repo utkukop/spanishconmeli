@@ -10,14 +10,13 @@ export const TestimonialsSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-14">
           <div className="text-xs sm:text-sm font-bold text-[#C73E29] uppercase tracking-wider mb-2">
-            Historias Reales de Estudiantes
+            Real Student Stories
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E1B18] tracking-tight">
-            De no atreverse a hablar, a disfrutar cada conversación
+            From Hesitant & Overthinking to Natural Everyday Conversations
           </h2>
           <p className="mt-4 text-base sm:text-lg text-[#57514A]">
-            Descubre cómo otros estudiantes superaron la barrera del miedo y la vergüenza gracias al
-            método conversacional de Meli.
+            See how motivated learners broke through fear and speaking hesitation with Meli’s communicative, real-life approach.
           </p>
         </div>
 

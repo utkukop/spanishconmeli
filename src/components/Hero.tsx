@@ -1,14 +1,15 @@
 import React from 'react';
 import { useCMS } from '../context/CMSContext';
 import { ArrowRight, CheckCircle2, Sparkles, Star, Users, Volume2 } from 'lucide-react';
+import { WireframePlaceholder } from './WireframePlaceholder';
 
 export const Hero: React.FC = () => {
   const { siteConfig, setActiveView } = useCMS();
 
   const bullets = siteConfig.heroBullets || [
-    'Español coloquial de España y Latinoamérica',
-    'Audios reales sin frases robóticas',
-    'Test de nivel en 3 minutos',
+    'Real conversational Spanish from Spain and Latin America',
+    'Authentic street dialogues without robotic grammar formulas',
+    'Diagnostic level assessment in 3 minutes',
   ];
 
   return (
@@ -31,7 +32,7 @@ export const Hero: React.FC = () => {
             <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#C73E29] mb-4">
               <span>{siteConfig.heroBadge}</span>
               <span aria-hidden="true">·</span>
-              <span>Edición 2026</span>
+              <span>2026 Edition</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#1E1B18] leading-[1.15] text-balance">
@@ -62,7 +63,7 @@ export const Hero: React.FC = () => {
                 className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-sm sm:text-base font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl shadow-sm transition-all hover:translate-y-[-1px] cursor-pointer"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>{siteConfig.heroCtaPrimaryText || 'Hacer Test de Nivel Gratis'}</span>
+                <span>{siteConfig.heroCtaPrimaryText || 'Take Free Level Quiz'}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
@@ -74,7 +75,7 @@ export const Hero: React.FC = () => {
                 }}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm sm:text-base font-semibold text-[#1E1B18] bg-[#EFE9DD] hover:bg-[#E5DDCF] rounded-xl transition-colors cursor-pointer"
               >
-                <span>{siteConfig.heroCtaSecondaryText || 'Ver Cursos & Precios'}</span>
+                <span>{siteConfig.heroCtaSecondaryText || 'Explore Courses & Pricing'}</span>
               </button>
             </div>
 
@@ -89,60 +90,37 @@ export const Hero: React.FC = () => {
                 <span className="font-bold text-[#1E1B18]">
                   {siteConfig.heroStatRating || '4.9 / 5'}
                 </span>
-                <span>({siteConfig.heroStatReviews || 'más de 1.800 reseñas'})</span>
+                <span>({siteConfig.heroStatReviews || '1,800+ student reviews'})</span>
               </div>
               <div className="flex items-center gap-1.5 font-medium">
                 <Users className="w-4 h-4 text-[#C73E29]" />
                 <span>
-                  {siteConfig.heroStatCommunity || 'Comunidad en YouTube, Spotify e Instagram'}
+                  {siteConfig.heroStatCommunity || 'Community on Instagram @spanishconmeli'}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Teacher Portrait with Natural Framing */}
+          {/* Right Column: Dimensional Wireframe Placeholder for Hero Teacher Portrait */}
           <div className="lg:col-span-5 relative">
             <div className="relative mx-auto max-w-md lg:max-w-none">
-              <div className="relative rounded-2xl overflow-hidden shadow-xl border border-[#EAE5D9] bg-white aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3]">
-                <img
-                  src={
-                    siteConfig.heroImage ||
-                    '/src/assets/images/hero_meli_teacher_1794405197921.jpg'
-                  }
-                  alt={`Profesora ${siteConfig.teacherName} enseñando español`}
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                  referrerPolicy="no-referrer"
-                />
-
-                {/* Scrim for text overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5 text-white">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-bold text-base sm:text-lg">{siteConfig.teacherName}</p>
-                      <p className="text-xs text-white/80">{siteConfig.teacherTitle}</p>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setActiveView('quiz');
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }}
-                      className="px-3 py-1.5 text-xs font-bold bg-[#C73E29] hover:bg-[#AB3220] text-white rounded-lg transition-colors cursor-pointer"
-                    >
-                      Empezar Quiz
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <WireframePlaceholder
+                width={600}
+                height={750}
+                aspectRatio="4/5"
+                label="Teacher Meli Hero Portrait Photo"
+                subtitle="Recommended: 600 × 750 px transparent cut-out or studio portrait"
+                className="shadow-xl"
+              />
 
               {/* Floating micro trust card */}
-              <div className="absolute -bottom-5 -left-4 sm:left-4 bg-white/95 backdrop-blur-md border border-[#EAE5D9] rounded-xl p-3.5 shadow-lg flex items-center gap-3">
+              <div className="absolute -bottom-5 -left-4 sm:left-4 bg-white/95 backdrop-blur-md border border-[#EAE5D9] rounded-xl p-3.5 shadow-lg flex items-center gap-3 z-20">
                 <div className="w-10 h-10 rounded-lg bg-[#C73E29]/10 text-[#C73E29] flex items-center justify-center shrink-0">
                   <Volume2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-[#1E1B18]">Español 100% natural</p>
-                  <p className="text-[11px] text-[#665E55]">Sin traducciones forzadas</p>
+                  <p className="text-xs font-bold text-[#1E1B18]">100% Street-Smart Spanish</p>
+                  <p className="text-[11px] text-[#665E55]">Zero robotic memorization</p>
                 </div>
               </div>
             </div>

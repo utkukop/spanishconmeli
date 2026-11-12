@@ -1,6 +1,6 @@
 {
   "name": "spanishconmeli",
-  "description": "Aprende español real y con confianza con Meli. Cursos conversacionales, podcast de inmersión y test de nivel interactivo.",
+  "description": "Speak real conversational Spanish with confidence with teacher Meli. Interactive CEFR level quiz and structured speaking courses.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

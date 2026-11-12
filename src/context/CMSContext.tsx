@@ -17,9 +17,9 @@ import {
 } from '../data/initialContent';
 
 const STORAGE_KEYS = {
-  PUBLISHED_DATA: 'spanishconmeli_published_data_v2',
-  DRAFT_DATA: 'spanishconmeli_draft_data_v2',
-  AUTH_SESSION: 'spanishconmeli_backoffice_auth_v2',
+  PUBLISHED_DATA: 'spanishconmeli_published_data_v3',
+  DRAFT_DATA: 'spanishconmeli_draft_data_v3',
+  AUTH_SESSION: 'spanishconmeli_backoffice_auth_v3',
 };
 
 const DEFAULT_WEBSITE_DATA: WebsiteData = {

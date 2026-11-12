@@ -7,17 +7,17 @@ export const MethodologySection: React.FC = () => {
 
   const comparisons = siteConfig.methodologyComparisons || [
     {
-      situation: 'Pedir comida en un bar',
-      textbook: '«¿Desea usted servirme un vaso de agua mineral fría?» (Innatural, nadie habla así)',
-      meliMethod: '«¿Me pones un vaso de agua del tiempo, porfa?» (Fluido, cálido y real)',
+      situation: 'Ordering tapas and a drink at a busy bar',
+      textbook: '«¿Desea usted servirme un vaso de agua mineral fría?» (Stiff, robotic—nobody talks like this)',
+      meliMethod: '«¿Me pones un vaso de agua del tiempo, porfa?» (Warm, natural, and effortless)',
     },
     {
-      situation: 'Expresar acuerdo con un amigo',
+      situation: 'Agreeing enthusiastically with a friend',
       textbook: '«Yo concuerdo plenamente con su respetable opinión.»',
       meliMethod: '«¡Totalmente!», «Tal cual», «¡Ya te digo!»',
     },
     {
-      situation: 'Hacer planes de fin de semana',
+      situation: 'Making plans for the weekend',
       textbook: '«¿Tiene usted la intención de realizar actividades el sábado?»',
       meliMethod: '«¿Qué plan tienes para el finde? ¿Nos tomamos unas cañas?»',
     },
@@ -25,34 +25,38 @@ export const MethodologySection: React.FC = () => {
 
   const pillars = siteConfig.methodologyPillars || [
     {
-      title: 'Inmersión Coloquial',
-      desc: 'Aprende las muletillas y frases hechas que hacen que tu español suene natural y empático desde el primer minuto.',
+      title: 'Colloquial Immersion',
+      desc: 'Master the natural conversational fillers and idioms that make your Spanish sound warm and spontaneous from day one.',
     },
     {
-      title: 'Oído Afilado',
-      desc: 'Diálogos a velocidad normal de conversación para que nunca más te sientas perdido cuando un hispanohablante te hable rápido.',
+      title: 'Fast-Speech Ear Training',
+      desc: 'Listen to dialogues at real native tempo so you never lose the thread when locals speak quickly.',
     },
     {
-      title: 'Cero Bloqueo',
-      desc: 'Técnicas de respuesta instantánea y reformulación para que nunca te quedes callado pensando en cómo conjugar.',
+      title: 'Zero-Hesitation Fluency',
+      desc: 'Techniques for instant verbal response and reformulating your thoughts without mentally conjugating verbs first.',
     },
   ];
 
-  const pillarIcons = [<MessageSquare key="1" className="w-6 h-6" />, <Headphones key="2" className="w-6 h-6" />, <Zap key="3" className="w-6 h-6" />];
+  const pillarIcons = [
+    <MessageSquare key="1" className="w-6 h-6" />,
+    <Headphones key="2" className="w-6 h-6" />,
+    <Zap key="3" className="w-6 h-6" />,
+  ];
 
   return (
     <section className="py-16 md:py-24 bg-white border-b border-[#EAE5D9]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-14">
           <div className="text-xs sm:text-sm font-bold text-[#C73E29] uppercase tracking-wider mb-2">
-            {siteConfig.methodologyKicker || 'La Gran Diferencia'}
+            {siteConfig.methodologyKicker || 'The Core Difference'}
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E1B18] tracking-tight">
-            {siteConfig.methodologyTitle || '¿Por qué tantos estudiantes se bloquean al hablar?'}
+            {siteConfig.methodologyTitle || 'Why do so many students freeze when trying to speak?'}
           </h2>
           <p className="mt-4 text-base sm:text-lg text-[#57514A]">
             {siteConfig.methodologySubtitle ||
-              `La mayoría de las escuelas enseñan un español de hace 40 años. En ${siteConfig.siteName} aprendes las frases, los modismos y el ritmo que se usa hoy en día.`}
+              `Traditional academies teach Spanish from 40 years ago. At ${siteConfig.siteName}, you learn the phrases, slang, and conversational rhythm real native speakers use today.`}
           </p>
         </div>
 
@@ -63,58 +67,58 @@ export const MethodologySection: React.FC = () => {
             <div>
               <div className="flex items-center gap-2 text-red-600 font-bold text-sm mb-4">
                 <X className="w-5 h-5 shrink-0" />
-                <span>Español tradicional de libro de texto</span>
+                <span>Traditional Textbook Spanish</span>
               </div>
               <ul className="space-y-4 text-sm text-[#665E55]">
                 <li className="flex items-start gap-2.5">
                   <span className="text-red-500 font-bold shrink-0">✕</span>
-                  <span>Frases forzadas que te hacen sonar como un robot o traductor.</span>
+                  <span>Stiff, awkward phrases that make you sound like a robot or translation app.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <span className="text-red-500 font-bold shrink-0">✕</span>
-                  <span>Listas eternas de gramática sin contexto práctico ni entonación.</span>
+                  <span>Endless grammar tables without practical situational context or natural cadence.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <span className="text-red-500 font-bold shrink-0">✕</span>
-                  <span>Cero preparación para los acentos rápidos y el argot callejero.</span>
+                  <span>Zero preparation for fast-talking locals, regional accents, or everyday slang.</span>
                 </li>
               </ul>
             </div>
 
             <div className="mt-6 pt-6 border-t border-[#EAE5D9] text-xs text-[#78716C] italic">
-              «Sé mucha gramática en papel, pero cuando alguien me habla me quedo en blanco.»
+              «I know lots of grammar on paper, but the moment someone speaks to me, my mind goes completely blank.»
             </div>
           </div>
 
           {/* Meli Method Card */}
           <div className="bg-[#FAF8F5] border-2 border-[#C73E29]/30 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-xs relative">
             <div className="absolute -top-3 right-6 bg-[#C73E29] text-white text-[11px] font-bold px-3 py-0.5 rounded-full">
-              Método {siteConfig.siteName}
+              The {siteConfig.siteName} Method
             </div>
             <div>
               <div className="flex items-center gap-2 text-[#2A9D8F] font-bold text-sm mb-4">
                 <Check className="w-5 h-5 shrink-0" />
-                <span>Español vivo, coloquial y con soltura</span>
+                <span>Living, Colloquial & Natural Fluency</span>
               </div>
               <ul className="space-y-4 text-sm text-[#1E1B18]">
                 <li className="flex items-start gap-2.5">
                   <span className="text-[#2A9D8F] font-bold shrink-0">✓</span>
-                  <span>Bloques de conversación ("chunks") que salen espontáneos sin traducir.</span>
+                  <span>Conversational chunks that roll off your tongue automatically without mental translation.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <span className="text-[#2A9D8F] font-bold shrink-0">✓</span>
-                  <span>Entrenamiento auditivo con charlas reales en cafeterías y calles.</span>
+                  <span>Audio training with unscripted chats recorded in real tapas bars and city streets.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <span className="text-[#2A9D8F] font-bold shrink-0">✓</span>
-                  <span>Subjuntivo y pasados explicados con emociones simples y humor.</span>
+                  <span>Subjunctive and past tenses explained through human emotions and intuitive humor.</span>
                 </li>
               </ul>
             </div>
 
             <div className="mt-6 pt-6 border-t border-[#EAE5D9] flex items-center justify-between">
               <span className="text-xs font-semibold text-[#C73E29]">
-                Resultados medibles en 30 días
+                Measurable results in 30 days
               </span>
               <button
                 onClick={() => {
@@ -123,7 +127,7 @@ export const MethodologySection: React.FC = () => {
                 }}
                 className="text-xs font-bold text-[#1E1B18] hover:text-[#C73E29] underline cursor-pointer"
               >
-                Comprobar mi nivel ahora →
+                Assess my level now →
               </button>
             </div>
           </div>
@@ -133,7 +137,7 @@ export const MethodologySection: React.FC = () => {
         {comparisons.length > 0 && (
           <div className="mt-12 max-w-4xl mx-auto">
             <h3 className="text-sm font-bold uppercase tracking-wider text-[#665E55] text-center mb-6">
-              Ejemplos de frases reales que aprenderás a dominar:
+              Real Spanish phrases you will learn to master:
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {comparisons.map((c, i) => (
