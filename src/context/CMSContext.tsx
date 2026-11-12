@@ -202,10 +202,33 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  const getPageTitle = (view: string): string => {
+    switch (view) {
+      case 'courses':
+        return 'Courses & Pricing | Spanish con Meli';
+      case 'contact':
+        return 'Contact & Inquiries | Spanish con Meli';
+      case 'quiz':
+        return 'Conversational Level Quiz | Spanish con Meli';
+      case 'about':
+        return 'About Teacher Meli | Spanish con Meli';
+      case 'home':
+      default:
+        return 'Spanish con Meli | Speak Real Conversational Spanish';
+    }
+  };
+
   const [previewMode, setPreviewMode] = useState<'live' | 'draft'>('live');
   const [activeView, setActiveViewState] = useState<
     'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact'
   >(() => (typeof window !== 'undefined' ? getViewFromPathname(window.location.pathname) : 'home'));
+
+  // Update document title dynamically based on active page route
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.title = getPageTitle(activeView);
+    }
+  }, [activeView]);
 
   const setActiveView = (
     view: 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact',

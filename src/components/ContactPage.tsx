@@ -89,23 +89,6 @@ export const ContactPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FAF9F5] py-10 sm:py-16 px-4 sm:px-6 lg:px-8 animate-fadeIn">
       <div className="max-w-6xl mx-auto">
-        {/* Top Breadcrumb */}
-        <div className="mb-8">
-          <a
-            href="/"
-            onClick={(e) => {
-              e.preventDefault();
-              setActiveView('home');
-              window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-              document.documentElement.scrollTop = 0;
-              document.body.scrollTop = 0;
-            }}
-            className="inline-flex items-center gap-2 text-xs font-semibold text-[#665E55] hover:text-[#1E1B18] transition-colors cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to website</span>
-          </a>
-        </div>
 
         {/* Page Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
@@ -165,9 +148,9 @@ export const ContactPage: React.FC = () => {
                 <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-[#FAF9F5] border border-[#EAE5D9]">
                   <MapPin className="w-5 h-5 text-[#2A9D8F] shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-xs font-bold text-[#1E1B18]">Location & Timezone</p>
-                    <p className="text-xs text-[#57514A] font-medium">Toronto, Canada (Eastern Time / ET)</p>
-                    <p className="text-[11px] text-[#8C827A] mt-0.5">Flexible times available across North American and European timezones</p>
+                    <p className="text-xs font-bold text-[#1E1B18]">Location</p>
+                    <p className="text-xs text-[#57514A] font-medium">Toronto, Ontario, Canada</p>
+                    <p className="text-[11px] text-[#8C827A] mt-0.5">Live online classes · Accommodating time zones across Canada, the Americas, and Europe</p>
                   </div>
                 </div>
               </div>

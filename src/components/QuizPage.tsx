@@ -60,14 +60,21 @@ export const QuizPage: React.FC = () => {
   const isResultStep = quizResult !== null;
 
   const currentQuestion = quizQuestions[currentStepIndex];
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
 
-  // Speech synthesis audio helper with customizable language
+  // Speech synthesis audio helper with full mobile web view and desktop support
   const handlePlayAudio = (phrase: string) => {
-    if ('speechSynthesis' in window) {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
       const utterance = new SpeechSynthesisUtterance(phrase);
       utterance.lang = qc.speechSynthesisLanguage || 'es-ES';
       utterance.rate = 0.9;
+      utterance.onstart = () => setIsPlayingAudio(true);
+      utterance.onend = () => setIsPlayingAudio(false);
+      utterance.onerror = () => setIsPlayingAudio(false);
       window.speechSynthesis.speak(utterance);
     }
   };
@@ -426,19 +433,23 @@ export const QuizPage: React.FC = () => {
             <div className="bg-[#FAF9F5] border border-[#EAE5D9] rounded-2xl p-5 mb-6 text-sm text-[#332E29] leading-relaxed">
               <p className="font-medium">{currentQuestion.scenario}</p>
 
-              {/* Native Speech Pronunciation Audio trigger */}
+              {/* Native Speech Pronunciation Audio trigger (Consistent on desktop & mobile web view) */}
               {currentQuestion.audioPhrase && (
-                <div className="mt-3 pt-3 border-t border-[#EAE5D9] flex items-center gap-3">
+                <div className="mt-3 pt-3 border-t border-[#EAE5D9] flex flex-wrap sm:flex-nowrap items-center gap-2.5 sm:gap-3">
                   <button
                     type="button"
                     onClick={() => handlePlayAudio(currentQuestion.audioPhrase!)}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold text-[#C73E29] bg-[#C73E29]/10 hover:bg-[#C73E29]/20 rounded-lg transition-colors cursor-pointer"
+                    className={`inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer shrink-0 ${
+                      isPlayingAudio
+                        ? 'bg-[#C73E29] text-white shadow-xs scale-102'
+                        : 'text-[#C73E29] bg-[#C73E29]/10 hover:bg-[#C73E29]/20'
+                    }`}
                     title={qc.listenAudioText || 'Listen in Spanish'}
                   >
-                    <Volume2 className="w-4 h-4" />
-                    <span>{qc.listenAudioText || 'Listen in Spanish'}</span>
+                    <Volume2 className={`w-4 h-4 ${isPlayingAudio ? 'animate-bounce' : ''}`} />
+                    <span>{isPlayingAudio ? 'Playing...' : qc.listenAudioText || 'Listen in Spanish'}</span>
                   </button>
-                  <span className="text-xs text-[#78716C] italic">
+                  <span className="text-xs text-[#57514A] italic font-medium leading-relaxed">
                     «{currentQuestion.audioPhrase}»
                   </span>
                 </div>

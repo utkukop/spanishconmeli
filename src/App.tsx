@@ -3,9 +3,10 @@ import { CMSProvider, useCMS } from './context/CMSContext';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { MethodologySection } from './components/MethodologySection';
-import { CoursesSection } from './components/CoursesSection';
+import { HomeFeaturedPrograms } from './components/HomeFeaturedPrograms';
 import { TestimonialsSection } from './components/TestimonialsSection';
-import { AboutSection } from './components/AboutSection';
+import { CoursesPage } from './components/CoursesPage';
+import { AboutPage } from './components/AboutPage';
 import { QuizPage } from './components/QuizPage';
 import { ContactPage } from './components/ContactPage';
 import { Footer } from './components/Footer';
@@ -17,7 +18,6 @@ const AppContent: React.FC = () => {
     activeView,
     setActiveView,
     isBackofficeMode,
-    siteConfig,
   } = useCMS();
 
   // Scroll to absolute top whenever active view changes
@@ -41,26 +41,9 @@ const AppContent: React.FC = () => {
         {activeView === 'quiz' ? (
           <QuizPage />
         ) : activeView === 'courses' ? (
-          <div>
-            <div className="bg-[#FAF0E6] py-10 px-4 text-center border-b border-[#EAE5D9]">
-              <span className="text-xs font-bold text-[#C73E29] uppercase tracking-wider">
-                Curriculum & Programs
-              </span>
-              <h1 className="text-3xl sm:text-4xl font-extrabold text-[#1E1B18] mt-2">
-                Master Conversational Spanish with {siteConfig.teacherName || 'Meli'}
-              </h1>
-              <p className="mt-3 text-sm text-[#57514A] max-w-xl mx-auto">
-                Step-by-step structured programs designed to build speaking confidence and natural rhythm without dry textbook drills.
-              </p>
-            </div>
-            <CoursesSection />
-            <MethodologySection />
-          </div>
+          <CoursesPage />
         ) : activeView === 'about' ? (
-          <div>
-            <AboutSection />
-            <TestimonialsSection />
-          </div>
+          <AboutPage />
         ) : activeView === 'contact' ? (
           <ContactPage />
         ) : (
@@ -68,9 +51,8 @@ const AppContent: React.FC = () => {
           <div>
             <Hero />
             <MethodologySection />
-            <CoursesSection />
+            <HomeFeaturedPrograms />
             <TestimonialsSection />
-            <AboutSection />
           </div>
         )}
       </main>
@@ -108,4 +90,3 @@ export default function App() {
     </CMSProvider>
   );
 }
-
