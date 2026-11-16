@@ -7,7 +7,7 @@ import {
   type PreplyReviewsResponse,
 } from '../utils/preplyReviews';
 
-const SESSION_CACHE_KEY = 'scm_student_reviews_v3';
+const SESSION_CACHE_KEY = 'scm_student_reviews_v4';
 const SESSION_CACHE_TTL_MS = 15 * 60 * 1000;
 
 const FALLBACK_REVIEWS: PreplyReviewItem[] = [
@@ -84,6 +84,37 @@ const FALLBACK_REVIEWS: PreplyReviewItem[] = [
     rating: 5,
     avatar: '/assets/avatars/tanya.jpg',
     createdAt: '2023-01-20T00:00:00+00:00',
+    lessonCount: null,
+  },
+  {
+    id: '583617',
+    firstName: 'Sophia',
+    country: 'Canada',
+    quote: 'Melissa is very patient, frienly and super fun to work with. I highly recommend!',
+    rating: 5,
+    avatar: '/assets/avatars/sophia.jpg',
+    createdAt: '2023-04-12T00:00:00+00:00',
+    lessonCount: null,
+  },
+  {
+    id: '582892',
+    firstName: 'Jack',
+    country: 'Ireland',
+    quote:
+      'Melissa is very patient and fun to learn from. You will enjoy going to your classes with her because she makes them very interactive. Would definitely recommend her!',
+    rating: 5,
+    avatar: '/assets/avatars/jack.jpg',
+    createdAt: '2023-04-10T00:00:00+00:00',
+    lessonCount: null,
+  },
+  {
+    id: '506135',
+    firstName: 'Daniel',
+    country: 'Germany',
+    quote: 'An amazing teacher! Proportional and patient!',
+    rating: 5,
+    avatar: '/assets/avatars/daniel.jpg',
+    createdAt: '2023-01-18T00:00:00+00:00',
     lessonCount: null,
   },
   CEREN_REVIEW,

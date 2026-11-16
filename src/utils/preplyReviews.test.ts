@@ -61,8 +61,8 @@ test('parsePreplyHtmlReviews parses __NEXT_DATA__ reviews and ignores avatar pla
   assert.equal(result.reviews[0].firstName, 'Sofia');
   assert.equal(result.reviews[0].avatar, 'https://avatars.preply.com/i/logos/sample.jpg');
   assert.equal(result.reviews[0].lessonCount, 42);
-  assert.equal(result.reviews[1].firstName, 'Verified Student');
-  assert.equal(result.reviews[1].avatar, null);
+  assert.equal(result.reviews[1].firstName, 'Sophia');
+  assert.equal(result.reviews[1].avatar, '/assets/avatars/sophia.jpg');
 });
 
 test('parsePreplyHtmlReviews falls back cleanly to JSON-LD schema.org reviews', () => {
@@ -93,7 +93,7 @@ test('parsePreplyHtmlReviews falls back cleanly to JSON-LD schema.org reviews', 
   const result = parsePreplyHtmlReviews(ldHtml);
   assert.equal(result.reviews.length, 2);
   assert.equal(result.reviews[0].firstName, 'Carlos');
-  assert.equal(result.reviews[1].firstName, 'Verified Student');
+  assert.equal(result.reviews[1].firstName, 'Daniel');
 });
 
 test('parsePreplyHtmlReviews deduplicates reviews with identical id or quote text', () => {
@@ -134,23 +134,48 @@ test('enrichReviewsWithStudentProfiles adds real student names, countries, local
       lessonCount: 21,
     },
     {
-      id: '1383945',
-      firstName: 'Mariagiulia',
-      quote: "Melissa is a really kind person. She's prepared for what she's teaching.",
+      id: '583617',
+      firstName: 'Verified Student',
+      quote: 'Melissa is very patient, frienly and super fun to work with.',
       rating: 5,
-      avatar: 'https://example.com/old.jpg',
+      avatar: null,
       createdAt: '',
-      lessonCount: 71,
+      lessonCount: null,
+    },
+    {
+      id: '506135',
+      firstName: 'Verified Student',
+      quote: 'An amazing teacher! Proportional and patient!',
+      rating: 5,
+      avatar: null,
+      createdAt: '',
+      lessonCount: null,
+    },
+    {
+      id: '582892',
+      firstName: 'Jack',
+      quote: 'Melissa is very patient and fun to learn from.',
+      rating: 5,
+      avatar: null,
+      createdAt: '',
+      lessonCount: null,
     },
   ]);
 
-  assert.equal(enriched.length, 3);
+  assert.equal(enriched.length, 5);
   assert.equal(enriched[0].firstName, 'Natasha');
   assert.equal(enriched[0].country, 'USA');
   assert.equal(enriched[0].avatar, '/assets/avatars/natasha.jpg');
-  assert.equal(enriched[1].country, 'Italy');
-  assert.equal(enriched[1].avatar, '/assets/avatars/mariagiulia.jpg');
-  assert.equal(enriched[2].firstName, 'Ceren');
-  assert.equal(enriched[2].country, 'Türkiye');
-  assert.equal(enriched[2].avatar, '/assets/avatars/ceren.jpg');
+  assert.equal(enriched[1].firstName, 'Sophia');
+  assert.equal(enriched[1].country, 'Canada');
+  assert.equal(enriched[1].avatar, '/assets/avatars/sophia.jpg');
+  assert.equal(enriched[2].firstName, 'Daniel');
+  assert.equal(enriched[2].country, 'Germany');
+  assert.equal(enriched[2].avatar, '/assets/avatars/daniel.jpg');
+  assert.equal(enriched[3].firstName, 'Jack');
+  assert.equal(enriched[3].country, 'Ireland');
+  assert.equal(enriched[3].avatar, '/assets/avatars/jack.jpg');
+  assert.equal(enriched[4].firstName, 'Ceren');
+  assert.equal(enriched[4].country, 'Türkiye');
+  assert.equal(enriched[4].avatar, '/assets/avatars/ceren.jpg');
 });

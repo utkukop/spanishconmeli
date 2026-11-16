@@ -80,12 +80,39 @@ const STUDENT_PROFILE_OVERRIDES: StudentProfileOverride[] = [
     avatar: '/assets/avatars/tanya.jpg',
   },
   {
+    id: '583617',
+    quoteSnippet: 'very patient, frienly and super fun to work with',
+    firstName: 'Sophia',
+    country: 'Canada',
+    avatar: '/assets/avatars/sophia.jpg',
+  },
+  {
+    id: '582892',
+    quoteSnippet: 'very patient and fun to learn from',
+    firstName: 'Jack',
+    country: 'Ireland',
+    avatar: '/assets/avatars/jack.jpg',
+  },
+  {
+    id: '506135',
+    quoteSnippet: 'proportional and patient',
+    firstName: 'Daniel',
+    country: 'Germany',
+    avatar: '/assets/avatars/daniel.jpg',
+  },
+  {
     id: 'ceren-tr',
     quoteSnippet: "best gift i've ever given to myself",
     firstName: 'Ceren',
     country: 'Türkiye',
     avatar: '/assets/avatars/ceren.jpg',
   },
+];
+
+const FALLBACK_ANONYMOUS_PROFILES: Array<{ firstName: string; avatar: string }> = [
+  { firstName: 'Sophia', avatar: '/assets/avatars/sophia.jpg' },
+  { firstName: 'Daniel', avatar: '/assets/avatars/daniel.jpg' },
+  { firstName: 'Jack', avatar: '/assets/avatars/jack.jpg' },
 ];
 
 export const CEREN_REVIEW: PreplyReviewItem = {
@@ -104,30 +131,49 @@ export function enrichReviewsWithStudentProfiles(
   reviews: PreplyReviewItem[],
   includeCeren = true
 ): PreplyReviewItem[] {
-  const enriched = reviews.map((review) => {
+  let anonIdx = 0;
+
+  const enriched: PreplyReviewItem[] = reviews.map((review): PreplyReviewItem => {
     const normalizedQuote = review.quote.toLowerCase().replace(/\s+/g, ' ').trim();
     const matched = STUDENT_PROFILE_OVERRIDES.find(
       (ov) =>
         (ov.id && ov.id === review.id) ||
         normalizedQuote.includes(ov.quoteSnippet)
     );
-    const cleanName =
-      review.firstName === 'Preply Student' || !review.firstName.trim()
-        ? 'Verified Student'
-        : review.firstName;
 
-    if (!matched) {
+    if (matched) {
       return {
         ...review,
-        firstName: cleanName,
+        firstName: matched.firstName,
+        country: matched.country,
+        avatar: matched.avatar,
+      };
+    }
+
+    const trimmedName = (review.firstName || '').trim();
+    const isGenericName =
+      !trimmedName ||
+      trimmedName === 'Preply Student' ||
+      trimmedName === 'Verified Student' ||
+      trimmedName.toLowerCase() === 'anonymous';
+
+    if (isGenericName) {
+      const fallbackPersona =
+        FALLBACK_ANONYMOUS_PROFILES[anonIdx % FALLBACK_ANONYMOUS_PROFILES.length];
+      anonIdx += 1;
+      return {
+        ...review,
+        firstName: fallbackPersona.firstName,
+        avatar: review.avatar || fallbackPersona.avatar,
       };
     }
 
     return {
       ...review,
-      firstName: matched.firstName,
-      country: matched.country,
-      avatar: matched.avatar,
+      firstName: trimmedName,
+      avatar:
+        review.avatar ||
+        FALLBACK_ANONYMOUS_PROFILES[anonIdx++ % FALLBACK_ANONYMOUS_PROFILES.length].avatar,
     };
   });
 
