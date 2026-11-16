@@ -1,7 +1,6 @@
 import React from 'react';
 import { useCMS } from '../context/CMSContext';
 import { Star } from 'lucide-react';
-import heroLessonImg from '../assets/images/hero_spanish_lesson_1794828171392.jpg';
 
 export const Hero: React.FC = () => {
   const { siteConfig } = useCMS();
@@ -43,14 +42,13 @@ export const Hero: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column: Warm Teacher Portrait */}
+          {/* Right Column: Meli Real Portrait */}
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
-            <div className="w-full max-w-sm lg:max-w-md rounded-2xl overflow-hidden border border-[#E9DCCB] shadow-sm bg-[#FFF6EC] aspect-[4/3]">
+            <div className="w-full max-w-[300px] sm:max-w-[340px] lg:max-w-[370px] rounded-2xl overflow-hidden border border-[#E9DCCB] shadow-sm bg-[#FFF6EC] aspect-[4/5]">
               <img
-                src={heroLessonImg}
+                src="/assets/aistudio/banner-img_bb360ebf.jpeg"
                 alt="Meli smiling at her desk during an online Spanish class"
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-cover object-top"
               />
             </div>
           </div>

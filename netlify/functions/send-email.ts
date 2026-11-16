@@ -200,21 +200,32 @@ export async function handler(event: { httpMethod: string; body: string | null }
 
     // Optional Google Sheet Webhook (Apps Script / Zapier / Make) with Toronto column
     const sheetWebhook = process.env.GOOGLE_SHEET_WEBHOOK_URL;
-    if (sheetWebhook && isGroupWaitlist) {
+    let sheetLogged = false;
+    if (sheetWebhook) {
       sideTasks.push(
         fetch(sheetWebhook, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             timestampToronto: cleanSubmittedToronto,
+            formType: isGroupWaitlist
+              ? 'Group Lessons Waitlist'
+              : isCourseEnrollment
+                ? 'Course Inquiry'
+                : 'Contact Form',
             name: cleanName,
             email: cleanEmail,
-            level: cleanLevel || "I'm not sure",
+            level: isGroupWaitlist ? cleanLevel || "I'm not sure" : '',
             timezone: cleanTimezone,
-            bestTimesLocal: bestTimesDisplay,
-            correspondingTimeToronto: cleanTorontoTime,
+            bestTimesLocal: isGroupWaitlist ? bestTimesDisplay : '',
+            correspondingTimeToronto: isGroupWaitlist ? cleanTorontoTime : '',
+            message: message ? String(message).trim() : '',
           }),
-        }).catch((err) => console.error('Google Sheet webhook error:', err))
+        })
+          .then((r) => {
+            sheetLogged = r.ok;
+          })
+          .catch((err) => console.error('Google Sheet webhook error:', err))
       );
     }
 
@@ -289,7 +300,7 @@ export async function handler(event: { httpMethod: string; body: string | null }
       return {
         statusCode: 200,
         headers,
-        body: JSON.stringify({ success: true }),
+        body: JSON.stringify({ success: true, emailSent: true, sheetLogged }),
       };
     } else {
       await Promise.all(sideTasks);
@@ -302,11 +313,12 @@ export async function handler(event: { httpMethod: string; body: string | null }
         timezone: cleanTimezone,
         bestTimes: bestTimesDisplay,
         torontoTime: cleanTorontoTime,
+        sheetLogged,
       });
       return {
         statusCode: 200,
         headers,
-        body: JSON.stringify({ success: true, simulated: true }),
+        body: JSON.stringify({ success: true, simulated: true, emailSent: false, sheetLogged }),
       };
     }
   } catch (error: unknown) {
