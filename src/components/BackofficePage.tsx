@@ -1675,14 +1675,16 @@ export const BackofficePage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => {
-                    const headers = 'ID,Name,Email,Source,Quiz_Level,Quiz_Score,Created_Date\n';
+                    const headers =
+                      'ID,Name,Email,Source,Level,Time_Zone,Best_Times_Student,Corresponding_Time_Toronto,Created_Date\n';
                     const rows = draftData.leads
-                      .map(
-                        (l) =>
-                          `"${l.id}","${l.name}","${l.email}","${l.source}","${l.quizLevel || ''}","${
-                            l.quizScore || ''
-                          }","${l.createdAt}"`
-                      )
+                      .map((l) => {
+                        const lvl = l.waitlistLevel || l.quizLevel || '';
+                        const tz = l.timezone || '';
+                        const times = (l.bestTimes || []).join(' | ');
+                        const toronto = l.torontoTime || '';
+                        return `"${l.id}","${l.name}","${l.email}","${l.source}","${lvl}","${tz}","${times}","${toronto}","${l.createdAt}"`;
+                      })
                       .join('\n');
                     const blob = new Blob([headers + rows], { type: 'text/csv;charset=utf-8;' });
                     const url = URL.createObjectURL(blob);
@@ -1707,8 +1709,9 @@ export const BackofficePage: React.FC = () => {
                       <th className="py-3 px-4 font-bold">Name</th>
                       <th className="py-3 px-4 font-bold">Email</th>
                       <th className="py-3 px-4 font-bold">Source</th>
-                      <th className="py-3 px-4 font-bold">Assessed Level</th>
-                      <th className="py-3 px-4 font-bold">Score</th>
+                      <th className="py-3 px-4 font-bold">Level</th>
+                      <th className="py-3 px-4 font-bold">Student Time Zone</th>
+                      <th className="py-3 px-4 font-bold">Corresponding Time (Toronto)</th>
                       <th className="py-3 px-4 font-bold">Date</th>
                       <th className="py-3 px-4 text-right font-bold">Action</th>
                     </tr>
@@ -1724,10 +1727,13 @@ export const BackofficePage: React.FC = () => {
                           </span>
                         </td>
                         <td className="py-3 px-4 font-bold text-[#C73E29]">
-                          {lead.quizLevel || '—'}
+                          {lead.waitlistLevel || lead.quizLevel || '—'}
                         </td>
-                        <td className="py-3 px-4 tabular-nums">
-                          {lead.quizScore !== undefined ? `${lead.quizScore}%` : '—'}
+                        <td className="py-3 px-4 text-[#57514A]">
+                          {lead.timezone || '—'}
+                        </td>
+                        <td className="py-3 px-4 text-[#1E1B18]">
+                          {lead.torontoTime || (lead.quizScore !== undefined ? `${lead.quizScore}%` : '—')}
                         </td>
                         <td className="py-3 px-4 text-[#8C827A] text-[11px]">
                           {new Date(lead.createdAt).toLocaleDateString()}
@@ -1746,8 +1752,8 @@ export const BackofficePage: React.FC = () => {
                     ))}
                     {draftData.leads.length === 0 && (
                       <tr>
-                        <td colSpan={7} className="py-8 text-center text-[#8C827A]">
-                          No leads captured yet. Take the quiz on the public site to test.
+                        <td colSpan={8} className="py-8 text-center text-[#8C827A]">
+                          No leads captured yet.
                         </td>
                       </tr>
                     )}

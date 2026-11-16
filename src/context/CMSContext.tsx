@@ -90,9 +90,9 @@ interface CMSContextType {
   addLead: (lead: Omit<Lead, 'id' | 'createdAt'>) => void;
 
   // Navigation & Routing
-  activeView: 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact';
+  activeView: 'home' | 'quiz' | 'courses' | 'group-lessons' | 'resources' | 'about' | 'contact';
   setActiveView: (
-    view: 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact',
+    view: 'home' | 'quiz' | 'courses' | 'group-lessons' | 'resources' | 'about' | 'contact',
     searchParams?: string
   ) => void;
 
@@ -177,16 +177,23 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   });
 
-  const getViewFromPathname = (pathname: string): 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact' => {
+  const getViewFromPathname = (
+    pathname: string
+  ): 'home' | 'quiz' | 'courses' | 'group-lessons' | 'resources' | 'about' | 'contact' => {
     const clean = pathname.toLowerCase().replace(/\/$/, '') || '/';
+    if (clean === '/group-lessons' || clean.startsWith('/group-lessons')) return 'group-lessons';
     if (clean === '/contact' || clean.startsWith('/contact')) return 'contact';
     if (clean === '/courses' || clean.startsWith('/courses')) return 'courses';
     if (clean === '/about' || clean.startsWith('/about')) return 'about';
     return 'home';
   };
 
-  const getPathnameFromView = (view: 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact'): string => {
+  const getPathnameFromView = (
+    view: 'home' | 'quiz' | 'courses' | 'group-lessons' | 'resources' | 'about' | 'contact'
+  ): string => {
     switch (view) {
+      case 'group-lessons':
+        return '/group-lessons';
       case 'contact':
         return '/contact';
       case 'courses':
@@ -201,6 +208,8 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const getPageTitle = (view: string): string => {
     switch (view) {
+      case 'group-lessons':
+        return 'Group Lessons | spanishconmeli';
       case 'courses':
         return 'Courses | spanishconmeli';
       case 'contact':
@@ -215,7 +224,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [previewMode, setPreviewMode] = useState<'live' | 'draft'>('live');
   const [activeView, setActiveViewState] = useState<
-    'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact'
+    'home' | 'quiz' | 'courses' | 'group-lessons' | 'resources' | 'about' | 'contact'
   >(() => (typeof window !== 'undefined' ? getViewFromPathname(window.location.pathname) : 'home'));
 
   // Update document title dynamically based on active page route
@@ -226,7 +235,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [activeView]);
 
   const setActiveView = (
-    view: 'home' | 'quiz' | 'courses' | 'resources' | 'about' | 'contact',
+    view: 'home' | 'quiz' | 'courses' | 'group-lessons' | 'resources' | 'about' | 'contact',
     searchParams?: string
   ) => {
     setActiveViewState(view);

@@ -5,6 +5,7 @@ import { Hero } from './components/Hero';
 import { HomeFeaturedPrograms } from './components/HomeFeaturedPrograms';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { CoursesPage } from './components/CoursesPage';
+import { GroupLessonsPage } from './components/GroupLessonsPage';
 import { AboutPage } from './components/AboutPage';
 import { ContactPage } from './components/ContactPage';
 import { Footer } from './components/Footer';
@@ -44,6 +45,8 @@ const AppContent: React.FC = () => {
       <main className="flex-1">
         {activeView === 'courses' ? (
           <CoursesPage />
+        ) : activeView === 'group-lessons' ? (
+          <GroupLessonsPage />
         ) : activeView === 'about' ? (
           <AboutPage />
         ) : activeView === 'contact' ? (

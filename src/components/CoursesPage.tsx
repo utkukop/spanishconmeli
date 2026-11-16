@@ -11,12 +11,7 @@ export const CoursesPage: React.FC = () => {
 
   const handleWaitlistClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    setActiveView(
-      'contact',
-      `subject=${encodeURIComponent('Course enrollment')}&course=${encodeURIComponent(
-        'Group Lessons Waitlist'
-      )}`
-    );
+    setActiveView('group-lessons');
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
@@ -94,7 +89,7 @@ export const CoursesPage: React.FC = () => {
                   Limited spots
                 </span>
                 <a
-                  href="/contact?course=Group%20Lessons%20Waitlist&subject=Course%20enrollment"
+                  href="/group-lessons"
                   onClick={handleWaitlistClick}
                   className="min-h-[46px] inline-flex items-center justify-center px-7 py-2.5 text-sm font-semibold text-white bg-[#F2B134] hover:bg-[#de9f23] rounded-full transition-colors cursor-pointer whitespace-nowrap"
                 >

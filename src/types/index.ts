@@ -129,6 +129,10 @@ export interface Lead {
   source: 'quiz' | 'newsletter' | 'course_waitlist';
   quizLevel?: CEFRLevel;
   quizScore?: number;
+  waitlistLevel?: string;
+  timezone?: string;
+  bestTimes?: string[];
+  torontoTime?: string;
   createdAt: string;
 }
 

@@ -43,7 +43,9 @@ export const Navbar: React.FC = () => {
           {/* Right/Center: 4 Clean Navigation Links */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
             {navLinks.map((item) => {
-              const isActive = activeView === item.view;
+              const isActive =
+                activeView === item.view ||
+                (item.view === 'courses' && activeView === 'group-lessons');
               return (
                 <a
                   key={item.id}
@@ -104,7 +106,9 @@ export const Navbar: React.FC = () => {
 
               <nav className="mt-6 flex flex-col gap-2">
                 {navLinks.map((item) => {
-                  const isActive = activeView === item.view;
+                  const isActive =
+                    activeView === item.view ||
+                    (item.view === 'courses' && activeView === 'group-lessons');
                   return (
                     <a
                       key={item.id}
