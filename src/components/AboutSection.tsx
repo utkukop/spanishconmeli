@@ -1,10 +1,75 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useCMS } from '../context/CMSContext';
-import { Globe, GraduationCap, MessageSquare, Calendar } from 'lucide-react';
+import {
+  Globe,
+  GraduationCap,
+  MessageSquare,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react';
+
+const PERU_SLIDES = [
+  {
+    src: '/assets/aistudio/banner-machupicchu_efc3da11.webp',
+    alt: 'Machu Picchu in the Peruvian Andes',
+    caption: 'Machu Picchu · Cusco Region, Peru',
+  },
+  {
+    src: '/assets/aistudio/peru-and-mountains_a2c896fa.webp',
+    alt: 'Rainbow Mountain (Vinicunca) in the Peruvian Andes',
+    caption: 'Vinicunca (Rainbow Mountain) · Peruvian Andes',
+  },
+  {
+    src: '/assets/aistudio/peru-machu-picchu-2_878a392e.webp',
+    alt: 'Overlook of Machu Picchu and surrounding Andean peaks',
+    caption: 'Andean Highlands & Sacred Valley, Peru',
+  },
+];
 
 export const AboutSection: React.FC = () => {
   const { siteConfig } = useCMS();
   const calLink = siteConfig.calLink || 'https://cal.com/melissa-anchelia-54kwyd/30min';
+
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = window.setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % PERU_SLIDES.length);
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [isPaused]);
+
+  const handlePrev = () => {
+    setActiveSlide((prev) => (prev - 1 + PERU_SLIDES.length) % PERU_SLIDES.length);
+  };
+
+  const handleNext = () => {
+    setActiveSlide((prev) => (prev + 1) % PERU_SLIDES.length);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0]?.clientX ?? null;
+    setIsPaused(true);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) {
+      setIsPaused(false);
+      return;
+    }
+    const endX = e.changedTouches[0]?.clientX ?? touchStartX.current;
+    const diff = touchStartX.current - endX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) handleNext();
+      else handlePrev();
+    }
+    touchStartX.current = null;
+    setIsPaused(false);
+  };
 
   return (
     <section className="py-10 sm:py-16 bg-[#FFF6EC]">
@@ -47,15 +112,78 @@ export const AboutSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Panoramic Machu Picchu Heritage Visual */}
-        <div className="mt-10 sm:mt-12 rounded-2xl overflow-hidden border border-[#E9DCCB] shadow-xs bg-white">
-          <img
-            src="/assets/aistudio/banner-machupicchu_efc3da11.webp"
-            alt="Machu Picchu in the Peruvian Andes"
-            referrerPolicy="no-referrer"
-            className="w-full aspect-[16/7] sm:aspect-[16/5] object-cover object-center block"
-            loading="lazy"
-          />
+        {/* Panoramic Peru Heritage Slider */}
+        <div
+          className="mt-10 sm:mt-12 relative rounded-2xl overflow-hidden border border-[#E9DCCB] shadow-xs bg-[#22334A]"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onFocus={() => setIsPaused(true)}
+          onBlur={() => setIsPaused(false)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Landscapes of Peru and the Andes"
+        >
+          <div
+            className="flex transition-transform duration-500 ease-out motion-reduce:transition-none"
+            style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+          >
+            {PERU_SLIDES.map((slide) => (
+              <div key={slide.src} className="w-full shrink-0 relative">
+                <img
+                  src={slide.src}
+                  alt={slide.alt}
+                  referrerPolicy="no-referrer"
+                  className="w-full aspect-[16/8] sm:aspect-[16/5] object-cover object-center block"
+                />
+                <div
+                  className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#22334A]/80 via-[#22334A]/35 to-transparent pointer-events-none"
+                  aria-hidden="true"
+                />
+                <p className="absolute bottom-3 left-4 sm:bottom-4 sm:left-6 text-xs sm:text-sm font-medium text-[#FFF6EC] tracking-wide pointer-events-none">
+                  {slide.caption}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Prev / Next Navigation Buttons */}
+          <button
+            type="button"
+            onClick={handlePrev}
+            aria-label="Previous Peru photo"
+            className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] rounded-full bg-[#22334A]/65 hover:bg-[#C8553D] text-[#FFF6EC] border border-[#FFF6EC]/25 flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F2B134]"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          <button
+            type="button"
+            onClick={handleNext}
+            aria-label="Next Peru photo"
+            className="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] rounded-full bg-[#22334A]/65 hover:bg-[#C8553D] text-[#FFF6EC] border border-[#FFF6EC]/25 flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F2B134]"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+
+          {/* Dot Indicators */}
+          <div className="absolute bottom-3 right-4 sm:bottom-4 sm:right-6 flex items-center gap-2 z-10">
+            {PERU_SLIDES.map((slide, idx) => (
+              <button
+                key={slide.src}
+                type="button"
+                onClick={() => setActiveSlide(idx)}
+                aria-label={`Show slide ${idx + 1} of ${PERU_SLIDES.length}`}
+                aria-current={activeSlide === idx ? 'true' : undefined}
+                className={`h-2 rounded-full transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F2B134] ${
+                  activeSlide === idx
+                    ? 'w-6 bg-[#F2B134]'
+                    : 'w-2 bg-[#FFF6EC]/60 hover:bg-[#FFF6EC]'
+                }`}
+              />
+            ))}
+          </div>
         </div>
 
         {/* 3 Warm Sand Badges Row */}
