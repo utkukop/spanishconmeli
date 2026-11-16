@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight, Star, ArrowUpRight } from 'lucide-react';
 import type { PreplyReviewItem, PreplyReviewsResponse } from '../utils/preplyReviews';
 
 const PREPLY_URL = 'https://preply.com/es/profesor/2407129';
-const SESSION_CACHE_KEY = 'scm_preply_reviews_v1';
+const SESSION_CACHE_KEY = 'scm_preply_reviews_v2';
 const SESSION_CACHE_TTL_MS = 15 * 60 * 1000;
 
 const FALLBACK_REVIEWS: PreplyReviewItem[] = [
@@ -31,13 +31,27 @@ const FALLBACK_REVIEWS: PreplyReviewItem[] = [
     id: '509163',
     firstName: 'Adam',
     quote:
-      'Melissa is an amazing teacher, she has great energy, is patient & explains things clearly. Lessons are always fun & full of laughter and joy! Gracias Melissa :)',
+      'Melissa is an amazing teacher, she has great energy, is patient & explains things clearly. Lessons are always fun & full of laughs & joy! Thank you Melissa :)',
     rating: 5,
     avatar: 'https://avatars.preply.com/i/logos/i/logos/7609619.bb09422abb.jpeg',
     createdAt: '2023-01-25T09:43:54.782495+00:00',
     lessonCount: 14,
   },
 ];
+
+function deduplicateReviews(items: PreplyReviewItem[]): PreplyReviewItem[] {
+  const seenIds = new Set<string>();
+  const seenQuotes = new Set<string>();
+  return items.filter((item) => {
+    const normalizedQuote = item.quote.toLowerCase().replace(/\s+/g, ' ').trim();
+    if (!normalizedQuote || seenIds.has(item.id) || seenQuotes.has(normalizedQuote)) {
+      return false;
+    }
+    seenIds.add(item.id);
+    seenQuotes.add(normalizedQuote);
+    return true;
+  });
+}
 
 const StudentAvatar: React.FC<{ name: string; avatar: string | null }> = ({ name, avatar }) => {
   const [imgFailed, setImgFailed] = useState(false);
@@ -76,7 +90,7 @@ export const TestimonialsSection: React.FC = () => {
             expiresAt: number;
           };
           if (parsed?.data?.reviews?.length && Date.now() < parsed.expiresAt) {
-            return parsed.data.reviews;
+            return deduplicateReviews(parsed.data.reviews);
           }
         }
       } catch {
@@ -115,8 +129,29 @@ export const TestimonialsSection: React.FC = () => {
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(reviews.length === 0);
-  const [startIndex, setStartIndex] = useState(0);
+  const [cardsPerPage, setCardsPerPage] = useState<number>(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 768 ? 3 : 1;
+    }
+    return 3;
+  });
+  const [currentPage, setCurrentPage] = useState(0);
   const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    const updateCardsPerPage = () => {
+      const next = window.innerWidth >= 768 ? 3 : 1;
+      setCardsPerPage((prev) => {
+        if (prev !== next) {
+          setCurrentPage(0);
+        }
+        return next;
+      });
+    };
+    updateCardsPerPage();
+    window.addEventListener('resize', updateCardsPerPage);
+    return () => window.removeEventListener('resize', updateCardsPerPage);
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -129,18 +164,19 @@ export const TestimonialsSection: React.FC = () => {
           if (!res.ok) continue;
           const payload = (await res.json()) as PreplyReviewsResponse;
           if (Array.isArray(payload.reviews) && payload.reviews.length > 0) {
-            setReviews(payload.reviews);
+            const uniqueReviews = deduplicateReviews(payload.reviews);
+            setReviews(uniqueReviews);
             setMeta({
               averageRating: payload.averageRating || 5.0,
-              totalReviews: payload.totalReviews || payload.reviews.length,
+              totalReviews: payload.totalReviews || uniqueReviews.length,
               profileUrl: payload.profileUrl || PREPLY_URL,
             });
-            setStartIndex(0);
+            setCurrentPage(0);
             try {
               sessionStorage.setItem(
                 SESSION_CACHE_KEY,
                 JSON.stringify({
-                  data: payload,
+                  data: { ...payload, reviews: uniqueReviews },
                   expiresAt: Date.now() + SESSION_CACHE_TTL_MS,
                 })
               );
@@ -152,11 +188,9 @@ export const TestimonialsSection: React.FC = () => {
           }
         } catch (err) {
           if ((err as Error)?.name === 'AbortError') return;
-          // try next endpoint
         }
       }
 
-      // If live fetch failed, keep any cached reviews or use verified Preply snapshots
       setReviews((prev) => (prev.length > 0 ? prev : FALLBACK_REVIEWS));
       setIsLoading(false);
     }
@@ -165,20 +199,24 @@ export const TestimonialsSection: React.FC = () => {
     return () => controller.abort();
   }, []);
 
-  const activeReviews = reviews.length > 0 ? reviews : FALLBACK_REVIEWS;
+  const activeReviews = useMemo(
+    () => deduplicateReviews(reviews.length > 0 ? reviews : FALLBACK_REVIEWS),
+    [reviews]
+  );
+
+  // Non-overlapping pagination so every single review appears strictly once
+  const totalPages = Math.max(1, Math.ceil(activeReviews.length / cardsPerPage));
+  const safePage = currentPage % totalPages;
+  const pageStart = safePage * cardsPerPage;
+  const visibleReviews = activeReviews.slice(pageStart, pageStart + cardsPerPage);
 
   const handlePrev = () => {
-    setStartIndex((prev) => (prev - 1 + activeReviews.length) % activeReviews.length);
+    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
   };
 
   const handleNext = () => {
-    setStartIndex((prev) => (prev + 1) % activeReviews.length);
+    setCurrentPage((prev) => (prev + 1) % totalPages);
   };
-
-  const visibleCount = Math.min(3, activeReviews.length);
-  const orderedReviews = Array.from({ length: visibleCount }, (_, offset) => {
-    return activeReviews[(startIndex + offset) % activeReviews.length];
-  });
 
   const toggleExpand = (id: string) => {
     setExpandedIds((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -209,13 +247,13 @@ export const TestimonialsSection: React.FC = () => {
           </a>
         </div>
 
-        {/* Loading Skeletons on First Live Fetch */}
+        {/* Loading Skeletons matching fixed 280px height */}
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[0, 1, 2].map((skeletonIdx) => (
               <div
                 key={skeletonIdx}
-                className={`bg-[#FFF6EC]/95 rounded-2xl p-6 border border-[#E9DCCB] h-56 animate-pulse flex flex-col justify-between ${
+                className={`bg-[#FFF6EC]/95 rounded-2xl p-6 border border-[#E9DCCB] h-[280px] animate-pulse flex flex-col justify-between ${
                   skeletonIdx > 0 ? 'hidden md:flex' : 'flex'
                 }`}
               >
@@ -239,25 +277,25 @@ export const TestimonialsSection: React.FC = () => {
               <button
                 type="button"
                 onClick={handlePrev}
-                aria-label="Previous review"
+                aria-label="Previous reviews"
                 className="min-w-[44px] min-h-[44px] rounded-full bg-[#FFF6EC]/10 hover:bg-[#F2B134] text-[#FFF6EC] hover:text-[#22334A] border border-[#FFF6EC]/20 flex items-center justify-center transition-colors shrink-0 cursor-pointer"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
 
-              {/* 3 Review Cards on Desktop, 1 Active Card on Mobile */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 flex-1">
-                {orderedReviews.map((review, idx) => {
+              {/* Non-overlapping cards; uniform 280px collapsed height, Read more expands cleanly */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 flex-1 items-start">
+                {visibleReviews.map((review) => {
                   const isExpanded = Boolean(expandedIds[review.id]);
-                  const isLong = review.quote.length > 175;
+                  const isLong = review.quote.length > 155;
                   return (
                     <div
-                      key={`${review.id}-${idx}`}
+                      key={review.id}
                       className={`bg-[#FFF6EC] text-[#22334A] rounded-2xl p-5 sm:p-6 border border-[#E9DCCB] shadow-sm flex flex-col justify-between transition-all duration-200 ${
-                        idx > 0 ? 'hidden md:flex' : 'flex'
+                        isExpanded ? 'min-h-[280px] h-auto' : 'h-[280px]'
                       }`}
                     >
-                      <div>
+                      <div className="min-h-0">
                         {/* Navy Stars */}
                         <div className="flex items-center gap-0.5 text-[#22334A] mb-3">
                           {[...Array(Math.round(review.rating || 5))].map((_, i) => (
@@ -286,7 +324,7 @@ export const TestimonialsSection: React.FC = () => {
                       </div>
 
                       {/* Student Picture + First Name */}
-                      <div className="mt-5 pt-4 border-t border-[#E9DCCB] flex items-center gap-3">
+                      <div className="mt-4 pt-4 border-t border-[#E9DCCB] flex items-center gap-3 shrink-0">
                         <StudentAvatar name={review.firstName} avatar={review.avatar} />
                         <div className="min-w-0">
                           <p className="font-serif text-sm font-bold text-[#22334A] truncate">
@@ -307,27 +345,31 @@ export const TestimonialsSection: React.FC = () => {
               <button
                 type="button"
                 onClick={handleNext}
-                aria-label="Next review"
+                aria-label="Next reviews"
                 className="min-w-[44px] min-h-[44px] rounded-full bg-[#FFF6EC]/10 hover:bg-[#F2B134] text-[#FFF6EC] hover:text-[#22334A] border border-[#FFF6EC]/20 flex items-center justify-center transition-colors shrink-0 cursor-pointer"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Dot Indicators (Mobile & Desktop overview) */}
-            <div className="flex items-center justify-center gap-1.5 mt-6">
-              {activeReviews.map((r, i) => (
-                <button
-                  key={r.id}
-                  type="button"
-                  onClick={() => setStartIndex(i)}
-                  aria-label={`Show review ${i + 1} of ${activeReviews.length}`}
-                  className={`h-2 rounded-full transition-all cursor-pointer ${
-                    startIndex === i ? 'w-6 bg-[#F2B134]' : 'w-2 bg-[#FFF6EC]/35 hover:bg-[#FFF6EC]/60'
-                  }`}
-                />
-              ))}
-            </div>
+            {/* Dot Indicators matching unique pages */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-6">
+                {Array.from({ length: totalPages }, (_, pageIdx) => (
+                  <button
+                    key={pageIdx}
+                    type="button"
+                    onClick={() => setCurrentPage(pageIdx)}
+                    aria-label={`Show reviews page ${pageIdx + 1} of ${totalPages}`}
+                    className={`h-2 rounded-full transition-all cursor-pointer ${
+                      safePage === pageIdx
+                        ? 'w-6 bg-[#F2B134]'
+                        : 'w-2 bg-[#FFF6EC]/35 hover:bg-[#FFF6EC]/60'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
           </>
         )}
       </div>

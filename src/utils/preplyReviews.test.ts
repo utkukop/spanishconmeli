@@ -92,3 +92,29 @@ test('parsePreplyHtmlReviews falls back cleanly to JSON-LD schema.org reviews', 
   assert.equal(result.reviews[0].firstName, 'Adam');
   assert.equal(result.reviews[1].firstName, 'Preply Student');
 });
+
+test('parsePreplyHtmlReviews deduplicates reviews with identical id or quote text', () => {
+  const dupHtml = `
+    <html>
+      <body>
+        <script id="__NEXT_DATA__" type="application/json">${JSON.stringify({
+          props: {
+            pageProps: {
+              reviews: [
+                { id: 1, score: 5, content: 'Great lessons with Meli!', user: { firstName: 'Adam' } },
+                { id: 1, score: 5, content: 'Great lessons with Meli!', user: { firstName: 'Adam' } },
+                { id: 2, score: 5, content: 'Great   lessons   with Meli!', user: { firstName: 'Adam' } },
+                { id: 3, score: 5, content: 'Super helpful!', user: { firstName: 'Tanya' } },
+              ],
+            },
+          },
+        })}</script>
+      </body>
+    </html>
+  `;
+
+  const result = parsePreplyHtmlReviews(dupHtml);
+  assert.equal(result.reviews.length, 2);
+  assert.equal(result.reviews[0].firstName, 'Adam');
+  assert.equal(result.reviews[1].firstName, 'Tanya');
+});

@@ -82,10 +82,20 @@ export function parsePreplyHtmlReviews(
       const pageProps = parsed?.props?.pageProps;
       const rawReviews = Array.isArray(pageProps?.reviews) ? pageProps.reviews : [];
 
+      const seenIds = new Set<string>();
+      const seenQuotes = new Set<string>();
       const reviews: PreplyReviewItem[] = rawReviews
         .map((r, idx): PreplyReviewItem | null => {
           const quote = pickQuote(r);
           if (!quote) return null;
+          const id = String(r.id ?? `preply-${idx + 1}`);
+          const normalizedQuote = quote.toLowerCase().replace(/\s+/g, ' ').trim();
+          if (seenIds.has(id) || seenQuotes.has(normalizedQuote)) {
+            return null;
+          }
+          seenIds.add(id);
+          seenQuotes.add(normalizedQuote);
+
           const rawName = (r.user?.firstName || '').trim();
           const score = Number(r.score);
           const rating = Number.isFinite(score) ? Math.min(5, Math.max(1, score)) : 5;
@@ -95,7 +105,7 @@ export function parsePreplyHtmlReviews(
               : null;
 
           return {
-            id: String(r.id ?? `preply-${idx + 1}`),
+            id,
             firstName: rawName || 'Preply Student',
             quote,
             rating,
