@@ -1,53 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useCMS } from '../context/CMSContext';
-import { BrandLogo } from './BrandLogo';
-import { Menu, X, Sparkles, ArrowRight } from 'lucide-react';
-
-const ANNOUNCEMENT_MESSAGES = [
-  {
-    id: 1,
-    badge: 'Level Quiz',
-    text: '🎯 Stop translating in your head: Learn real conversational Spanish with Meli!',
-    cta: 'Take 3-min quiz →',
-    view: 'quiz' as const,
-    path: '/quiz',
-  },
-  {
-    id: 2,
-    badge: 'Limited Spots',
-    text: '✨ New A0–A1 Small Group Cohort enrolling now! Save $35 with Early Bird ($115 USD)',
-    cta: 'Explore courses →',
-    view: 'courses' as const,
-    path: '/courses',
-  },
-  {
-    id: 3,
-    badge: 'Free Trial',
-    text: '☕ Speak naturally with confidence, not robotic textbook drills · Free 30-min trial!',
-    cta: 'Book trial →',
-    view: 'contact' as const,
-    path: '/contact',
-  },
-];
+import { Menu, X, Calendar } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const { siteConfig, activeView, setActiveView } = useCMS();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeMessageIndex, setActiveMessageIndex] = useState(0);
 
-  // 5-second interval rotating announcement messages
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveMessageIndex((prev) => (prev + 1) % ANNOUNCEMENT_MESSAGES.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
+  const calLink = siteConfig.calLink || 'https://cal.com/spanishconmeli';
 
   const navLinks = [
     { id: 'home', label: 'Home', view: 'home' as const, path: '/' },
-    { id: 'quiz', label: 'Level Quiz', view: 'quiz' as const, path: '/quiz' },
-    { id: 'courses', label: 'Courses & Pricing', view: 'courses' as const, path: '/courses' },
-    { id: 'about', label: 'About Meli', view: 'about' as const, path: '/about' },
+    { id: 'courses', label: 'Courses', view: 'courses' as const, path: '/courses' },
+    { id: 'about', label: 'About me', view: 'about' as const, path: '/about' },
     { id: 'contact', label: 'Contact', view: 'contact' as const, path: '/contact' },
   ];
 
@@ -59,45 +23,25 @@ export const Navbar: React.FC = () => {
     document.body.scrollTop = 0;
   };
 
-  const currentAnnouncement = ANNOUNCEMENT_MESSAGES[activeMessageIndex];
-
   return (
     <>
-      {/* 5-second Rotating Global Announcement Banner */}
-      <div className="bg-[#1E1B18] text-[#F3EFE6] text-[11px] sm:text-xs py-2 px-3 sm:px-4 border-b border-[#332E29] relative overflow-hidden">
-        <div className="max-w-7xl mx-auto flex items-center justify-center">
+      <header className="sticky top-0 z-40 bg-[#FFF6EC]/95 backdrop-blur-md border-b border-[#E9DCCB]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-6">
+          {/* Left: Brand Wordmark "spanishconmeli" in Terracotta Playfair Display */}
           <a
-            href={currentAnnouncement.path}
+            href="/"
             onClick={(e) => {
               e.preventDefault();
-              handleNavClick(currentAnnouncement.view);
+              handleNavClick('home');
             }}
-            className="flex items-center justify-center flex-wrap gap-1.5 sm:gap-2 text-center group cursor-pointer transition-opacity duration-300"
-            key={currentAnnouncement.id}
+            className="font-serif text-xl sm:text-2xl font-bold text-[#C8553D] tracking-tight whitespace-nowrap shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
+            aria-label="spanishconmeli home"
           >
-            <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-[#C73E29] text-white text-[10px] font-bold uppercase tracking-wider">
-              {currentAnnouncement.badge}
-            </span>
-            <span className="font-medium text-[#FAF9F5] group-hover:text-[#FBB040] transition-colors">
-              {currentAnnouncement.text}
-            </span>
-            <span className="text-[#FBB040] font-bold underline ml-1 whitespace-nowrap group-hover:text-white transition-colors">
-              {currentAnnouncement.cta}
-            </span>
+            spanishconmeli
           </a>
-        </div>
-      </div>
 
-      {/* Main Top Bar */}
-      <header className="sticky top-0 z-40 bg-[#FAF9F5]/95 backdrop-blur-md border-b border-[#EAE5D9] transition-all">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-6 sm:gap-8">
-          {/* Zone 1: Custom Brand Logo with SVG Emblem & Typographic Wordmark */}
-          <div className="flex items-center shrink-0">
-            <BrandLogo />
-          </div>
-
-          {/* Zone 2: Navigation Links (Clean, semantic, direct URLs) */}
-          <nav className="hidden lg:flex items-center gap-7 text-sm font-medium text-[#57514A]">
+          {/* Right/Center: 4 Clean Navigation Links */}
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
             {navLinks.map((item) => {
               const isActive = activeView === item.view;
               return (
@@ -108,69 +52,51 @@ export const Navbar: React.FC = () => {
                     e.preventDefault();
                     handleNavClick(item.view);
                   }}
-                  className={`relative py-1 transition-colors whitespace-nowrap cursor-pointer ${
+                  className={`py-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                     isActive
-                      ? 'text-[#C73E29] font-semibold'
-                      : 'hover:text-[#1E1B18]'
+                      ? 'text-[#C8553D] font-semibold'
+                      : 'text-[#22334A] hover:text-[#C8553D]'
                   }`}
                 >
                   {item.label}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#C73E29] rounded-full" />
-                  )}
                 </a>
               );
             })}
           </nav>
 
-          {/* Zone 3: Primary CTA */}
-          <div className="flex items-center gap-3 shrink-0">
-            <a
-              href="/quiz"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick('quiz');
-              }}
-              className="hidden sm:inline-flex items-center gap-2 px-4.5 py-2.5 text-xs sm:text-sm font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl shadow-xs transition-colors cursor-pointer whitespace-nowrap"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{siteConfig.headerCtaText || 'Take Level Quiz'}</span>
-            </a>
-
-            {/* Mobile Hamburger Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-[#57514A] hover:text-[#1E1B18] hover:bg-[#F0ECE2] rounded-lg transition-colors cursor-pointer"
-              aria-label={mobileMenuOpen ? 'Cerrar menú móvil' : 'Abrir menú móvil'}
-              aria-expanded={mobileMenuOpen}
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
+          {/* Mobile Menu Trigger (>= 44px touch hitbox) */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center text-[#22334A] hover:bg-[#E9DCCB]/60 rounded-full transition-colors cursor-pointer"
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
       </header>
 
-      {/* Mobile Drawer Navigation (Responsive) */}
+      {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
         <div
-          className="lg:hidden fixed inset-0 z-50 bg-[#1E1B18]/50 backdrop-blur-xs transition-opacity"
+          className="md:hidden fixed inset-0 z-50 bg-[#22334A]/45 backdrop-blur-xs"
           onClick={() => setMobileMenuOpen(false)}
         >
           <div
-            className="fixed top-0 right-0 bottom-0 w-5/6 max-w-sm bg-[#FAF9F5] shadow-2xl p-6 flex flex-col justify-between overflow-y-auto"
+            className="fixed top-0 right-0 bottom-0 w-5/6 max-w-sm bg-[#FFF6EC] shadow-2xl p-6 flex flex-col justify-between overflow-y-auto border-l border-[#E9DCCB]"
             onClick={(e) => e.stopPropagation()}
           >
             <div>
-              <div className="flex items-center justify-between pb-6 border-b border-[#EAE5D9]">
-                <BrandLogo
-                  iconSize={36}
-                  wordmarkSize="22px"
-                  onClick={() => setMobileMenuOpen(false)}
-                />
+              <div className="flex items-center justify-between pb-5 border-b border-[#E9DCCB]">
+                <span className="font-serif text-xl font-bold text-[#C8553D]">
+                  spanishconmeli
+                </span>
                 <button
+                  type="button"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-1.5 text-[#57514A] hover:text-[#1E1B18] rounded-lg cursor-pointer"
-                  aria-label="Cerrar menú"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center text-[#22334A] hover:bg-[#E9DCCB]/60 rounded-full cursor-pointer"
+                  aria-label="Close menu"
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -187,31 +113,29 @@ export const Navbar: React.FC = () => {
                         e.preventDefault();
                         handleNavClick(item.view);
                       }}
-                      className={`flex items-center justify-between px-4 py-3 rounded-xl text-left text-base font-medium transition-colors cursor-pointer ${
+                      className={`min-h-[48px] flex items-center px-4 py-3 rounded-2xl text-base font-medium transition-colors cursor-pointer ${
                         isActive
-                          ? 'bg-[#C73E29]/10 text-[#C73E29] font-bold'
-                          : 'text-[#57514A] hover:bg-[#F0ECE2] hover:text-[#1E1B18]'
+                          ? 'bg-[#F5E7DA] text-[#C8553D] font-semibold'
+                          : 'text-[#22334A] hover:bg-[#E9DCCB]/40'
                       }`}
                     >
-                      <span>{item.label}</span>
-                      <ArrowRight className="w-4 h-4 opacity-50" />
+                      {item.label}
                     </a>
                   );
                 })}
               </nav>
             </div>
 
-            <div className="pt-6 border-t border-[#EAE5D9]">
+            <div className="pt-6 border-t border-[#E9DCCB]">
               <a
-                href="/quiz"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick('quiz');
-                }}
-                className="w-full flex items-center justify-center gap-2 py-3.5 px-4 text-sm font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl shadow-xs cursor-pointer text-center"
+                href={calLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-5 text-sm font-semibold text-white bg-[#C8553D] hover:bg-[#B14630] rounded-full shadow-sm cursor-pointer text-center"
               >
-                <Sparkles className="w-4 h-4" />
-                <span>Take Free Level Quiz</span>
+                <Calendar className="w-4 h-4" />
+                <span>Book your trial lesson · $5</span>
               </a>
             </div>
           </div>

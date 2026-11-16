@@ -11,7 +11,7 @@ interface BrandLogoProps {
 
 export const BrandLogo: React.FC<BrandLogoProps> = ({
   variant = 'light',
-  iconSize = 44,
+  iconSize = 38,
   wordmarkSize,
   onClick,
   className = '',
@@ -34,9 +34,8 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       href="/"
       onClick={handleClick}
       className={`scm-brand-logo group cursor-pointer ${className}`}
-      aria-label="spanishconmeli ana sayfa"
+      aria-label="spanishconmeli home"
     >
-      {/* Amblem SVG */}
       <svg
         className="scm-icon"
         viewBox="0 0 120 120"
@@ -46,17 +45,17 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       >
         <defs>
           <linearGradient id={`navBgGrad-${variant}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#F7941D" />
-            <stop offset="55%" stopColor="#F15A24" />
-            <stop offset="100%" stopColor="#D9272E" />
+            <stop offset="0%" stopColor="#F2B134" />
+            <stop offset="55%" stopColor="#D96B43" />
+            <stop offset="100%" stopColor="#C8553D" />
           </linearGradient>
           <linearGradient id={`navRibbon1-${variant}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FBB040" />
-            <stop offset="100%" stopColor="#E63E21" />
+            <stop offset="0%" stopColor="#FFF6EC" />
+            <stop offset="100%" stopColor="#F2B134" />
           </linearGradient>
           <linearGradient id={`navRibbon2-${variant}`} x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#D9272E" />
-            <stop offset="100%" stopColor="#F7941D" />
+            <stop offset="0%" stopColor="#C8553D" />
+            <stop offset="100%" stopColor="#FFF6EC" />
           </linearGradient>
         </defs>
         <rect x="4" y="4" width="112" height="112" rx="28" fill={`url(#navBgGrad-${variant})`} />
@@ -76,29 +75,24 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
           strokeLinejoin="round"
         />
         <g transform="translate(56, 26)">
-          <circle cx="12" cy="12" r="11" fill="#FFFDF9" />
-          <polygon points="4,19 2,24 9,21" fill="#FFFDF9" />
+          <circle cx="12" cy="12" r="11" fill="#FFF6EC" />
+          <polygon points="4,19 2,24 9,21" fill="#FFF6EC" />
           <text
             x="12"
             y="15.5"
             fontFamily="sans-serif"
             fontWeight="800"
             fontSize="9.5"
-            fill="#C92A2A"
+            fill="#C8553D"
             textAnchor="middle"
           >
             ¡H!
           </text>
         </g>
-        <g transform="translate(82, 30) rotate(-8)">
-          <path d="M0,2 Q6,0 12,2 T24,2 L24,14 Q18,16 12,14 T0,14 Z" fill="#AA151B" />
-          <path d="M0,5 Q6,3 12,5 T24,5 L24,11 Q18,13 12,11 T0,11 Z" fill="#F1BF00" />
-        </g>
       </svg>
 
-      {/* Renkli 'i' Noktalarına Sahip Özel Tipografi */}
       <span
-        className={`scm-wordmark ${isDark ? 'text-white' : 'text-[#1E1C1A]'}`}
+        className={`scm-wordmark ${isDark ? 'text-[#FFF6EC]' : 'text-[#22334A]'}`}
         style={wordmarkSize ? { fontSize: wordmarkSize } : undefined}
       >
         span<span className="red-dot-i">ı</span>shconmel<span className="red-dot-i">ı</span>

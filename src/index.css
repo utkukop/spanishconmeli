@@ -1,8 +1,27 @@
 @import "tailwindcss";
 
+:root {
+  --color-terracotta: #C8553D;
+  --color-navy: #22334A;
+  --color-cream: #FFF6EC;
+  --color-mustard: #F2B134;
+  --color-sand: #E9DCCB;
+}
+
 @layer base {
+  html {
+    background-color: #FFF6EC;
+    color: #22334A;
+  }
+
   body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #FFF6EC;
+    color: #22334A;
+  }
+
+  h1, h2, h3, h4, .font-serif {
+    font-family: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
   }
 }
 
@@ -11,41 +30,41 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1ede4;
+  background: #FFF6EC;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d4cbbe;
-  border-radius: 4px;
+  background: #E9DCCB;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #b5a896;
+  background: #C8553D;
 }
 
-/* SCM Custom Brand Logo & Typography */
+/* Brand Logo & Typography */
 .scm-brand-logo {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   text-decoration: none;
   user-select: none;
 }
 
 .scm-icon {
   flex-shrink: 0;
-  border-radius: 11px;
-  box-shadow: 0 4px 12px rgba(217, 39, 46, 0.22);
-  transition: transform 0.25s ease;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(200, 85, 61, 0.2);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .scm-brand-logo:hover .scm-icon {
-  transform: translateY(-2px) scale(1.03);
+  transform: translateY(-1px) scale(1.03);
 }
 
 .scm-wordmark {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 24px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 22px;
   font-weight: 700;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   line-height: 1;
   display: inline-flex;
   align-items: baseline;
@@ -53,11 +72,10 @@
 
 @media (min-width: 640px) {
   .scm-wordmark {
-    font-size: 28px;
+    font-size: 25px;
   }
 }
 
-/* Noktasız 'ı' harfinin üzerine turuncu-kırmızı özel nokta yerleştirme */
 .red-dot-i {
   position: relative;
   display: inline-block;
@@ -66,11 +84,11 @@
 .red-dot-i::after {
   content: "";
   position: absolute;
-  top: 0.08em;
+  top: 0.06em;
   left: 50%;
   transform: translateX(-50%);
-  width: 0.21em;
-  height: 0.21em;
-  background-color: #E84C22;
+  width: 0.2em;
+  height: 0.2em;
+  background-color: #C8553D;
   border-radius: 50%;
 }

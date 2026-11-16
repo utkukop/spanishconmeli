@@ -17,9 +17,9 @@ import {
 } from '../data/initialContent';
 
 const STORAGE_KEYS = {
-  PUBLISHED_DATA: 'spanishconmeli_published_data_v6',
-  DRAFT_DATA: 'spanishconmeli_draft_data_v6',
-  AUTH_SESSION: 'spanishconmeli_backoffice_auth_v6',
+  PUBLISHED_DATA: 'spanishconmeli_published_data_v7',
+  DRAFT_DATA: 'spanishconmeli_draft_data_v7',
+  AUTH_SESSION: 'spanishconmeli_backoffice_auth_v7',
 };
 
 const DEFAULT_WEBSITE_DATA: WebsiteData = {
@@ -181,7 +181,6 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const clean = pathname.toLowerCase().replace(/\/$/, '') || '/';
     if (clean === '/contact' || clean.startsWith('/contact')) return 'contact';
     if (clean === '/courses' || clean.startsWith('/courses')) return 'courses';
-    if (clean === '/quiz' || clean.startsWith('/quiz')) return 'quiz';
     if (clean === '/about' || clean.startsWith('/about')) return 'about';
     return 'home';
   };
@@ -192,8 +191,6 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return '/contact';
       case 'courses':
         return '/courses';
-      case 'quiz':
-        return '/quiz';
       case 'about':
         return '/about';
       case 'home':
@@ -205,16 +202,14 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const getPageTitle = (view: string): string => {
     switch (view) {
       case 'courses':
-        return 'Courses & Pricing | Spanish con Meli';
+        return 'Courses | spanishconmeli';
       case 'contact':
-        return 'Contact & Inquiries | Spanish con Meli';
-      case 'quiz':
-        return 'Conversational Level Quiz | Spanish con Meli';
+        return 'Contact | spanishconmeli';
       case 'about':
-        return 'About Teacher Meli | Spanish con Meli';
+        return 'About me | spanishconmeli';
       case 'home':
       default:
-        return 'Spanish con Meli | Speak Real Conversational Spanish';
+        return 'spanishconmeli – Speak Real Spanish with Warmth & Confidence';
     }
   };
 

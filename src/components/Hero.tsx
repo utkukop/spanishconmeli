@@ -1,123 +1,56 @@
 import React from 'react';
 import { useCMS } from '../context/CMSContext';
-import { ArrowRight, CheckCircle2, Sparkles, Star, Users } from 'lucide-react';
-import { WireframePlaceholder } from './WireframePlaceholder';
+import { Star } from 'lucide-react';
+import heroLessonImg from '../assets/images/hero_spanish_lesson_1794828171392.jpg';
 
 export const Hero: React.FC = () => {
-  const { siteConfig, setActiveView } = useCMS();
-
-  const bullets = siteConfig.heroBullets || [
-    'Real conversational Spanish from Spain and Latin America',
-    'Authentic street dialogues without robotic grammar formulas',
-    'Diagnostic level assessment in 3 minutes',
-  ];
+  const { siteConfig } = useCMS();
+  const calLink = siteConfig.calLink || 'https://cal.com/spanishconmeli';
 
   return (
-    <section className="relative overflow-hidden pt-8 pb-16 md:pt-14 md:pb-24 border-b border-[#EAE5D9]">
-      {/* Subtle warm atmospheric glow */}
-      <div
-        className="absolute top-0 right-1/4 w-96 h-96 bg-[#F4A261]/10 rounded-full blur-3xl pointer-events-none"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute bottom-0 left-10 w-80 h-80 bg-[#E76F51]/10 rounded-full blur-3xl pointer-events-none"
-        aria-hidden="true"
-      />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Left Column: Value Proposition & CTAs */}
+    <section className="bg-[#F4E3D3]/75 border-b border-[#E9DCCB]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* Left Column: Exact Headline, Subtitle, Terracotta $5 Button & Trust Line */}
           <div className="lg:col-span-7 flex flex-col items-start">
-            {/* Unboxed editorial kicker */}
-            <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#C73E29] mb-4">
-              <span>{siteConfig.heroBadge}</span>
-              <span aria-hidden="true">·</span>
-              <span>2026 Edition</span>
-            </div>
-
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#1E1B18] leading-[1.15] text-balance">
-              {siteConfig.heroHeadline}
+            <h1 className="font-serif text-4xl sm:text-5xl lg:text-[3.35rem] font-bold text-[#22334A] leading-[1.1] tracking-tight text-balance">
+              Speak real Spanish with confidence
             </h1>
 
-            <p className="mt-5 text-base sm:text-lg text-[#57514A] leading-relaxed max-w-2xl">
-              {siteConfig.heroSubtitle}
+            <p className="mt-4 sm:mt-5 text-base sm:text-lg text-[#22334A]/85 leading-relaxed max-w-lg">
+              Native Spanish teacher for English speakers. Start with a trial lesson and speak from day one.
             </p>
 
-            {/* Micro feature checklist */}
-            <div className="mt-6 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs sm:text-sm text-[#443E38]">
-              {bullets.map((bullet, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#2A9D8F] shrink-0" />
-                  <span>{bullet}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Action Buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto">
+            {/* Primary CTA + Trust Line */}
+            <div className="mt-7 sm:mt-8 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 w-full sm:w-auto">
               <a
-                href="/quiz"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActiveView('quiz');
-                  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-                  document.documentElement.scrollTop = 0;
-                  document.body.scrollTop = 0;
-                }}
-                className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-sm sm:text-base font-bold text-white bg-[#C73E29] hover:bg-[#AB3220] rounded-xl shadow-sm transition-all hover:translate-y-[-1px] cursor-pointer"
+                href={calLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="min-h-[48px] inline-flex items-center justify-center px-7 py-3.5 text-sm sm:text-base font-semibold text-white bg-[#C8553D] hover:bg-[#B14630] rounded-full shadow-xs transition-all hover:translate-y-[-1px] cursor-pointer whitespace-nowrap"
               >
-                <Sparkles className="w-4 h-4" />
-                <span>{siteConfig.heroCtaPrimaryText || 'Take Free Level Quiz'}</span>
-                <ArrowRight className="w-4 h-4" />
+                Book your trial lesson · $5
               </a>
 
-              <a
-                href="/courses"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActiveView('courses');
-                  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-                  document.documentElement.scrollTop = 0;
-                  document.body.scrollTop = 0;
-                }}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm sm:text-base font-semibold text-[#1E1B18] bg-[#EFE9DD] hover:bg-[#E5DDCF] rounded-xl transition-colors cursor-pointer"
-              >
-                <span>{siteConfig.heroCtaSecondaryText || 'Explore Courses & Pricing'}</span>
-              </a>
-            </div>
-
-            {/* Social proof strip */}
-            <div className="mt-10 pt-6 border-t border-[#EAE5D9] flex flex-wrap items-center gap-6 text-xs text-[#665E55]">
-              <div className="flex items-center gap-2">
-                <div className="flex text-amber-500">
+              <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-[#C8553D]">
+                <div className="flex items-center text-[#C8553D]">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-3.5 h-3.5 fill-current" />
                   ))}
                 </div>
-                <span className="font-bold text-[#1E1B18]">
-                  {siteConfig.heroStatRating || '4.9 / 5'}
-                </span>
-                <span>({siteConfig.heroStatReviews || '1,800+ student reviews'})</span>
-              </div>
-              <div className="flex items-center gap-1.5 font-medium">
-                <Users className="w-4 h-4 text-[#C73E29]" />
-                <span>
-                  {siteConfig.heroStatCommunity || 'Community on Instagram @spanishconmeli'}
-                </span>
+                <span className="font-semibold">Loved by students</span>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Dimensional Wireframe Placeholder for Hero Teacher Portrait */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative mx-auto max-w-md lg:max-w-none">
-              <WireframePlaceholder
-                width={600}
-                height={750}
-                aspectRatio="4/5"
-                label="Teacher Meli Hero Portrait Photo"
-                subtitle="Recommended: 600 × 750 px transparent cut-out or studio portrait"
-                className="shadow-xl"
+          {/* Right Column: Warm Teacher Portrait */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+            <div className="w-full max-w-sm lg:max-w-md rounded-2xl overflow-hidden border border-[#E9DCCB] shadow-sm bg-[#FFF6EC] aspect-[4/3]">
+              <img
+                src={heroLessonImg}
+                alt="Meli smiling at her desk during an online Spanish class"
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover object-center"
               />
             </div>
           </div>

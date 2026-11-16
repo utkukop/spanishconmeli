@@ -27,98 +27,97 @@ export const INITIAL_QUIZ_CONFIG: QuizConfig = {
 export const INITIAL_SITE_CONFIG: SiteConfig = {
   // General & Header
   siteName: 'spanishconmeli',
-  brandTagline: 'Learn the Spanish people actually speak on the streets',
+  brandTagline: '¡Hola! Real-life Spanish taught with warmth and confidence.',
   currencySymbol: '$',
-  announcementActive: true,
-  announcementText: '🎯 Stop translating in your head: Learn real conversational Spanish with Meli! · Free 3-min quiz',
+  announcementActive: false,
+  announcementText: '',
   announcementLinkText: '',
-  headerCtaText: 'Take Level Quiz',
+  headerCtaText: 'Book a trial lesson',
+  calLink: 'https://cal.com/spanishconmeli',
   navLinks: [
     { id: 'home', label: 'Home', view: 'home' },
-    { id: 'quiz', label: 'Level Quiz', view: 'quiz' },
     { id: 'courses', label: 'Courses', view: 'courses' },
-    { id: 'about', label: 'About Meli', view: 'about' },
+    { id: 'about', label: 'About me', view: 'about' },
     { id: 'contact', label: 'Contact', view: 'contact' },
   ],
 
   // Hero Section
-  heroBadge: 'Direct Conversational Immersion · Over 45,000 Students Worldwide',
-  heroHeadline: 'Speak real Spanish with confidence—never freeze up in conversation again.',
+  heroBadge: '¡Hola! Live Online Spanish Classes',
+  heroHeadline: 'Speak real Spanish with warmth and confidence. ¡Hablemos!',
   heroSubtitle:
-    'Leave behind artificial textbook dialogues and endless grammar drills. Learn to express yourself naturally in tapas bars, travels, and lively dinners with friends through bite-sized, practical lessons.',
+    'Leave stiff textbook drills behind. Learn how people actually speak over coffee, travels, and dinners with friends through friendly live classes with Meli.',
   heroImage: '',
-  heroCtaPrimaryText: 'Take Free Level Quiz',
-  heroCtaSecondaryText: 'Explore Courses & Pricing',
+  heroCtaPrimaryText: 'Book a trial lesson',
+  heroCtaSecondaryText: 'Explore courses',
   heroBullets: [
-    'Real conversational Spanish from Spain and Latin America',
-    'Authentic street dialogues without robotic grammar formulas',
-    'Diagnostic level assessment in 3 minutes',
+    'Friendly live lessons in small groups or 1-on-1',
+    'Practical Spanish for real-life conversations',
+    'Free 30-minute trial lesson to get started',
   ],
   heroStatRating: '4.9 / 5',
-  heroStatReviews: 'from 1,800+ international students',
-  heroStatCommunity: 'Global community on Instagram @spanishconmeli',
+  heroStatReviews: 'from happy international students',
+  heroStatCommunity: 'Daily Spanish on Instagram @spanishconmeli',
 
-  // Methodology Section
-  methodologyKicker: 'The Core Difference',
+  // Methodology / Conversation Section
+  methodologyKicker: '¡Hablemos!',
   methodologyTitle: 'Why do so many students freeze when trying to speak?',
   methodologySubtitle:
-    'Traditional academies teach Spanish from 40 years ago. At spanishconmeli, you learn the phrases, slang, and conversational rhythm real native speakers use today.',
+    'Most classrooms focus on memorizing rules. With Meli, you practice the natural phrases, rhythm, and confidence real native speakers use every day.',
   methodologyComparisons: [
     {
-      situation: 'Ordering tapas and a drink at a busy bar',
-      textbook: '«¿Desea usted servirme un vaso de agua mineral fría?» (Stiff, robotic—nobody talks like this)',
-      meliMethod: '«¿Me pones un vaso de agua del tiempo, porfa?» (Warm, natural, and effortless)',
+      situation: 'Ordering coffee or tapas at a lively café',
+      textbook: '«¿Desea usted servirme un vaso de agua mineral fría?»',
+      meliMethod: '«¿Me pones un café con leche, porfa?»',
     },
     {
-      situation: 'Agreeing enthusiastically with a friend',
-      textbook: '«Yo concuerdo plenamente con su respetable opinión.»',
-      meliMethod: '«¡Totalmente!», «Tal cual», «¡Ya te digo!»',
+      situation: 'Agreeing warmly with a friend',
+      textbook: '«Concuerdo plenamente con su respetable opinión.»',
+      meliMethod: '«¡Totalmente! ¡Claro que sí!»',
     },
     {
-      situation: 'Making plans for the weekend',
+      situation: 'Making weekend plans',
       textbook: '«¿Tiene usted la intención de realizar actividades el sábado?»',
-      meliMethod: '«¿Qué plan tienes para el finde? ¿Nos tomamos unas cañas?»',
+      meliMethod: '«¿Qué plan tienes este finde? ¡Vamos a tomar algo!»',
     },
   ],
   methodologyPillars: [
     {
-      title: 'Colloquial Immersion',
-      desc: 'Master the natural conversational fillers and idioms that make your Spanish sound warm and spontaneous from day one.',
+      title: 'Speak from Day One',
+      desc: 'Warm, judgment-free live practice so you feel comfortable forming sentences right away.',
     },
     {
-      title: 'Fast-Speech Ear Training',
-      desc: 'Listen to dialogues at real native tempo so you never lose the thread when locals speak quickly.',
+      title: 'Real-Life Vocabulary',
+      desc: 'Learn the everyday expressions and natural fillers locals actually use in conversation.',
     },
     {
-      title: 'Zero-Hesitation Fluency',
-      desc: 'Techniques for instant verbal response and reformulating your thoughts without mentally conjugating verbs first.',
+      title: 'Your Pace, Your Goals',
+      desc: 'Choose an intimate 4–6 student beginner group or flexible 1-on-1 private lessons tailored to you.',
     },
   ],
 
   // About Meli Section
   teacherName: 'Meli',
-  teacherTitle: 'Your Conversational Spanish Mentor',
+  teacherTitle: 'Your Native Spanish Teacher',
   teacherBio:
-    "¡Hola! I'm Meli, a native Spanish teacher obsessed with genuine human communication. After over 8 years of mentoring thousands of international learners, I discovered why so many get stuck: standard schools teach you to pass exams, not how to joke with a bartender or understand stories around a dinner table.",
+    "¡Hola! I'm Meli, a native Spanish teacher who believes learning a language should feel like catching up with a friend over coffee—not sitting through a stressful exam.",
   teacherBioParagraph2:
-    "I have lived in Madrid and traveled extensively throughout Andalusia, Mexico, and Colombia. I know precisely which idioms cause confusion, why learners freeze when speaking with groups of natives, and how to unlock spontaneous conversation with humor and zero stress.",
-  teacherQuote: '«You do not learn Spanish to pass a test—you learn it to connect with real people.»',
+    "Whether you're starting completely from scratch in a supportive small group or polishing your fluency in 1-on-1 private classes, my goal is to help you speak naturally, laugh in Spanish, and feel genuinely at home in any conversation.",
+  teacherQuote: '«You don’t learn Spanish to pass a test—you learn it to connect with real people.»',
   teacherImage: '',
   instagramHandle: '@spanishconmeli',
   youtubeHandle: '',
   spotifyHandle: '',
 
-  // Footer & Newsletter
+  // Footer
   footerDescription:
-    'Learn the Spanish people actually speak on the street. The online school designed to give you the rhythm, humor, and natural ease of a true native speaker.',
-  footerCopyright: 'All rights reserved.',
+    'Warm, practical online Spanish classes for real-life conversation. ¡Vamos a hablar español!',
+  footerCopyright: '© 2026 spanishconmeli. All rights reserved.',
   footerAddress: 'Toronto, Ontario, Canada',
-  footerNewsletterTitle: 'Weekly Real Spanish Letter',
-  footerNewsletterDesc:
-    'Get 1 bite-sized conversational idiom every Tuesday plus a 15% discount code for your first course.',
-  newsletterDiscountCode: 'MELI15',
+  footerNewsletterTitle: '',
+  footerNewsletterDesc: '',
+  newsletterDiscountCode: '',
 
-  // Quiz config
+  // Quiz config (kept for internal type compatibility)
   quizConfig: INITIAL_QUIZ_CONFIG,
 };
 
@@ -127,9 +126,9 @@ export const INITIAL_COURSES: Course[] = [
     id: 'course-group-a0a1',
     title: 'A0–A1 Small Group Spanish Cohort',
     tagline: 'From zero to basic practical Spanish in small, engaging groups of 4–6 students with live weekly classes.',
-    badge: 'Limited Spots · 4–6 Students',
-    level: 'A0–A1 Level (From Zero to Basic Spanish)',
-    duration: '10 Weeks · 1 Class / Week (75 min each)',
+    badge: 'Small Groups · 4–6 Students',
+    level: 'A0–A1 Level',
+    duration: '10 Weeks · 75 min / week',
     price: 115,
     originalPrice: 150,
     regularPrice: 150,
@@ -140,12 +139,12 @@ export const INITIAL_COURSES: Course[] = [
     secondaryImage: '/assets/aistudio/2_b2d4e231.jfif',
     features: [
       'A0–A1 level: From zero to basic Spanish',
-      'Small groups: 4–6 students for high-energy speaking practice',
+      'Small groups: 4–6 students for plenty of speaking practice',
       '10 weeks: 1 live class per week',
       '75 minutes each: Live and interactive classes',
       'Online via Google Meet: Join comfortably from anywhere',
       'Materials included: Weekly materials and practice activities',
-      'Practical Spanish for real life situations',
+      'Practical Spanish for real-life situations',
       'Early Bird Special: $115 USD (Save $35 USD from $150 regular price)',
     ],
     syllabus: [
@@ -159,9 +158,9 @@ export const INITIAL_COURSES: Course[] = [
     id: 'course-private-1on1',
     title: 'Online Spanish Private Lessons',
     tagline: 'Personalized 1-on-1 Spanish classes tailored to your pace, schedule, and individual goals.',
-    badge: 'Free 30-Min Trial Class Included',
-    level: 'All Levels (Beginner to Advanced)',
-    duration: 'Flexible Schedule · 1-Hour Live Classes',
+    badge: 'Free 30-Min Trial Included',
+    level: 'All Levels',
+    duration: 'Flexible · 1-Hour Live Classes',
     price: 80,
     currency: '$',
     popular: false,
@@ -179,14 +178,14 @@ export const INITIAL_COURSES: Course[] = [
       'Grammar, vocabulary, conversation, and pronunciation',
       'Materials included: Shared after each lesson with practice activities',
       'Support for your questions between lessons',
-      'Contact me and take a free 30-minute introductory class',
+      'Free 30-minute trial lesson before choosing a package',
     ],
     syllabus: [
-      { title: 'Diagnostic Session & Custom Blueprint', desc: 'Assessing your goals, challenges, and building your personalized learning roadmap.' },
-      { title: 'Live Targeted 1-on-1 Sessions', desc: 'Immediate correction, active conversation, and pronunciation fine-tuning.' },
-      { title: 'Continuous Progress & Support', desc: 'Weekly curated homework, feedback between lessons, and conversational mastery.' },
+      { title: 'Trial Chat & Custom Plan', desc: 'Assessing your goals and building a friendly, realistic speaking roadmap.' },
+      { title: 'Live 1-on-1 Practice', desc: 'Real conversation, gentle feedback, and natural pronunciation tips.' },
+      { title: 'Between-Class Support', desc: 'Weekly curated activities and quick help whenever questions come up.' },
     ],
-    ctaText: 'Book 1-on-1 Package & Free Trial',
+    ctaText: 'Inquire & Reserve Package',
   },
 ];
 
@@ -199,32 +198,32 @@ export const INITIAL_TESTIMONIALS: Testimonial[] = [
     location: 'London, United Kingdom',
     countryFlag: '🇬🇧',
     quote:
-      'I spent 3 years on typical apps and completely froze the first time I walked into a café in Valencia. With Meli’s course, I learned exactly what to say, how to banter, and lost my fear of speaking within 3 weeks.',
-    resultAchieved: 'Went from stage fright to enjoying full dinner conversations in Spanish',
+      'I spent 3 years on apps and completely froze the first time I walked into a café in Valencia. With Meli, I learned what to actually say and lost my fear of speaking within weeks.',
+    resultAchieved: 'Went from stage fright to full dinner conversations',
     rating: 5,
-    courseTaken: 'Speak with Confidence',
+    courseTaken: '1-on-1 Private Lessons',
   },
   {
     id: 'test-2',
     name: 'Lukas Meyer',
-    location: 'Berlin, Germany',
-    countryFlag: '🇩🇪',
+    location: 'Toronto, Canada',
+    countryFlag: '🇨🇦',
     quote:
-      'Meli’s breakdown of the subjunctive is pure gold. The way she connects it to emotional triggers instead of 15 confusing rules saved me months of frustration.',
-    resultAchieved: 'Passed the DELE B2 oral exam with top marks',
+      'Meli makes every class feel warm and relaxed. Instead of endless drills, we talk about real life and laugh a lot—my confidence skyrocketed.',
+    resultAchieved: 'Started speaking comfortably on trips to Mexico & Spain',
     rating: 5,
-    courseTaken: 'Subjunctive Without the Pain',
+    courseTaken: '1-on-1 Private Lessons',
   },
   {
     id: 'test-3',
-    name: 'Chloe Martinez-Dupont',
-    location: 'Paris, France',
-    countryFlag: '🇫🇷',
+    name: 'Chloe Dupont',
+    location: 'Montreal, Canada',
+    countryFlag: '🇨🇦',
     quote:
-      'The best thing about this method is that it is genuine and funny. You do not learn phrases no one says like "the bear eats apples", but how people our age talk in Madrid bars.',
-    resultAchieved: 'Landed a marketing role in Barcelona and speaks daily with local colleagues',
+      'The small group classes are so encouraging! Having only a few students meant I got to speak every single session without ever feeling overwhelmed.',
+    resultAchieved: 'Built a real beginner foundation from zero in 10 weeks',
     rating: 5,
-    courseTaken: 'Speak with Confidence',
+    courseTaken: 'A0–A1 Small Group Cohort',
   },
 ];
 

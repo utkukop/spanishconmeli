@@ -159,6 +159,7 @@ export interface SiteConfig {
   announcementText: string;
   announcementLinkText: string;
   headerCtaText: string;
+  calLink?: string;
   navLinks: NavLinkItem[];
 
   // Hero Section
