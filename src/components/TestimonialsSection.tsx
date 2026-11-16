@@ -247,13 +247,13 @@ export const TestimonialsSection: React.FC = () => {
           </a>
         </div>
 
-        {/* Loading Skeletons matching fixed 280px height */}
+        {/* Loading Skeletons */}
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[0, 1, 2].map((skeletonIdx) => (
               <div
                 key={skeletonIdx}
-                className={`bg-[#FFF6EC]/95 rounded-2xl p-6 border border-[#E9DCCB] h-[280px] animate-pulse flex flex-col justify-between ${
+                className={`bg-[#FFF6EC]/95 rounded-2xl p-6 border border-[#E9DCCB] min-h-[276px] animate-pulse flex flex-col justify-between ${
                   skeletonIdx > 0 ? 'hidden md:flex' : 'flex'
                 }`}
               >
@@ -283,19 +283,17 @@ export const TestimonialsSection: React.FC = () => {
                 <ChevronLeft className="w-5 h-5" />
               </button>
 
-              {/* Non-overlapping cards; uniform 280px collapsed height, Read more expands cleanly */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 flex-1 items-start">
+              {/* Non-overlapping cards; equal minimum height (272px) and synced row stretch on Read more */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 flex-1">
                 {visibleReviews.map((review) => {
                   const isExpanded = Boolean(expandedIds[review.id]);
-                  const isLong = review.quote.length > 155;
+                  const isLong = review.quote.length > 175;
                   return (
                     <div
                       key={review.id}
-                      className={`bg-[#FFF6EC] text-[#22334A] rounded-2xl p-5 sm:p-6 border border-[#E9DCCB] shadow-sm flex flex-col justify-between transition-all duration-200 ${
-                        isExpanded ? 'min-h-[280px] h-auto' : 'h-[280px]'
-                      }`}
+                      className="min-h-[276px] bg-[#FFF6EC] text-[#22334A] rounded-2xl p-5 sm:p-6 border border-[#E9DCCB] shadow-sm flex flex-col justify-between transition-all duration-200"
                     >
-                      <div className="min-h-0">
+                      <div>
                         {/* Navy Stars */}
                         <div className="flex items-center gap-0.5 text-[#22334A] mb-3">
                           {[...Array(Math.round(review.rating || 5))].map((_, i) => (
@@ -324,7 +322,7 @@ export const TestimonialsSection: React.FC = () => {
                       </div>
 
                       {/* Student Picture + First Name */}
-                      <div className="mt-4 pt-4 border-t border-[#E9DCCB] flex items-center gap-3 shrink-0">
+                      <div className="mt-5 pt-4 border-t border-[#E9DCCB] flex items-center gap-3">
                         <StudentAvatar name={review.firstName} avatar={review.avatar} />
                         <div className="min-w-0">
                           <p className="font-serif text-sm font-bold text-[#22334A] truncate">

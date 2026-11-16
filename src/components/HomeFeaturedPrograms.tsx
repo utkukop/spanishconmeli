@@ -1,9 +1,11 @@
 import React from 'react';
 import { useCMS } from '../context/CMSContext';
 
+const ONE_ON_ONE_CAL_LINK = 'https://cal.com/melissa-anchelia-54kwyd/1-1-class';
+const CONVERSATION_CAL_LINK = 'https://cal.com/melissa-anchelia-54kwyd/conversation-class-40-min';
+
 export const HomeFeaturedPrograms: React.FC = () => {
-  const { siteConfig, setActiveView } = useCMS();
-  const calLink = siteConfig.calLink || 'https://cal.com/spanishconmeli';
+  const { setActiveView } = useCMS();
 
   const handleJoinWaitlist = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -42,7 +44,7 @@ export const HomeFeaturedPrograms: React.FC = () => {
 
             <div className="mt-7">
               <a
-                href={calLink}
+                href={ONE_ON_ONE_CAL_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="min-h-[46px] w-full inline-flex items-center justify-center py-3 px-6 text-sm font-semibold text-white bg-[#C8553D] hover:bg-[#B14630] rounded-full transition-colors cursor-pointer"
@@ -68,7 +70,7 @@ export const HomeFeaturedPrograms: React.FC = () => {
 
             <div className="mt-7">
               <a
-                href={calLink}
+                href={CONVERSATION_CAL_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="min-h-[46px] w-full inline-flex items-center justify-center py-3 px-6 text-sm font-semibold text-white bg-[#C8553D] hover:bg-[#B14630] rounded-full transition-colors cursor-pointer"
