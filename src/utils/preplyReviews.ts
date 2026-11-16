@@ -178,13 +178,16 @@ export function enrichReviewsWithStudentProfiles(
   });
 
   if (includeCeren) {
-    const hasCeren = enriched.some(
+    const cerenIndex = enriched.findIndex(
       (r) =>
         r.id === CEREN_REVIEW.id ||
         r.quote.toLowerCase().includes("best gift i've ever given to myself")
     );
-    if (!hasCeren) {
-      enriched.push(CEREN_REVIEW);
+    if (cerenIndex === -1) {
+      enriched.unshift(CEREN_REVIEW);
+    } else if (cerenIndex > 0) {
+      const [cerenItem] = enriched.splice(cerenIndex, 1);
+      enriched.unshift(cerenItem);
     }
   }
 

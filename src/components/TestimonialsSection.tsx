@@ -7,10 +7,11 @@ import {
   type PreplyReviewsResponse,
 } from '../utils/preplyReviews';
 
-const SESSION_CACHE_KEY = 'scm_student_reviews_v4';
+const SESSION_CACHE_KEY = 'scm_student_reviews_v5';
 const SESSION_CACHE_TTL_MS = 15 * 60 * 1000;
 
 const FALLBACK_REVIEWS: PreplyReviewItem[] = [
+  CEREN_REVIEW,
   {
     id: '1383945',
     firstName: 'Mariagiulia',
@@ -117,7 +118,6 @@ const FALLBACK_REVIEWS: PreplyReviewItem[] = [
     createdAt: '2023-01-18T00:00:00+00:00',
     lessonCount: null,
   },
-  CEREN_REVIEW,
 ];
 
 function deduplicateReviews(items: PreplyReviewItem[]): PreplyReviewItem[] {
