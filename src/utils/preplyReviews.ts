@@ -4,6 +4,7 @@ export const PREPLY_PROFILE_URL = `https://preply.com/es/profesor/${PREPLY_TUTOR
 export interface PreplyReviewItem {
   id: string;
   firstName: string;
+  country?: string;
   quote: string;
   rating: number;
   avatar: string | null;
@@ -18,6 +19,130 @@ export interface PreplyReviewsResponse {
   reviews: PreplyReviewItem[];
   fetchedAt: string;
   source: 'live-preply';
+}
+
+interface StudentProfileOverride {
+  id?: string;
+  quoteSnippet: string;
+  firstName: string;
+  country: string;
+  avatar: string;
+}
+
+const STUDENT_PROFILE_OVERRIDES: StudentProfileOverride[] = [
+  {
+    id: '1383945',
+    quoteSnippet: 'melissa is a really kind person',
+    firstName: 'Mariagiulia',
+    country: 'Italy',
+    avatar: '/assets/avatars/mariagiulia.jpg',
+  },
+  {
+    id: '640906',
+    quoteSnippet: 'very dedicated to the learning experience',
+    firstName: 'Natasha',
+    country: 'USA',
+    avatar: '/assets/avatars/natasha.jpg',
+  },
+  {
+    id: '583853',
+    quoteSnippet: 'melissa is fantastic. super involved',
+    firstName: 'Logan',
+    country: 'UK',
+    avatar: '/assets/avatars/logan.jpg',
+  },
+  {
+    id: '829904',
+    quoteSnippet: 'already feel more confident with my spanish',
+    firstName: 'Kaila',
+    country: 'Australia',
+    avatar: '/assets/avatars/kaila.jpg',
+  },
+  {
+    id: '705386',
+    quoteSnippet: "i can't recommend melissa enough",
+    firstName: 'Fahad',
+    country: 'Saudi Arabia',
+    avatar: '/assets/avatars/fahad.jpg',
+  },
+  {
+    id: '509163',
+    quoteSnippet: 'she has great energy, is patient',
+    firstName: 'Adam',
+    country: 'USA',
+    avatar: '/assets/avatars/adam.jpg',
+  },
+  {
+    id: '506879',
+    quoteSnippet: 'wonderful teacher, me encantan nuestras clases',
+    firstName: 'Tanya',
+    country: 'Denmark',
+    avatar: '/assets/avatars/tanya.jpg',
+  },
+  {
+    id: 'ceren-tr',
+    quoteSnippet: "best gift i've ever given to myself",
+    firstName: 'Ceren',
+    country: 'Türkiye',
+    avatar: '/assets/avatars/ceren.jpg',
+  },
+];
+
+export const CEREN_REVIEW: PreplyReviewItem = {
+  id: 'ceren-tr',
+  firstName: 'Ceren',
+  country: 'Türkiye',
+  quote:
+    "Melissa’s lessons were the best gift I've ever given to myself. Now I even love this language more ♥ Gracias Melissa! Look forward to having more fun together learning Spanish.😊",
+  rating: 5,
+  avatar: '/assets/avatars/ceren.jpg',
+  createdAt: '2025-01-15T12:00:00Z',
+  lessonCount: null,
+};
+
+export function enrichReviewsWithStudentProfiles(
+  reviews: PreplyReviewItem[],
+  includeCeren = true
+): PreplyReviewItem[] {
+  const enriched = reviews.map((review) => {
+    const normalizedQuote = review.quote.toLowerCase().replace(/\s+/g, ' ').trim();
+    const matched = STUDENT_PROFILE_OVERRIDES.find(
+      (ov) =>
+        (ov.id && ov.id === review.id) ||
+        normalizedQuote.includes(ov.quoteSnippet)
+    );
+    const cleanName =
+      review.firstName === 'Preply Student' || !review.firstName.trim()
+        ? 'Verified Student'
+        : review.firstName;
+
+    if (!matched) {
+      return {
+        ...review,
+        firstName: cleanName,
+      };
+    }
+
+    return {
+      ...review,
+      firstName: matched.firstName,
+      country: matched.country,
+      avatar: matched.avatar,
+    };
+  });
+
+  if (includeCeren) {
+    const hasCeren = enriched.some(
+      (r) =>
+        r.id === CEREN_REVIEW.id ||
+        r.quote.toLowerCase().includes("best gift i've ever given to myself")
+    );
+    if (!hasCeren) {
+      enriched.push(CEREN_REVIEW);
+    }
+  }
+
+  return enriched;
 }
 
 interface NextDataReview {
@@ -84,11 +209,11 @@ export function parsePreplyHtmlReviews(
 
       const seenIds = new Set<string>();
       const seenQuotes = new Set<string>();
-      const reviews: PreplyReviewItem[] = rawReviews
+      const parsedReviews: PreplyReviewItem[] = rawReviews
         .map((r, idx): PreplyReviewItem | null => {
           const quote = pickQuote(r);
           if (!quote) return null;
-          const id = String(r.id ?? `preply-${idx + 1}`);
+          const id = String(r.id ?? `student-${idx + 1}`);
           const normalizedQuote = quote.toLowerCase().replace(/\s+/g, ' ').trim();
           if (seenIds.has(id) || seenQuotes.has(normalizedQuote)) {
             return null;
@@ -106,7 +231,7 @@ export function parsePreplyHtmlReviews(
 
           return {
             id,
-            firstName: rawName || 'Preply Student',
+            firstName: rawName || 'Verified Student',
             quote,
             rating,
             avatar: sanitizeAvatarUrl(r.user?.profile?.avatarUrlHttps),
@@ -115,6 +240,8 @@ export function parsePreplyHtmlReviews(
           };
         })
         .filter((item): item is PreplyReviewItem => item !== null);
+
+      const reviews = enrichReviewsWithStudentProfiles(parsedReviews, false);
 
       const dist = pageProps?.reviewDistribution;
       let totalReviews = reviews.length;
@@ -165,13 +292,13 @@ export function parsePreplyHtmlReviews(
         }>;
       };
       if (Array.isArray(ld.review) && ld.review.length > 0) {
-        const reviews: PreplyReviewItem[] = ld.review
+        const parsedReviews: PreplyReviewItem[] = ld.review
           .map((r, idx): PreplyReviewItem | null => {
             const quote = (r.reviewBody || '').trim();
             if (!quote) return null;
             const author = (r.author?.name || '').trim();
             const firstName =
-              !author || author.toLowerCase() === 'anonymous' ? 'Preply Student' : author;
+              !author || author.toLowerCase() === 'anonymous' ? 'Verified Student' : author;
             const ratingVal = Number(r.reviewRating?.ratingValue);
             return {
               id: `ld-${idx + 1}`,
@@ -184,6 +311,8 @@ export function parsePreplyHtmlReviews(
             };
           })
           .filter((item): item is PreplyReviewItem => item !== null);
+
+        const reviews = enrichReviewsWithStudentProfiles(parsedReviews, false);
 
         if (reviews.length > 0) {
           const avg = reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length;
@@ -202,7 +331,7 @@ export function parsePreplyHtmlReviews(
     }
   }
 
-  throw new Error('Could not parse reviews from Preply profile page.');
+  throw new Error('Could not parse reviews from live reviews profile page.');
 }
 
 export async function fetchLivePreplyReviews(

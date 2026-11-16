@@ -1,48 +1,99 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ChevronLeft, ChevronRight, Star, ArrowUpRight } from 'lucide-react';
-import type { PreplyReviewItem, PreplyReviewsResponse } from '../utils/preplyReviews';
+import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import {
+  CEREN_REVIEW,
+  enrichReviewsWithStudentProfiles,
+  type PreplyReviewItem,
+  type PreplyReviewsResponse,
+} from '../utils/preplyReviews';
 
-const PREPLY_URL = 'https://preply.com/es/profesor/2407129';
-const SESSION_CACHE_KEY = 'scm_preply_reviews_v2';
+const SESSION_CACHE_KEY = 'scm_student_reviews_v3';
 const SESSION_CACHE_TTL_MS = 15 * 60 * 1000;
 
 const FALLBACK_REVIEWS: PreplyReviewItem[] = [
   {
     id: '1383945',
     firstName: 'Mariagiulia',
+    country: 'Italy',
     quote:
       "Melissa is a really kind person. She's prepared for what she's teaching and always knows how to organize the lesson so it is as effective as possible. Tools like games and videos make learning easier.",
     rating: 5,
-    avatar: 'https://avatars.preply.com/i/logos/i/logos/cc902b73-964d-488d-8b56-97fa9d3d1795.jpg',
+    avatar: '/assets/avatars/mariagiulia.jpg',
     createdAt: '2024-12-08T17:54:24.309239+00:00',
     lessonCount: 71,
   },
   {
     id: '640906',
-    firstName: 'Preply Student',
+    firstName: 'Natasha',
+    country: 'USA',
     quote:
       'Melissa is an excellent tutor! She is very dedicated to the learning experience by having slideshows, practice quizzes, games, and homework. My Spanish has greatly improved because of her and I could not be happier!',
     rating: 5,
-    avatar: null,
+    avatar: '/assets/avatars/natasha.jpg',
     createdAt: '2023-06-27T11:59:02.620967+00:00',
     lessonCount: 21,
   },
   {
     id: '509163',
     firstName: 'Adam',
+    country: 'USA',
     quote:
       'Melissa is an amazing teacher, she has great energy, is patient & explains things clearly. Lessons are always fun & full of laughs & joy! Thank you Melissa :)',
     rating: 5,
-    avatar: 'https://avatars.preply.com/i/logos/i/logos/7609619.bb09422abb.jpeg',
+    avatar: '/assets/avatars/adam.jpg',
     createdAt: '2023-01-25T09:43:54.782495+00:00',
     lessonCount: 14,
   },
+  {
+    id: '583853',
+    firstName: 'Logan',
+    country: 'UK',
+    quote: 'Melissa is fantastic. Super involved and very kind.',
+    rating: 5,
+    avatar: '/assets/avatars/logan.jpg',
+    createdAt: '2023-04-20T00:00:00+00:00',
+    lessonCount: null,
+  },
+  {
+    id: '829904',
+    firstName: 'Kaila',
+    country: 'Australia',
+    quote:
+      'Had my first lesson with Melissa and already feel more confident with my Spanish! She is patient and really helps you learn. I quickly booked my subscription to work with her every week!',
+    rating: 5,
+    avatar: '/assets/avatars/kaila.jpg',
+    createdAt: '2023-11-12T00:00:00+00:00',
+    lessonCount: null,
+  },
+  {
+    id: '705386',
+    firstName: 'Fahad',
+    country: 'Saudi Arabia',
+    quote:
+      "I can't recommend Melissa enough! Her teaching style is engaging and effective, making learning the language a breeze. She is knowledgeable, and always goes the extra mile to ensure I understand the material.",
+    rating: 5,
+    avatar: '/assets/avatars/fahad.jpg',
+    createdAt: '2023-08-18T00:00:00+00:00',
+    lessonCount: null,
+  },
+  {
+    id: '506879',
+    firstName: 'Tanya',
+    country: 'Denmark',
+    quote: 'Melissa is a wonderful teacher, me encantan nuestras clases!',
+    rating: 5,
+    avatar: '/assets/avatars/tanya.jpg',
+    createdAt: '2023-01-20T00:00:00+00:00',
+    lessonCount: null,
+  },
+  CEREN_REVIEW,
 ];
 
 function deduplicateReviews(items: PreplyReviewItem[]): PreplyReviewItem[] {
+  const enriched = enrichReviewsWithStudentProfiles(items, true);
   const seenIds = new Set<string>();
   const seenQuotes = new Set<string>();
-  return items.filter((item) => {
+  return enriched.filter((item) => {
     const normalizedQuote = item.quote.toLowerCase().replace(/\s+/g, ' ').trim();
     if (!normalizedQuote || seenIds.has(item.id) || seenQuotes.has(normalizedQuote)) {
       return false;
@@ -60,7 +111,7 @@ const StudentAvatar: React.FC<{ name: string; avatar: string | null }> = ({ name
     return (
       <img
         src={avatar}
-        alt={`${name} — Preply student`}
+        alt={`${name} — Spanish student`}
         referrerPolicy="no-referrer"
         onError={() => setImgFailed(true)}
         className="w-10 h-10 rounded-full object-cover border border-[#E9DCCB] shrink-0 bg-[#E9DCCB]/40"
@@ -103,7 +154,6 @@ export const TestimonialsSection: React.FC = () => {
   const [meta, setMeta] = useState<{
     averageRating: number;
     totalReviews: number;
-    profileUrl: string;
   }>(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -116,8 +166,7 @@ export const TestimonialsSection: React.FC = () => {
           if (parsed?.data?.reviews?.length && Date.now() < parsed.expiresAt) {
             return {
               averageRating: parsed.data.averageRating,
-              totalReviews: parsed.data.totalReviews,
-              profileUrl: parsed.data.profileUrl || PREPLY_URL,
+              totalReviews: Math.max(parsed.data.totalReviews, parsed.data.reviews.length),
             };
           }
         }
@@ -125,7 +174,7 @@ export const TestimonialsSection: React.FC = () => {
         // ignore
       }
     }
-    return { averageRating: 5.0, totalReviews: 10, profileUrl: PREPLY_URL };
+    return { averageRating: 5.0, totalReviews: 11 };
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(reviews.length === 0);
@@ -156,7 +205,7 @@ export const TestimonialsSection: React.FC = () => {
   useEffect(() => {
     const controller = new AbortController();
 
-    async function loadLivePreplyReviews() {
+    async function loadLiveReviews() {
       const endpoints = ['/api/preply-reviews', '/.netlify/functions/preply-reviews'];
       for (const endpoint of endpoints) {
         try {
@@ -168,8 +217,7 @@ export const TestimonialsSection: React.FC = () => {
             setReviews(uniqueReviews);
             setMeta({
               averageRating: payload.averageRating || 5.0,
-              totalReviews: payload.totalReviews || uniqueReviews.length,
-              profileUrl: payload.profileUrl || PREPLY_URL,
+              totalReviews: Math.max(payload.totalReviews || 0, uniqueReviews.length),
             });
             setCurrentPage(0);
             try {
@@ -195,7 +243,7 @@ export const TestimonialsSection: React.FC = () => {
       setIsLoading(false);
     }
 
-    loadLivePreplyReviews();
+    loadLiveReviews();
     return () => controller.abort();
   }, []);
 
@@ -222,29 +270,30 @@ export const TestimonialsSection: React.FC = () => {
     setExpandedIds((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
+  const formatStudentSubtitle = (review: PreplyReviewItem): string => {
+    if (review.country && review.lessonCount) {
+      return `${review.country} · ${review.lessonCount} lessons`;
+    }
+    if (review.country) {
+      return `${review.country} · Verified student`;
+    }
+    if (review.lessonCount) {
+      return `${review.lessonCount} lessons · Verified student`;
+    }
+    return 'Verified student';
+  };
+
   return (
     <section className="py-12 sm:py-16 bg-[#22334A] text-[#FFF6EC]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header Row: Mustard Title + Rating Summary + Preply Profile Link */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8">
-          <div>
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#F2B134]">
-              What my students say
-            </h2>
-            <p className="mt-1 text-xs sm:text-sm text-[#FFF6EC]/75">
-              ★★★★★ {meta.averageRating.toFixed(1)} average · {meta.totalReviews} verified student reviews on Preply
-            </p>
-          </div>
-
-          <a
-            href={meta.profileUrl || PREPLY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#FFF6EC]/90 hover:text-[#F2B134] underline underline-offset-4 transition-colors"
-          >
-            <span>Read all my reviews on Preply</span>
-            <ArrowUpRight className="w-4 h-4" />
-          </a>
+        {/* Header Row: Mustard Title + Verified Rating Summary */}
+        <div className="mb-8">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#F2B134]">
+            What my students say
+          </h2>
+          <p className="mt-1 text-xs sm:text-sm text-[#FFF6EC]/75">
+            ★★★★★ {meta.averageRating.toFixed(1)} average · {meta.totalReviews} verified student reviews
+          </p>
         </div>
 
         {/* Loading Skeletons */}
@@ -283,7 +332,7 @@ export const TestimonialsSection: React.FC = () => {
                 <ChevronLeft className="w-5 h-5" />
               </button>
 
-              {/* Non-overlapping cards; equal minimum height (272px) and synced row stretch on Read more */}
+              {/* Non-overlapping cards; equal minimum height (276px) and synced row stretch on Read more */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5 flex-1">
                 {visibleReviews.map((review) => {
                   const isExpanded = Boolean(expandedIds[review.id]);
@@ -321,7 +370,7 @@ export const TestimonialsSection: React.FC = () => {
                         )}
                       </div>
 
-                      {/* Student Picture + First Name */}
+                      {/* Student Picture + First Name + Country */}
                       <div className="mt-5 pt-4 border-t border-[#E9DCCB] flex items-center gap-3">
                         <StudentAvatar name={review.firstName} avatar={review.avatar} />
                         <div className="min-w-0">
@@ -329,9 +378,7 @@ export const TestimonialsSection: React.FC = () => {
                             {review.firstName}
                           </p>
                           <p className="text-[11px] text-[#22334A]/65 truncate">
-                            {review.lessonCount
-                              ? `${review.lessonCount} lessons · Preply`
-                              : 'Verified Preply student'}
+                            {formatStudentSubtitle(review)}
                           </p>
                         </div>
                       </div>

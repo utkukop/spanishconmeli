@@ -116,10 +116,14 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const saved = localStorage.getItem(STORAGE_KEYS.PUBLISHED_DATA);
       if (saved) {
         const parsed = JSON.parse(saved);
+        const mergedConfig = { ...DEFAULT_WEBSITE_DATA.siteConfig, ...(parsed.siteConfig || {}) };
+        if (!mergedConfig.calLink || mergedConfig.calLink === 'https://cal.com/spanishconmeli') {
+          mergedConfig.calLink = DEFAULT_WEBSITE_DATA.siteConfig.calLink;
+        }
         return {
           ...DEFAULT_WEBSITE_DATA,
           ...parsed,
-          siteConfig: { ...DEFAULT_WEBSITE_DATA.siteConfig, ...(parsed.siteConfig || {}) },
+          siteConfig: mergedConfig,
         };
       }
       return DEFAULT_WEBSITE_DATA;
@@ -134,10 +138,14 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const saved = localStorage.getItem(STORAGE_KEYS.DRAFT_DATA);
       if (saved) {
         const parsed = JSON.parse(saved);
+        const mergedConfig = { ...DEFAULT_WEBSITE_DATA.siteConfig, ...(parsed.siteConfig || {}) };
+        if (!mergedConfig.calLink || mergedConfig.calLink === 'https://cal.com/spanishconmeli') {
+          mergedConfig.calLink = DEFAULT_WEBSITE_DATA.siteConfig.calLink;
+        }
         return {
           ...DEFAULT_WEBSITE_DATA,
           ...parsed,
-          siteConfig: { ...DEFAULT_WEBSITE_DATA.siteConfig, ...(parsed.siteConfig || {}) },
+          siteConfig: mergedConfig,
         };
       }
       // Defaults to matching published data

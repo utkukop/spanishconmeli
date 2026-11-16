@@ -7,7 +7,7 @@ const CONVERSATION_CAL_LINK = 'https://cal.com/melissa-anchelia-54kwyd/conversat
 
 export const CoursesPage: React.FC = () => {
   const { siteConfig, setActiveView } = useCMS();
-  const trialCalLink = siteConfig.calLink || 'https://cal.com/spanishconmeli';
+  const trialCalLink = siteConfig.calLink || 'https://cal.com/melissa-anchelia-54kwyd/30min';
 
   const handleWaitlistClick = (e: React.MouseEvent) => {
     e.preventDefault();

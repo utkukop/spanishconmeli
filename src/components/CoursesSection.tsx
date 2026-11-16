@@ -14,7 +14,7 @@ import {
 
 export const CoursesSection: React.FC = () => {
   const { courses, siteConfig, setActiveView } = useCMS();
-  const calLink = siteConfig.calLink || 'https://cal.com/spanishconmeli';
+  const calLink = siteConfig.calLink || 'https://cal.com/melissa-anchelia-54kwyd/30min';
 
   const [selectedCourseId, setSelectedCourseId] = useState<string>(
     courses[0]?.id || 'course-group-a0a1'

@@ -32,8 +32,8 @@ export const INITIAL_SITE_CONFIG: SiteConfig = {
   announcementActive: false,
   announcementText: '',
   announcementLinkText: '',
-  headerCtaText: 'Book a trial lesson',
-  calLink: 'https://cal.com/spanishconmeli',
+  headerCtaText: 'Book your trial lesson · $5',
+  calLink: 'https://cal.com/melissa-anchelia-54kwyd/30min',
   navLinks: [
     { id: 'home', label: 'Home', view: 'home' },
     { id: 'courses', label: 'Courses', view: 'courses' },
@@ -47,7 +47,7 @@ export const INITIAL_SITE_CONFIG: SiteConfig = {
   heroSubtitle:
     'Leave stiff textbook drills behind. Learn how people actually speak over coffee, travels, and dinners with friends through friendly live classes with Meli.',
   heroImage: '',
-  heroCtaPrimaryText: 'Book a trial lesson',
+  heroCtaPrimaryText: 'Book your trial lesson · $5',
   heroCtaSecondaryText: 'Explore courses',
   heroBullets: [
     'Friendly live lessons in small groups or 1-on-1',

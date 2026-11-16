@@ -5,7 +5,7 @@ import { Instagram, Mail, Calendar } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const { siteConfig, setActiveView } = useCMS();
-  const calLink = siteConfig.calLink || 'https://cal.com/spanishconmeli';
+  const calLink = siteConfig.calLink || 'https://cal.com/melissa-anchelia-54kwyd/30min';
 
   const navLinks = [
     { id: 'home', label: 'Home', view: 'home' as const, path: '/' },

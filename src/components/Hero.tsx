@@ -4,7 +4,7 @@ import { Star } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   const { siteConfig } = useCMS();
-  const calLink = siteConfig.calLink || 'https://cal.com/spanishconmeli';
+  const calLink = siteConfig.calLink || 'https://cal.com/melissa-anchelia-54kwyd/30min';
 
   return (
     <section className="bg-[#F4E3D3]/75 border-b border-[#E9DCCB]">

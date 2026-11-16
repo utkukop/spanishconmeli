@@ -5,7 +5,7 @@ import aboutPortraitImg from '../assets/images/about_meli_portrait_1794828171737
 
 export const AboutSection: React.FC = () => {
   const { siteConfig } = useCMS();
-  const calLink = siteConfig.calLink || 'https://cal.com/spanishconmeli';
+  const calLink = siteConfig.calLink || 'https://cal.com/melissa-anchelia-54kwyd/30min';
 
   return (
     <section className="py-10 sm:py-16 bg-[#FFF6EC]">
@@ -81,7 +81,7 @@ export const AboutSection: React.FC = () => {
             className="min-h-[48px] w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3 text-sm sm:text-base font-semibold text-white bg-[#C8553D] hover:bg-[#B14630] rounded-full shadow-xs transition-colors cursor-pointer shrink-0 whitespace-nowrap"
           >
             <Calendar className="w-4 h-4" />
-            <span>Book a trial lesson</span>
+            <span>Book your trial lesson · $5</span>
           </a>
         </div>
       </div>

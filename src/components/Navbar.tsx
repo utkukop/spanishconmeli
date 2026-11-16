@@ -6,7 +6,7 @@ export const Navbar: React.FC = () => {
   const { siteConfig, activeView, setActiveView } = useCMS();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const calLink = siteConfig.calLink || 'https://cal.com/spanishconmeli';
+  const calLink = siteConfig.calLink || 'https://cal.com/melissa-anchelia-54kwyd/30min';
 
   const navLinks = [
     { id: 'home', label: 'Home', view: 'home' as const, path: '/' },

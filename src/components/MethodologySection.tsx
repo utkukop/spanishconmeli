@@ -5,7 +5,7 @@ import conversationImg from '../assets/images/spanish_conversation_vibe_17948281
 
 export const MethodologySection: React.FC = () => {
   const { siteConfig } = useCMS();
-  const calLink = siteConfig.calLink || 'https://cal.com/spanishconmeli';
+  const calLink = siteConfig.calLink || 'https://cal.com/melissa-anchelia-54kwyd/30min';
 
   const comparisons = siteConfig.methodologyComparisons || [];
   const pillars = siteConfig.methodologyPillars || [];
@@ -65,7 +65,7 @@ export const MethodologySection: React.FC = () => {
                 className="min-h-[48px] inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-[#C8553D] hover:bg-[#B14630] rounded-full shadow-xs transition-colors cursor-pointer"
               >
                 <Calendar className="w-4 h-4" />
-                <span>Book a trial lesson</span>
+                <span>Book your trial lesson · $5</span>
               </a>
             </div>
           </div>

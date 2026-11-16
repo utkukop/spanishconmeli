@@ -5,7 +5,7 @@ import { sendContactEmail } from '../services/emailService';
 
 export const ContactPage: React.FC = () => {
   const { siteConfig, addLead } = useCMS();
-  const calLink = siteConfig.calLink || 'https://cal.com/spanishconmeli';
+  const calLink = siteConfig.calLink || 'https://cal.com/melissa-anchelia-54kwyd/30min';
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -219,7 +219,7 @@ export const ContactPage: React.FC = () => {
                   rel="noopener noreferrer"
                   className="min-h-[46px] w-full inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-white bg-[#C8553D] hover:bg-[#B14630] rounded-full transition-colors cursor-pointer"
                 >
-                  Book a trial lesson
+                  Book your trial lesson · $5
                 </a>
               </div>
             </div>
